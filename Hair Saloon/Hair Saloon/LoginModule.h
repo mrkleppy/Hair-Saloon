@@ -1,12 +1,11 @@
 #pragma once
 
-#ifndef Login
-#define Login
+#ifndef LoginModule
+#define LoginModule
 
 #include <string>
 using namespace std;
 
-void clearScreen();
 int exit();
 int validateUser(string username, string password);
 void loginScreen();

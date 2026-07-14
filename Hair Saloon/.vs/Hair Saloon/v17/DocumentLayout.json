@@ -1,66 +1,46 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\",
+  "WorkspaceRootPath": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\UserModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\UserModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\UserModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Hair Saloon\\UserModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\ReportingModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\ReportingModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\LoginModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Hair Saloon\\LoginModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Hair Saloon\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\PerformanceModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\PerformanceModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\UserModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Hair Saloon\\UserModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\InventoryModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\InventoryModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\Main.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Hair Saloon\\Main.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\BillingModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\BillingModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\PerformanceModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Hair Saloon\\PerformanceModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\BillingModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\BillingModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\Hair Saloon.vcxproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Hair Saloon\\Hair Saloon.vcxproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\AppointmentModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\AppointmentModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\BillingModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Hair Saloon\\BillingModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\AppointmentModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\AppointmentModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\LoginModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Hair Saloon\\LoginModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\LoginModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\LoginModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\LoginModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\LoginModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\PerformanceModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\PerformanceModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\InventoryModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\InventoryModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\ReportingModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\ReportingModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\UserModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{12DDE497-67C0-4304-A2DA-AFC3135C924D}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\UserModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\PerformanceModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Hair Saloon\\PerformanceModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -70,202 +50,132 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "BillingModule.cpp",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\BillingModule.cpp",
-              "RelativeDocumentMoniker": "Hair Saloon\\BillingModule.cpp",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\BillingModule.cpp",
-              "RelativeToolTip": "Hair Saloon\\BillingModule.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-07-13T15:19:20.398Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "InventoryModule.cpp",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\InventoryModule.cpp",
-              "RelativeDocumentMoniker": "Hair Saloon\\InventoryModule.cpp",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\InventoryModule.cpp",
-              "RelativeToolTip": "Hair Saloon\\InventoryModule.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-07-13T15:20:42.751Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "PerformanceModule.cpp",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\PerformanceModule.cpp",
-              "RelativeDocumentMoniker": "Hair Saloon\\PerformanceModule.cpp",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\PerformanceModule.cpp",
-              "RelativeToolTip": "Hair Saloon\\PerformanceModule.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-07-13T15:21:29.023Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ReportingModule.cpp",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\ReportingModule.cpp",
-              "RelativeDocumentMoniker": "Hair Saloon\\ReportingModule.cpp",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\ReportingModule.cpp",
-              "RelativeToolTip": "Hair Saloon\\ReportingModule.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-07-13T15:20:04.415Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "UserModule.cpp",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\UserModule.cpp",
-              "RelativeDocumentMoniker": "Hair Saloon\\UserModule.cpp",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\UserModule.cpp",
-              "RelativeToolTip": "Hair Saloon\\UserModule.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-07-13T15:17:45.032Z",
-              "EditorCaption": ""
+              "Title": "Main.h",
+              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\Main.h",
+              "RelativeDocumentMoniker": "Hair Saloon\\Main.h",
+              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\Main.h",
+              "RelativeToolTip": "Hair Saloon\\Main.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-07-14T05:21:55.203Z",
+              "IsPinned": true
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "Main.cpp",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\Main.cpp",
+              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\Main.cpp",
               "RelativeDocumentMoniker": "Hair Saloon\\Main.cpp",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\Main.cpp",
+              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\Main.cpp",
               "RelativeToolTip": "Hair Saloon\\Main.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-07-13T15:02:04.87Z",
+              "WhenOpened": "2026-07-14T05:18:42.415Z",
+              "IsPinned": true,
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "PerformanceModule.h",
+              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\PerformanceModule.h",
+              "RelativeDocumentMoniker": "Hair Saloon\\PerformanceModule.h",
+              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\PerformanceModule.h",
+              "RelativeToolTip": "Hair Saloon\\PerformanceModule.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-07-14T05:37:15.102Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "BillingModule.h",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\BillingModule.h",
-              "RelativeDocumentMoniker": "Hair Saloon\\BillingModule.h",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\BillingModule.h",
-              "RelativeToolTip": "Hair Saloon\\BillingModule.h",
+              "Title": "Hair Saloon.vcxproj",
+              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\Hair Saloon.vcxproj",
+              "RelativeDocumentMoniker": "Hair Saloon\\Hair Saloon.vcxproj",
+              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\Hair Saloon.vcxproj",
+              "RelativeToolTip": "Hair Saloon\\Hair Saloon.vcxproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-07-13T15:19:29.2Z",
-              "EditorCaption": ""
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000698|",
+              "WhenOpened": "2026-07-14T05:37:10.156Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "AppointmentModule.h",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\AppointmentModule.h",
-              "RelativeDocumentMoniker": "Hair Saloon\\AppointmentModule.h",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\AppointmentModule.h",
-              "RelativeToolTip": "Hair Saloon\\AppointmentModule.h",
+              "Title": "BillingModule.h",
+              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\BillingModule.h",
+              "RelativeDocumentMoniker": "Hair Saloon\\BillingModule.h",
+              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\BillingModule.h",
+              "RelativeToolTip": "Hair Saloon\\BillingModule.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-07-13T15:19:06.656Z",
+              "WhenOpened": "2026-07-14T05:37:08.55Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserModule.h",
+              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\UserModule.h",
+              "RelativeDocumentMoniker": "Hair Saloon\\UserModule.h",
+              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\UserModule.h",
+              "RelativeToolTip": "Hair Saloon\\UserModule.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-07-14T05:30:20.987Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserModule.cpp",
+              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\UserModule.cpp",
+              "RelativeDocumentMoniker": "Hair Saloon\\UserModule.cpp",
+              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\UserModule.cpp",
+              "RelativeToolTip": "Hair Saloon\\UserModule.cpp",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-07-14T05:27:55.852Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "AppointmentModule.cpp",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\AppointmentModule.cpp",
-              "RelativeDocumentMoniker": "Hair Saloon\\AppointmentModule.cpp",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\AppointmentModule.cpp",
-              "RelativeToolTip": "Hair Saloon\\AppointmentModule.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "LoginModule.cpp",
+              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\LoginModule.cpp",
+              "RelativeDocumentMoniker": "Hair Saloon\\LoginModule.cpp",
+              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\LoginModule.cpp",
+              "RelativeToolTip": "Hair Saloon\\LoginModule.cpp",
+              "ViewState": "AgIAADkAAAAAAAAAAAAAAEMAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-07-13T15:18:24.17Z",
+              "WhenOpened": "2026-07-14T05:20:42.285Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 9,
-              "Title": "LoginModule.cpp",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\LoginModule.cpp",
-              "RelativeDocumentMoniker": "Hair Saloon\\LoginModule.cpp",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\LoginModule.cpp",
-              "RelativeToolTip": "Hair Saloon\\LoginModule.cpp",
+              "Title": "PerformanceModule.cpp",
+              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\PerformanceModule.cpp",
+              "RelativeDocumentMoniker": "Hair Saloon\\PerformanceModule.cpp",
+              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\PerformanceModule.cpp",
+              "RelativeToolTip": "Hair Saloon\\PerformanceModule.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-07-13T15:01:13.824Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-07-14T05:36:45.01Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 8,
               "Title": "LoginModule.h",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\LoginModule.h",
+              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\LoginModule.h",
               "RelativeDocumentMoniker": "Hair Saloon\\LoginModule.h",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\LoginModule.h",
+              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Assignment\\Hair-Saloon\\Hair Saloon\\Hair Saloon\\LoginModule.h",
               "RelativeToolTip": "Hair Saloon\\LoginModule.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAzAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-07-13T15:08:39.508Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "PerformanceModule.h",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\PerformanceModule.h",
-              "RelativeDocumentMoniker": "Hair Saloon\\PerformanceModule.h",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\PerformanceModule.h",
-              "RelativeToolTip": "Hair Saloon\\PerformanceModule.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-07-13T15:21:46.966Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "InventoryModule.h",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\InventoryModule.h",
-              "RelativeDocumentMoniker": "Hair Saloon\\InventoryModule.h",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\InventoryModule.h",
-              "RelativeToolTip": "Hair Saloon\\InventoryModule.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-07-13T15:20:55.432Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "ReportingModule.h",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\ReportingModule.h",
-              "RelativeDocumentMoniker": "Hair Saloon\\ReportingModule.h",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\ReportingModule.h",
-              "RelativeToolTip": "Hair Saloon\\ReportingModule.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-07-13T15:20:19.649Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "UserModule.h",
-              "DocumentMoniker": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\UserModule.h",
-              "RelativeDocumentMoniker": "Hair Saloon\\UserModule.h",
-              "ToolTip": "C:\\Users\\Owner\\TARUMT\\DCS2\\Sem 1\\System and Programming Concepts\\Hair Saloon\\Hair Saloon\\UserModule.h",
-              "RelativeToolTip": "Hair Saloon\\UserModule.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-07-13T15:17:53.859Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-07-14T05:27:51.622Z"
             }
           ]
         }

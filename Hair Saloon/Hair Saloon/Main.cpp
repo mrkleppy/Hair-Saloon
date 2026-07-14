@@ -10,3 +10,7 @@ int main() {
 
     return 0;
 }
+
+void clearScreen() {
+    cout << "\033[2J\033[H";
+}

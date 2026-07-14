@@ -1,19 +1,28 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include "Main.h"
+#include "UserModule.h"
 
 using namespace std;
-
-void clearScreen() {
-    cout << "\033[2J\033[H";
-}
 
 int exit() {
     return 0;
 }
 
 int validateUser(string username, string password) {
-    return 0;
+    if (username == "1") {// login as member // temp value only
+        return 1;
+    }
+    else if (username == "2") {// login as staff // temp value only
+        return 2;
+    }
+    else if (username == "3") {// login as admin // temp value only
+        return 3;
+    }
+    else {
+        return 0;
+    }
 }
 
 void loginScreen() {
@@ -27,18 +36,20 @@ void loginScreen() {
         cout << "Password: ";
         getline(cin, password); // match with correspoding user
 
-        int user = stoi(username); // placeholder
-        //int user = validateUser(username, password);
+        int user = validateUser(username, password);
 
         switch (user) {
         case 1:
-            // member
+            clearScreen();
+            memberHomePage(username);
             break;
         case 2:
-            // staff
+            clearScreen();
+            staffHomePage(username);
             break;
         case 3:
-            // admin
+            clearScreen();
+            adminHomePage(username);
             break;
         default:
             clearScreen();
@@ -54,7 +65,7 @@ void registerScreen() {
     string username, phoneNo, password, confirmPassword;
 
     do {
-        cout << "Login" << endl;
+        cout << "Register" << endl;
         cout << "Username: ";
         getline(cin, username); //cannot duplicate, empty, more than 3 char
         cout << "Phone number: ";
@@ -67,8 +78,9 @@ void registerScreen() {
 }
 
 void mainScreen() {
-    int selection;
-    
+    int selection = 0;
+    bool validate = true;
+
     do {
         cout << "Welcome to XYZ Saloon!" << endl;
         cout << "1. Login\n2. Register as member\n0. Exit" << endl;
@@ -76,22 +88,23 @@ void mainScreen() {
         cin >> selection;
         cin.ignore();
 
-        switch(selection) {
-            case 1:
-                clearScreen();
-                loginScreen();
-                break;
-            case 2:
-                clearScreen();
-                registerScreen();
-                break;
-            case 0:
-                exit();
-                break;
-            default:
-                clearScreen();
-                cout << "Invalid input! Please enter 0, 1 or 2!";
-                break;
+        switch (selection) {
+        case 1:
+            clearScreen();
+            loginScreen();
+            break;
+        case 2:
+            clearScreen();
+            registerScreen();
+            break;
+        case 0:
+            exit();
+            break;
+        default:
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1 or 2!";
+            validate = false;
+            break;
         }
-    } while (selection != 1 || selection != 2 || selection != 0);
+    } while (!validate);
 }
