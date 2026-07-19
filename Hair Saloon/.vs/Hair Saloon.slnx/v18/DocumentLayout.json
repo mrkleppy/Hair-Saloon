@@ -1,0 +1,289 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\AppointmentModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\AppointmentModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\UserModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\UserModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\LoginModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\LoginModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\InventoryModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\InventoryModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\AppointmentModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\AppointmentModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\AppointmentReminder.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\AppointmentReminder.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\Main.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\Main.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\InventoryModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\InventoryModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\AppointmentReminder.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\AppointmentReminder.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\BillingModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\BillingModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\BillingModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\BillingModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\UserModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\UserModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\ReportingModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\ReportingModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\ReportingModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\ReportingModule.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\LoginModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F753468D-63F4-47C1-B85B-785968A44048}|Hair Saloon\\Hair Saloon.vcxproj|solutionrelative:Hair Saloon\\LoginModule.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 17,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{56df62a4-05a3-4e5b-aa1a-99371ccfb997}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "UserModule.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\UserModule.h",
+              "RelativeDocumentMoniker": "Hair Saloon\\UserModule.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\UserModule.h",
+              "RelativeToolTip": "Hair Saloon\\UserModule.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-07-15T01:57:37.434Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserModule.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\UserModule.cpp",
+              "RelativeDocumentMoniker": "Hair Saloon\\UserModule.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\UserModule.cpp",
+              "RelativeToolTip": "Hair Saloon\\UserModule.cpp",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAADAAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-07-15T01:57:26.127Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ReportingModule.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\ReportingModule.h",
+              "RelativeDocumentMoniker": "Hair Saloon\\ReportingModule.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\ReportingModule.h",
+              "RelativeToolTip": "Hair Saloon\\ReportingModule.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-07-15T01:57:16.165Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ReportingModule.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\ReportingModule.cpp",
+              "RelativeDocumentMoniker": "Hair Saloon\\ReportingModule.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\ReportingModule.cpp",
+              "RelativeToolTip": "Hair Saloon\\ReportingModule.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-07-15T01:57:08.985Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AppointmentReminder.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\AppointmentReminder.h",
+              "RelativeDocumentMoniker": "Hair Saloon\\AppointmentReminder.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\AppointmentReminder.h",
+              "RelativeToolTip": "Hair Saloon\\AppointmentReminder.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-07-15T01:56:56.489Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AppointmentReminder.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\AppointmentReminder.cpp",
+              "RelativeDocumentMoniker": "Hair Saloon\\AppointmentReminder.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\AppointmentReminder.cpp",
+              "RelativeToolTip": "Hair Saloon\\AppointmentReminder.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-07-15T01:56:48.873Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Main.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\Main.h",
+              "RelativeDocumentMoniker": "Hair Saloon\\Main.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\Main.h",
+              "RelativeToolTip": "Hair Saloon\\Main.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-07-15T01:56:23.138Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Main.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\Main.cpp",
+              "RelativeDocumentMoniker": "Hair Saloon\\Main.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\Main.cpp",
+              "RelativeToolTip": "Hair Saloon\\Main.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-07-15T01:56:13.094Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "LoginModule.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\LoginModule.h",
+              "RelativeDocumentMoniker": "Hair Saloon\\LoginModule.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\LoginModule.h",
+              "RelativeToolTip": "Hair Saloon\\LoginModule.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-07-15T01:56:04.495Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LoginModule.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\LoginModule.cpp",
+              "RelativeDocumentMoniker": "Hair Saloon\\LoginModule.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\LoginModule.cpp",
+              "RelativeToolTip": "Hair Saloon\\LoginModule.cpp",
+              "ViewState": "AgIAACwAAAAAAAAAAAAQwGoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-07-15T01:55:48.051Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "InventoryModule.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\InventoryModule.h",
+              "RelativeDocumentMoniker": "Hair Saloon\\InventoryModule.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\InventoryModule.h",
+              "RelativeToolTip": "Hair Saloon\\InventoryModule.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-07-15T01:55:39.444Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "InventoryModule.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\InventoryModule.cpp",
+              "RelativeDocumentMoniker": "Hair Saloon\\InventoryModule.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\InventoryModule.cpp",
+              "RelativeToolTip": "Hair Saloon\\InventoryModule.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-07-15T01:55:34.28Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "BillingModule.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\BillingModule.h",
+              "RelativeDocumentMoniker": "Hair Saloon\\BillingModule.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\BillingModule.h",
+              "RelativeToolTip": "Hair Saloon\\BillingModule.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-07-15T01:55:24.384Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "BillingModule.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\BillingModule.cpp",
+              "RelativeDocumentMoniker": "Hair Saloon\\BillingModule.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\BillingModule.cpp",
+              "RelativeToolTip": "Hair Saloon\\BillingModule.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-07-15T01:55:16.366Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AppointmentModule.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\AppointmentModule.h",
+              "RelativeDocumentMoniker": "Hair Saloon\\AppointmentModule.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\AppointmentModule.h",
+              "RelativeToolTip": "Hair Saloon\\AppointmentModule.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-07-15T01:55:07.759Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AppointmentModule.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\AppointmentModule.cpp",
+              "RelativeDocumentMoniker": "Hair Saloon\\AppointmentModule.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\spc\\Assignment\\Hair Saloon\\Hair Saloon\\AppointmentModule.cpp",
+              "RelativeToolTip": "Hair Saloon\\AppointmentModule.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-07-15T01:54:54.543Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

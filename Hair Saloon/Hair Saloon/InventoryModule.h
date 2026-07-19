@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef Login
-#define Login
+#ifndef InventoryModule
+#define InventoryModule
 
 #include <string>
 using namespace std;

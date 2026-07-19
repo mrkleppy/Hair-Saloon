@@ -1,11 +1,11 @@
 #pragma once
 
-#ifndef Login
-#define Login
+#ifndef ReportingModule
+#define ReportingModule
 
 #include <string>
 using namespace std;
 
-// Jarrett
+// Aiden
 
 #endif

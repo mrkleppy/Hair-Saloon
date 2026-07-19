@@ -1,0 +1,485 @@
+﻿#include <iostream>
+#include <iomanip>
+#include <string>
+#include <regex>
+#include "Main.h"
+#include "UserModule.h"
+
+using namespace std;
+
+// Functions to be defined early
+
+void bookAppointment();
+void completeTransaction(double total);
+void removeAppointment();
+void appointmentStatusManagement(string appointmentNo, string username);
+void assignAppointmentToStaff(string appointmentNo);
+
+// Member side Appointment Management Module
+
+void appointmentManager() {
+    char selection;
+    clearScreen();
+
+    do {
+        cout << "Reminder: 50% would be charged in case of cancelled appointments." << endl;
+        cout << "1. Book an Appointment" << endl;
+        cout << "2. Remove an Appointment" << endl;
+        cout << "0. Exit" << endl;
+        cout << "Selection: ";
+
+        cin >> selection;
+        cin.ignore();
+
+        switch(selection) {
+        case '1':
+            clearScreen();
+            bookAppointment();
+            break;
+
+        case '2':
+            clearScreen();
+            removeAppointment();
+            break;
+
+        case '0':
+            clearScreen();
+            return;
+
+        default:
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+
+        }
+
+    } while(true);
+}
+
+// Book appointment
+
+void bookAppointment() {
+    char selection, gender, confirmation;
+    int persons;
+    string date, timeSlot;
+    double total = 0;
+    clearScreen();
+
+    do {
+        cout << "Enter 'q' to quit." << endl;
+        cout << "Enter date to book appointment (DD/MM/YYYY): ";
+        getline(cin, date);
+
+        if (date == "q") {
+            clearScreen();
+            return;
+        }
+        // validation
+
+        cout << "\nPlease book within a slot of 9am to 5pm." << endl <<
+            "Please enter 00 or 30 for minutes and in 24 - Hours format(23:30)" << endl;
+        cout << "Enter time slot (HH:MM): ";
+        getline(cin, timeSlot);
+
+        if (timeSlot == "q") {
+            clearScreen();
+            return;
+
+        }
+        // validation
+        break;
+
+    } while(true);
+
+    do {
+        cout << "Choose Service Type:\t\t(M)ale\t\t(F)emale" <<
+            "\n1. Hair Cut\t\t\tRM 25.00\t\tRM45.00" <<
+            "\n2. Hair Coloring\t\tRM 80.00\t\tRM170.00" <<
+            "\n3. Hair Treatment\t\tRM 70.00\t\tRM90.00" <<
+            "\n4. Hair Styling\t\t\tRM 30.00\t\tRM35.00" << 
+            "\nEnter 'c' to complete your appointments!" << endl;
+
+        cout << "Selection: ";
+        cin >> selection;
+        cin.ignore();
+
+        // validations and c to complete transaction
+        total = 1;
+
+        switch (selection) {
+        case '1':
+            break;
+
+        case '2':
+            break;
+
+        case '3':
+            break;
+
+        case '4':
+            break;
+
+        case 'c':
+            clearScreen();
+            return;
+
+        default:
+            clearScreen();
+            cout << "Invalid input. Please enter 1, 2, 3, 4, or c to complete transaction!\n";
+            continue;
+
+        }
+
+        cout << "Gender: ";
+        cin >> gender;
+        cin.ignore();
+
+        // validation for m and f
+
+        cout << "Person(s) (Not more than 5): ";
+        cin >> persons;
+        cin.ignore();
+
+        // try catch
+
+        cout << "Confirm adding " << selection << " (" << gender << ") for " << persons << "person(s)?" <<
+            "\n(Y/N): ";
+        cin >> confirmation;
+        cin.ignore();
+
+        // validations
+
+        // calculate the total amount of appointment
+        completeTransaction(total);
+        break;
+
+    } while(true);
+}
+
+void completeTransaction(double total) {
+    char option;
+    int memberPointsAdded = 0, memberPoints = 0;
+    clearScreen();
+
+    do {
+        cout << "Total will be RM" << fixed << setprecision(2) << total << endl;
+        cout << "Continue? (Y/N): ";
+        cin >> option;
+
+		if (option == 'Y' || option == 'y') {
+			// add to the appointment list
+
+			memberPointsAdded = total / 10; // RM 10 = 1 point
+			memberPoints += memberPointsAdded;
+			break;
+
+		}
+		else if (option == 'N' || option == 'n') {
+			return;
+
+		}
+		else {
+			clearScreen();
+			cout << "Invalid input! Please enter Y or N!" << endl;
+
+		}
+    } while(true);
+
+    // Add to the user's member points
+
+    clearScreen();
+    cout << "Payment Done!" <<
+        "\nAppointment Request Added!" <<
+        "\n" << memberPointsAdded << " points has been creditted to your account!" <<
+        "\nCurrent Member Points: " << memberPoints <<
+        "\nPress enter to continue...";
+
+	cin.get(); // Wait for user to press enter
+    cin.ignore(); // Wait for user to press enter
+
+    clearScreen();
+
+}
+
+// Remove Appointment
+
+void removeAppointment() {
+    clearScreen();
+
+    do {
+        cout << "Appointments: \n" <<
+            "Appointment No.\t\tDate\t\tTime\t\tPerson(s)";
+
+        // for loop here to show each appointment that is upcoming status
+
+        cout << "\nEnter 'q' to exit." << endl;
+        cout << "Select Appointment No. to remove appointment: ";
+
+        string appointmentNo;
+        getline(cin, appointmentNo);
+
+        if (appointmentNo == "q" || appointmentNo == "Q") {
+            clearScreen();
+            return;
+
+        }
+        // validate if option has the appointment no in the list, or q to exit
+
+    } while (true);
+}
+
+// Staff side Appointment Management Module
+// View assigned Appointments
+
+void assignedAppointmentsView(string username) {
+    string appointmentNo;
+    clearScreen();
+
+    do {
+        cout << "Upcoming Appointments for " << username << endl;
+        cout << "Appointment No.\t\tCustomer Name\t\tDate\t\tTime\t\tPerson(s)" << endl;
+
+        // for loop here to show each appointment that is upcoming status
+
+        cout << "\n(n = next page, p = previous page, q = quit" << endl <<
+            "Enter Appointment No. to manage status: ";
+
+        getline(cin, appointmentNo);
+
+		if (appointmentNo == "q" || appointmentNo == "Q") {
+			clearScreen();
+			return;
+
+		}
+
+        break;
+
+    } while(true);
+
+    clearScreen();
+    appointmentStatusManagement(appointmentNo, username);
+}
+
+void appointmentStatusManagement(string appointmentNo, string username) {
+	char selection;
+    clearScreen();
+
+	do {
+		cout << "Appointment No. " << appointmentNo << " is being managed by " << username << endl; // Display all of the staffs that manages this appointment
+        cout << "Update Appointment Status:" << endl;
+        cout << "1. Mark as Completed" << endl;
+		cout << "2. Cancel Appointment" << endl;
+		cout << "0. Exit" << endl;
+		cout << "Selection: ";
+		
+        cin >> selection;
+		cin.ignore();
+		
+        switch (selection) {
+		case '1':
+			clearScreen();
+
+            do {
+                cout << "Appointment No. " << appointmentNo << " is done?" << endl <<
+                    "Confirm (Y/N): ";
+                char confirmation;
+                cin >> confirmation;
+                cin.ignore();
+
+				if (confirmation == 'Y' || confirmation == 'y') {
+					// mark as completed
+
+                    clearScreen();
+					cout << "Appointment No. " << appointmentNo << " has been marked as completed!" << endl;
+
+					break;
+
+				}
+				else if (confirmation == 'N' || confirmation == 'n') {
+					clearScreen();
+					return;
+
+				}
+				else {
+					clearScreen();
+					cout << "Invalid input! Please enter Y or N!" << endl;
+
+				}
+
+            } while(true);
+
+			break;
+
+		case '2':
+			clearScreen();
+			
+            do {
+                cout << "Why is " << appointmentNo << " being cancelled?" << endl <<
+                    "Reason: ";
+
+                char reason[50];
+                cin >> reason;
+
+                cout << "\nAppointment No. " << appointmentNo << " is being cancelled for the following reason: " << endl <<
+                    reason << endl <<
+                    "Confirm (Y/N): ";
+
+                char confirmation;
+                cin >> confirmation;
+                cin.ignore();
+
+				if (confirmation == 'Y' || confirmation == 'y') {
+					// cancel appointment
+
+                    clearScreen();
+					cout << "Appointment No. " << appointmentNo << " has been cancelled!" << endl;
+
+					break;
+
+				}
+				else if (confirmation == 'N' || confirmation == 'n') {
+					clearScreen();
+
+                    return;
+				}
+				else {
+					clearScreen();
+					cout << "Invalid input! Please enter Y or N!" << endl;
+
+				}
+
+                break;
+            } while(true);
+
+            break;
+
+		case '0':
+			clearScreen();
+			return;
+
+		default:
+			clearScreen();
+			cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+
+		}
+
+        break;
+
+	} while (true);
+}
+
+// View all completed past Appointments
+
+void completedAppointmentsView(string username) {
+	clearScreen();
+
+	do {
+		cout << "Completed Appointments for " << username << endl;
+		cout << "Appointment No.\t\tCustomer Name\t\tDate\t\tTime\t\tPerson(s)" << endl;
+		// for loop here to show each appointment that is completed status
+		cout << "\n(n = next page, p = previous page, q = quit)" << endl <<
+			"Enter 'q' to exit." << endl;
+        cout << "Selection: ";
+
+        char selection;
+        cin >> selection;
+
+		if (selection == 'q' || selection == 'Q') {
+			clearScreen();
+			return;
+
+		}
+		
+	} while (true);
+}
+
+// Admin side Appointment Management Module
+
+void assignAppointmentsPage() {
+    clearScreen();
+
+    do {
+
+        cout << "Appointment Assignment:" << endl <<
+			"Appointment No.\t\tCustomer Name\t\tDate\t\tTime\t\tPerson(s)" << endl;
+
+        // for loop here to show each appointment that is unassigned
+
+		cout << "\n(n = next page, p = previous page, q = quit)" << endl <<
+			"Enter 'q' to exit." << endl <<
+			"Select Appointment No. to assign: ";
+
+		string appointmentNo;
+		getline(cin, appointmentNo);
+
+        assignAppointmentToStaff(appointmentNo);
+
+    } while(true);
+}
+
+void assignAppointmentToStaff(string appointmentNo) {
+	clearScreen();
+    int staffCount = 0; // number of staff needed for the appointment.
+	string date, timeSlot; // date and time of the appointment.
+
+	do {
+		cout << "Assigning Appointment No. " << appointmentNo <<
+            "\t\t(" << staffCount << " staff needed!)" << endl <<
+            "Date: " << date << "\t\t" << "Time: " << timeSlot << endl <<
+            "Services: ";
+
+        // for loop here to show each services that is booked for this appointment
+
+        cout << "Staff List: " << endl;
+
+		// for loop here to show each staff that is available for this appointment
+
+		// for loop here to assign each staff to this appointment, based on the number of staff needed for this appointment
+        cout << "Assign staff 1: "; // placeholder
+        
+        string staffID;
+        getline(cin, staffID);
+
+		if (staffID == "q" || staffID == "Q") {
+			clearScreen();
+			return;
+
+		}
+
+        while(true) {
+            cout << "Confirm assigning staff ";
+
+            // for loop here to show each staff that is assigned to this appointment
+
+            cout << "to Appointment No. " << appointmentNo << "?" << endl <<
+                "Choice (Y/N): ";
+
+            char confirmation;
+            cin >> confirmation;
+            cin.ignore();
+
+            if (confirmation == 'Y' || confirmation == 'y') {
+                clearScreen();
+                cout << "Staff ";
+
+                // for loop here to show each staff that is assigned to this appointment
+
+                cout << " has been assigned to Appointment No. " << appointmentNo << "!" << endl;
+                break;
+
+            }
+            else if (confirmation == 'N' || confirmation == 'n') {
+                clearScreen();
+                return;
+
+            }
+            else {
+                clearScreen();
+                cout << "Invalid input! Please enter Y or N!" << endl;
+
+            }
+        }
+
+        break;
+
+	} while (true);
+}

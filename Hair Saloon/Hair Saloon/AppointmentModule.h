@@ -1,11 +1,14 @@
 #pragma once
 
-#ifndef Login
-#define Login
+#ifndef AppointmentModule
+#define AppointmentModule
 
 #include <string>
 using namespace std;
 
-// Stephen
+void appointmentManager();
+void assignedAppointmentsView(string username);
+void completedAppointmentsView(string username);
+void assignAppointmentsPage();
 
 #endif

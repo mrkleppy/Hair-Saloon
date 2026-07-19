@@ -1,16 +1,12 @@
 #pragma once
 
-#ifndef Login
-#define Login
+#ifndef LoginModule
+#define LoginModule
 
 #include <string>
 using namespace std;
 
-<<<<<<< Updated upstream
-void clearScreen();
 int exit();
-=======
->>>>>>> Stashed changes
 int validateUser(string username, string password);
 void loginScreen();
 void registerScreen();

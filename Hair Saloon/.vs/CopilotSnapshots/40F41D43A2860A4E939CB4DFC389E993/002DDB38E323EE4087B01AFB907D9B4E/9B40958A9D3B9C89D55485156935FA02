@@ -1,0 +1,132 @@
+﻿#include <iostream>
+#include <iomanip>
+#include <string>
+#include "Main.h"
+#include "LoginModule.h"
+#include "AppointmentModule.h"
+#include "InventoryModule.h"
+#include "BillingModule.h"
+#include "ReportingModule.h"
+
+void customerMaintenancePage() {
+
+}
+
+void staffMaintenancePage() {
+
+}
+
+void memberHomePage(string username) {
+    int selection = 0;
+    clearScreen();
+
+    do {
+        cout << "Welcome " << username << "!" << endl;
+        cout << "What would you like to do?" << endl;
+        cout << "1. Manage an appointment\n2. Buy an item\n3. View receipts\n0. Logout" << endl;
+        cout << "Selection: ";
+        cin >> selection;
+        cin.ignore();
+
+        switch (selection) {
+        case 1:
+            appointmentManager();
+            break;
+
+        case 2:
+            //navigate to buy item (inventory module)
+            break;
+
+        case 3:
+            //navigate to view reciept (billing module)
+            break;
+
+        case 0:
+            mainScreen();
+            break;
+
+        default:
+            cout << "Invalid input! Please enter 0, 1, 2 or 3!";
+
+        }
+    } while (true);
+}
+
+void staffHomePage(string username) {
+    int selection = 0;
+    bool validate = true;
+    clearScreen();
+
+    do {
+        cout << "Welcome " << username << "!" << endl;
+        cout << "What would you like to do?" << endl;
+        cout << "1. POS system\n2. View assigned appointment\n3. Inventory maintenance \
+        \n4. Customer maintenance\n5. View appointment done\n0. Logout" << endl;
+        cout << "Selection: ";
+        cin >> selection;
+        cin.ignore();
+
+        switch (selection) {
+        case 1:
+            //navigate to POS system (billing and payment module)
+            break;
+        case 2:
+            assignedAppointmentsView(username);
+            break;
+        case 3:
+            //navigate to inventory maintenance (inventory module)
+            break;
+        case 4:
+            customerMaintenancePage();
+            break;
+        case 5:
+            completedAppointmentsView(username);
+            break;
+        case 0:
+            mainScreen();
+            break;
+        default:
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, 2, 3, 4, or 5!";
+
+        }
+    } while(true);
+}
+
+void adminHomePage(string username) {
+    int selection = 0;
+    bool validate = true;
+    clearScreen();
+
+    do {
+        cout << "Welcome " << username << "!" << endl;
+        cout << "What would you like to do?" << endl;
+        cout << "1. Inventory maintenance\n2. Staff maintenance\n3. Assign appointments \
+        \n4. View reportings\n0. Logout" << endl;
+        cout << "Selection: ";
+        cin >> selection;
+        cin.ignore();
+
+        switch (selection) {
+        case 1:
+            //navigate to inventory maintenance (inventory module)
+            break;
+        case 2:
+            staffMaintenancePage();
+            break;
+        case 3:
+            assignAppointmentsPage();
+            break;
+        case 4:
+            //navigate to view reportings (reporting module)
+            break;
+        case 0:
+            mainScreen();
+            break;
+        default:
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, 2 or 3!";
+
+        }
+    } while(true);
+}
