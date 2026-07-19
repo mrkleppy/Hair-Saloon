@@ -4,6 +4,7 @@
 
 using namespace std;
 
+<<<<<<< Updated upstream
 void clearScreen() {
     cout << "\033[2J\033[H";
 }
@@ -14,23 +15,43 @@ int exit() {
 
 int validateUser(string username, string password) {
     return 0;
+=======
+int validateUser(string username, string password) { 
+    // validatate user from database
+	// username must exist in database and password must match with corresponding user
+
+
+	// comparison is placeholder for now
+    if (username == "1") {// login as member
+        return 1;
+    }
+    else if (username == "2") {// login as staff 
+        return 2;
+    }
+    else if (username == "3") {// login as admin
+        return 3;
+    }
+    else {
+        return 0;
+    }
+>>>>>>> Stashed changes
 }
 
 void loginScreen() {
-    bool validate = true;
     string username, password;
 
     do {
         cout << "Login" << endl;
         cout << "Username: ";
-        getline(cin, username); // exist in database
+        getline(cin, username);
         cout << "Password: ";
-        getline(cin, password); // match with correspoding user
+        getline(cin, password);
 
         int user = stoi(username); // placeholder
         //int user = validateUser(username, password);
 
         switch (user) {
+<<<<<<< Updated upstream
         case 1:
             // member
             break;
@@ -39,18 +60,37 @@ void loginScreen() {
             break;
         case 3:
             // admin
+=======
+        case 1: // navigate to member home page (user module)
+			clearScreen(); 
+            memberHomePage(username);
             break;
-        default:
+		case 2: // navigate to staff home page (user module)
+            clearScreen();
+            staffHomePage(username);
+            break;
+		case 3: // navigate to admin home page (user module)
+            clearScreen();
+            adminHomePage(username);
+>>>>>>> Stashed changes
+            break;
+		default: // any invalid situation, display error message and prompt user to try again
             clearScreen();
             cout << "User not found! Please try again!" << endl;
+<<<<<<< Updated upstream
             validate = false;
             break;
         }
     } while (!validate);
+=======
+        }
+
+        break;
+    } while (true);
+>>>>>>> Stashed changes
 }
 
 void registerScreen() {
-    bool validate = true;
     string username, phoneNo, password, confirmPassword;
 
     do {
@@ -63,6 +103,7 @@ void registerScreen() {
         getline(cin, password);
         cout << "Confirm password: ";
         getline(cin, confirmPassword); // match with password
+<<<<<<< Updated upstream
     } while (!validate);
 }
 
@@ -94,4 +135,7 @@ void mainScreen() {
                 break;
         }
     } while (selection != 1 || selection != 2 || selection != 0);
+=======
+    } while (true);
+>>>>>>> Stashed changes
 }
