@@ -110,6 +110,7 @@ void adminHomePage(string username) {
 
         switch (selection) {
         case 1:
+            clearScreen();
             //navigate to inventory maintenance (inventory module)
             break;
         case 2:
@@ -127,7 +128,6 @@ void adminHomePage(string username) {
         default:
             clearScreen();
             cout << "Invalid input! Please enter 0, 1, 2, 3, or 4!";
-
         }
     } while(true);
 }
