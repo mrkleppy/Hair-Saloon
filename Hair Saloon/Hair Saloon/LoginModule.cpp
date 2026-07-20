@@ -6,11 +6,6 @@
 
 using namespace std;
 
-int exit() {
-    return 0;
-}
-
-int validateUser(string username, string password) {
 int validateUser(string username, string password) { 
     // validatate user from database
 	// username must exist in database and password must match with corresponding user
@@ -24,13 +19,6 @@ int validateUser(string username, string password) {
         return 2;
     }
     else if (username == "3") {// login as admin
-    if (username == "1") {// login as member // temp value only
-        return 1;
-    }
-    else if (username == "2") {// login as staff // temp value only
-        return 2;
-    }
-    else if (username == "3") {// login as admin // temp value only
         return 3;
     }
     else {
@@ -40,7 +28,8 @@ int validateUser(string username, string password) {
 
 void loginScreen() {
     string username, password;
-    clearScreen();
+    Customer customer;
+    Staff staff;
 
     do {
         cout << "Login" << endl;
@@ -51,19 +40,36 @@ void loginScreen() {
 
         int user = validateUser(username, password);
 
+        
+
         switch (user) {
         case 1: // navigate to member home page (user module)
-			      clearScreen(); 
-            memberHomePage(username);
-            break;
-		    case 2: // navigate to staff home page (user module)
+			// Read file to get customer details based on username (TODO)
+			// Placeholder for now
+			customer.name = "Lim Ah Kau";
+			customer.password = "password1";
+			customer.phoneNo = "0123456789";
+			customer.points = 1000;
+
             clearScreen();
-            staffHomePage(username);
-            adminHomePage(username);
+            memberHomePage(customer);
             break;
-		    case 3: // navigate to admin home page (user module)
+		case 2: // navigate to staff home page (user module)
+			// Read file to get staff details based on username (TODO)
+			// Placeholder for now
+			staff.staffCode = "S001";
+			staff.name = "John Doe";
+			staff.phoneNo = "0123456789";
+			staff.salary = 3000.00;
+			staff.password = "password1";
+			staff.appointmentDone = 10;
+
             clearScreen();
-            adminHomePage(username);
+            staffHomePage(staff);
+            break;
+		case 3: // navigate to admin home page (user module)
+            clearScreen();
+            adminHomePage();
             break;
 		default: // any invalid situation, display error message and prompt user to try again
             clearScreen();
@@ -76,7 +82,6 @@ void loginScreen() {
 
 void registerScreen() {
     string username, phoneNo, password, confirmPassword;
-    clearScreen();
 
     do {
         cout << "Register" << endl;

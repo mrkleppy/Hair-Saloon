@@ -7,5 +7,6 @@
 using namespace std;
 
 // TengLok
+void appointmentReminder(Customer customer);
 
 #endif

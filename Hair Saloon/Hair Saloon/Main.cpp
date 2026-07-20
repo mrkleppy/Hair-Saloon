@@ -5,10 +5,6 @@
 
 using namespace std;
 
-<<<<<<< Updated upstream
-int main() {
-    mainScreen();
-=======
 void clearScreen() { // Clear the console screen
     cout << "\033[2J\033[H";
 }
@@ -39,11 +35,6 @@ int main() {
             cout << "Invalid input! Please enter 0, 1 or 2!";
         }
     } while (true);
->>>>>>> Stashed changes
 
     return 0;
-}
-
-void clearScreen() {
-    cout << "\033[2J\033[H";
 }
