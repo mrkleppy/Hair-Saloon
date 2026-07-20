@@ -4,6 +4,7 @@
 #include "Main.h"
 #include "LoginModule.h"
 #include "AppointmentModule.h"
+#include "AppointmentReminder.h"
 #include "InventoryModule.h"
 #include "BillingModule.h"
 #include "ReportingModule.h"
@@ -25,6 +26,7 @@ void RedeemPointsPage(string phoneNo) { // Redeem points page for customer maint
 
 	// Variable declarations
     int selection = 0, quantity = 0, totalPointCost = 0;
+<<<<<<< Updated upstream
     char confirm = 'N';
 
 	// Define a struct to hold item information
@@ -36,6 +38,12 @@ void RedeemPointsPage(string phoneNo) { // Redeem points page for customer maint
 
     // Create an array of items
     item items[8];
+=======
+    char confirm = 'N';  
+
+    // Create an array of items
+    Item items[8];
+>>>>>>> Stashed changes
     for (int i = 0; i < 8; i++) {
         items[i].name = itemName[i];
         items[i].pointCost = itemPointCost[i];
@@ -43,7 +51,11 @@ void RedeemPointsPage(string phoneNo) { // Redeem points page for customer maint
     }
 
 	// Pointer to the chosen item
+<<<<<<< Updated upstream
     item * itemChosen;
+=======
+    Item * itemChosen;
+>>>>>>> Stashed changes
 
 	do { // Display the redeem points page UI
         cout << "Customer Name: " << customerName << endl;
@@ -154,6 +166,7 @@ void customerMaintenancePage() { // Customer maintenance page for staff
             cout << "Invalid input! Please enter 0, 1, or 2!";
         } 
     } while (true);
+<<<<<<< Updated upstream
 }
 
 void staffMaintenancePage() {
@@ -166,6 +179,195 @@ void memberHomePage(string username) {
 
 	do { // Display the member home page UI
         cout << "Welcome " << username << "!" << endl;
+=======
+}
+
+void editStaff(string staffCode) {
+	// Read staff data from file (TODO)
+	// Placeholder for now
+	Staff staff = { "S001", "John Doe", "0123456789", "password1", 3000.00, 10 };
+
+    int selection = 0;
+
+    do {
+        cout << "Edit Staff" << endl;
+        cout << staff.name << "(" << staff.staffCode << ")" << endl;
+        cout << "1. Phone No.\n2. Salary\n0. Back" << endl;
+        cout << "Selection: ";
+        cin >> selection;
+        cin.ignore();
+
+        switch (selection) {
+            case 1:
+				cout << "Change phone no. to: ";
+				getline(cin, staff.phoneNo);
+                clearScreen();
+                return;
+				break;
+			case 2:
+				cout << "Change salary to: RM ";
+				cin >> staff.salary;
+				cin.ignore();
+                clearScreen();
+                return;
+				break;
+            case 0:
+				clearScreen();
+				return;
+            default:
+				clearScreen();
+				cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+        }
+	} while (true);
+}
+
+void addStaff(int totalStaff) {
+	Staff newStaff;
+	newStaff.staffCode = "S" + to_string(totalStaff + 1); // Generate staff code based on total staff count
+	newStaff.appointmentDone = 0; // Initialize appointment done to 0
+
+	string confirmPassword = "";
+	char confirm = 'N';
+
+    do {
+        cout << "Add Staff" << endl;
+        cout << "Staff code: " << newStaff.staffCode << endl;
+		cout << "Staff name: ";
+		getline(cin, newStaff.name);
+		cout << "Staff phone No.: ";
+		getline(cin, newStaff.phoneNo);
+        cout << "Staff salary: ";
+		cin >> newStaff.salary;
+        cin.ignore();
+		cout << "Staff password: ";
+		getline(cin, newStaff.password);
+		cout << "Confirm password: ";
+		getline(cin, confirmPassword);
+
+		// Validation here (TODO)
+        break;
+	} while (true);
+
+	clearScreen();
+	cout << "Staff name: " << newStaff.name << endl;
+	cout << "Staff phone No.: " << newStaff.phoneNo << endl;
+	cout << "Staff salary: RM " << newStaff.salary << endl;
+	cout << "Staff password: " << newStaff.password << endl;
+	cout << "Confirm adding staff (Y/N): ";
+	cin >> confirm;
+    cin.ignore();
+	confirm = toupper(confirm);
+
+    if (confirm == 'Y') { // If the user confirms, display success message
+        cout << "Staff added successfully!" << endl;
+        cout << "Press any key to continue..." << endl;
+        cin.get();
+        clearScreen();
+        return;
+    }
+    else if (confirm == 'N') { // If the user cancels, display cancel message
+        cout << "Staff addition cancelled." << endl;
+        cout << "Press any key to continue..." << endl;
+        cin.get();
+        clearScreen();
+        return;
+    }
+}
+
+void staffMaintenancePage() {
+    char selection = 0;
+    int currentpage = 1;
+    string newStaffCode = "";
+    const int MAX_STAFF_PER_PAGE = 10;
+
+    do {
+		// Read staff data from file (TODO)
+		// Placeholder for now
+		Staff staffList[5] = {
+			{"S001", "John Doe", "0123456789", "password1", 3000.00, 10},
+			{"S002", "Jane Smith", "0987654321", "password2", 3200.00, 15},
+			{"S003", "Alice Johnson", "0112233445", "password3", 2800.00, 8},
+			{"S004", "Bob Brown", "0109876543", "password4", 3500.00, 20},
+			{"S005", "Charlie Davis", "0134567890", "password5", 3100.00, 12}
+		};
+
+		Staff* staffPtr; // Pointer to the staff list
+        int totalStaff = sizeof(staffList) / sizeof(Staff);
+		int totalPages = ceil(static_cast<double>(totalStaff) / MAX_STAFF_PER_PAGE);
+        cout << totalPages << " " << totalStaff << endl;
+
+		cout << "Staff Maintenance" << endl;
+		cout << left << setw(20) << "Staff code" << setw(25) << "Name" << setw(15) << "Phone No." << setw(10) << "Salary" << setw(16) << "Appointment done" << endl;
+
+        int start = (currentpage - 1) * MAX_STAFF_PER_PAGE;
+        staffPtr = &staffList[start];
+
+        for (int i = 0; i < MAX_STAFF_PER_PAGE && (start + i) < totalStaff; i++) {
+            cout << left << setw(20) << staffPtr->staffCode
+                << setw(25) << staffPtr->name
+                << setw(15) << staffPtr->phoneNo
+                << setw(10) << "RM " << staffPtr->salary
+                << setw(16) << staffPtr->appointmentDone << endl;
+            staffPtr++;
+        }
+
+		cout << "Page " << currentpage << "/" << totalPages << endl;
+		cout << "(n = next page, p = previous page, a = add staff, e = edit staff, q = quit)" << endl;
+        cout << "Selection: ";
+        cin >> selection;
+        cin.ignore();
+
+		switch (selection) {
+		case 'n':
+			if (currentpage < totalPages) {
+				currentpage++;
+			}
+			else {
+				clearScreen();
+				cout << "You are on the last page!" << endl;
+			}
+			break;
+		case 'p':
+			if (currentpage > 1) {
+				currentpage--;
+			}
+			else {
+				clearScreen();
+				cout << "You are on the first page!" << endl;
+			}
+			break;
+		case 'a':
+			clearScreen();
+			addStaff(totalStaff);
+			break;
+		case 'e':
+			cout << "Staff code: ";
+			getline(cin, newStaffCode);
+
+			// Validation for staff code here (TODO)
+
+			clearScreen();
+            editStaff(newStaffCode);
+			break;
+		case 'q':
+			clearScreen();
+			return;
+		default:
+			clearScreen();
+			cout << "Invalid input! Please enter n, p, a, e, or q!" << endl;
+		}
+
+	} while (true);
+}
+
+void memberHomePage(Customer customer) {
+	// Variable declarations
+    int selection = 0;
+
+	do { // Display the member home page UI
+        cout << "Welcome " << customer.name << "!" << endl;
+		appointmentReminder(customer);
+>>>>>>> Stashed changes
         cout << "What would you like to do?" << endl;
         cout << "1. Manage an appointment\n2. Buy an item\n3. View receipts\n0. Logout" << endl;
         cout << "Selection: ";
@@ -195,14 +397,25 @@ void memberHomePage(string username) {
     } while (true);
 }
 
+<<<<<<< Updated upstream
 void staffHomePage(string username) {
+=======
+void staffHomePage(Staff staff) {
+>>>>>>> Stashed changes
 	// Variable declarations
     int selection = 0;
 
 	do { // Display the staff home page UI
+<<<<<<< Updated upstream
         cout << "Welcome " << username << "!" << endl;
         cout << "What would you like to do?" << endl;
         cout << "1. POS system\n2. View assigned appointment\n3. Inventory maintenance \n4. Customer maintenance\n5. View appointment done\n0. Logout" << endl;
+=======
+        cout << "Welcome " << staff.name << "!" << endl;
+        cout << "What would you like to do?" << endl;
+        cout << "1. POS system\n2. View assigned appointment\n3. Inventory maintenance \
+            \n4. Customer maintenance\n5. View appointment done\n0. Logout" << endl;
+>>>>>>> Stashed changes
         cout << "Selection: ";
         cin >> selection;
         cin.ignore();
@@ -214,7 +427,11 @@ void staffHomePage(string username) {
             break;
 		case 2: // navigate to view assigned appointment (appointment module)
             clearScreen();
+<<<<<<< Updated upstream
             assignedAppointmentsView(username);
+=======
+            assignedAppointmentsView(staff.name);
+>>>>>>> Stashed changes
             break;
         case 3:
             //navigate to inventory maintenance (inventory module)
@@ -225,7 +442,11 @@ void staffHomePage(string username) {
             break;
 		case 5: // navigate to view completed appointment (appointment module)
             clearScreen();
+<<<<<<< Updated upstream
             completedAppointmentsView(username);
+=======
+            completedAppointmentsView(staff.name);
+>>>>>>> Stashed changes
             break;
 		case 0: // exit the staff home page
             clearScreen();
@@ -237,12 +458,20 @@ void staffHomePage(string username) {
     } while(true);
 }
 
+<<<<<<< Updated upstream
 void adminHomePage(string username) {
+=======
+void adminHomePage() {
+>>>>>>> Stashed changes
 	// Variable declarations
     int selection = 0;
 
 	do { // Display the admin home page UI
+<<<<<<< Updated upstream
         cout << "Welcome " << username << "!" << endl;
+=======
+        cout << "Welcome admin!" << endl;
+>>>>>>> Stashed changes
         cout << "What would you like to do?" << endl;
         cout << "1. Inventory maintenance\n2. Staff maintenance\n3. Assign appointments \
         \n4. View reportings\n0. Logout" << endl;
