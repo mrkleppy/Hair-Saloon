@@ -26,24 +26,10 @@ void RedeemPointsPage(string phoneNo) { // Redeem points page for customer maint
 
 	// Variable declarations
     int selection = 0, quantity = 0, totalPointCost = 0;
-<<<<<<< Updated upstream
-    char confirm = 'N';
-
-	// Define a struct to hold item information
-    struct item {
-        string name;
-		int pointCost;
-		int stock;
-    };   
-
-    // Create an array of items
-    item items[8];
-=======
     char confirm = 'N';  
 
     // Create an array of items
     Item items[8];
->>>>>>> Stashed changes
     for (int i = 0; i < 8; i++) {
         items[i].name = itemName[i];
         items[i].pointCost = itemPointCost[i];
@@ -51,11 +37,7 @@ void RedeemPointsPage(string phoneNo) { // Redeem points page for customer maint
     }
 
 	// Pointer to the chosen item
-<<<<<<< Updated upstream
-    item * itemChosen;
-=======
     Item * itemChosen;
->>>>>>> Stashed changes
 
 	do { // Display the redeem points page UI
         cout << "Customer Name: " << customerName << endl;
@@ -166,20 +148,6 @@ void customerMaintenancePage() { // Customer maintenance page for staff
             cout << "Invalid input! Please enter 0, 1, or 2!";
         } 
     } while (true);
-<<<<<<< Updated upstream
-}
-
-void staffMaintenancePage() {
-
-}
-
-void memberHomePage(string username) {
-	// Variable declarations
-    int selection = 0;
-
-	do { // Display the member home page UI
-        cout << "Welcome " << username << "!" << endl;
-=======
 }
 
 void editStaff(string staffCode) {
@@ -367,7 +335,6 @@ void memberHomePage(Customer customer) {
 	do { // Display the member home page UI
         cout << "Welcome " << customer.name << "!" << endl;
 		appointmentReminder(customer);
->>>>>>> Stashed changes
         cout << "What would you like to do?" << endl;
         cout << "1. Manage an appointment\n2. Buy an item\n3. View receipts\n0. Logout" << endl;
         cout << "Selection: ";
@@ -397,25 +364,15 @@ void memberHomePage(Customer customer) {
     } while (true);
 }
 
-<<<<<<< Updated upstream
-void staffHomePage(string username) {
-=======
 void staffHomePage(Staff staff) {
->>>>>>> Stashed changes
 	// Variable declarations
     int selection = 0;
 
 	do { // Display the staff home page UI
-<<<<<<< Updated upstream
-        cout << "Welcome " << username << "!" << endl;
-        cout << "What would you like to do?" << endl;
-        cout << "1. POS system\n2. View assigned appointment\n3. Inventory maintenance \n4. Customer maintenance\n5. View appointment done\n0. Logout" << endl;
-=======
         cout << "Welcome " << staff.name << "!" << endl;
         cout << "What would you like to do?" << endl;
         cout << "1. POS system\n2. View assigned appointment\n3. Inventory maintenance \
             \n4. Customer maintenance\n5. View appointment done\n0. Logout" << endl;
->>>>>>> Stashed changes
         cout << "Selection: ";
         cin >> selection;
         cin.ignore();
@@ -427,11 +384,7 @@ void staffHomePage(Staff staff) {
             break;
 		case 2: // navigate to view assigned appointment (appointment module)
             clearScreen();
-<<<<<<< Updated upstream
-            assignedAppointmentsView(username);
-=======
             assignedAppointmentsView(staff.name);
->>>>>>> Stashed changes
             break;
         case 3:
             //navigate to inventory maintenance (inventory module)
@@ -442,11 +395,7 @@ void staffHomePage(Staff staff) {
             break;
 		case 5: // navigate to view completed appointment (appointment module)
             clearScreen();
-<<<<<<< Updated upstream
-            completedAppointmentsView(username);
-=======
             completedAppointmentsView(staff.name);
->>>>>>> Stashed changes
             break;
 		case 0: // exit the staff home page
             clearScreen();
@@ -458,20 +407,12 @@ void staffHomePage(Staff staff) {
     } while(true);
 }
 
-<<<<<<< Updated upstream
-void adminHomePage(string username) {
-=======
 void adminHomePage() {
->>>>>>> Stashed changes
 	// Variable declarations
     int selection = 0;
 
 	do { // Display the admin home page UI
-<<<<<<< Updated upstream
-        cout << "Welcome " << username << "!" << endl;
-=======
         cout << "Welcome admin!" << endl;
->>>>>>> Stashed changes
         cout << "What would you like to do?" << endl;
         cout << "1. Inventory maintenance\n2. Staff maintenance\n3. Assign appointments \
         \n4. View reportings\n0. Logout" << endl;

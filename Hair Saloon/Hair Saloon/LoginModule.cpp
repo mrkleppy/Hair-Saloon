@@ -28,11 +28,8 @@ int validateUser(string username, string password) {
 
 void loginScreen() {
     string username, password;
-<<<<<<< Updated upstream
-=======
     Customer customer;
     Staff staff;
->>>>>>> Stashed changes
 
     do {
         cout << "Login" << endl;
@@ -47,16 +44,6 @@ void loginScreen() {
 
         switch (user) {
         case 1: // navigate to member home page (user module)
-<<<<<<< Updated upstream
-			clearScreen(); 
-            memberHomePage(username);
-            break;
-		case 2: // navigate to staff home page (user module)
-            clearScreen();
-            staffHomePage(username);
-            break;
-		case 3: // navigate to admin home page (user module)
-=======
 			// Read file to get customer details based on username (TODO)
 			// Placeholder for now
 			customer.name = "Lim Ah Kau";
@@ -77,7 +64,6 @@ void loginScreen() {
 			staff.password = "password1";
 			staff.appointmentDone = 10;
 
->>>>>>> Stashed changes
             clearScreen();
             staffHomePage(staff);
             break;
