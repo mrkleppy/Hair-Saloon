@@ -6,11 +6,6 @@
 
 using namespace std;
 
-int exit() {
-    return 0;
-}
-
-int validateUser(string username, string password) {
 int validateUser(string username, string password) { 
     // validatate user from database
 	// username must exist in database and password must match with corresponding user
@@ -24,13 +19,6 @@ int validateUser(string username, string password) {
         return 2;
     }
     else if (username == "3") {// login as admin
-    if (username == "1") {// login as member // temp value only
-        return 1;
-    }
-    else if (username == "2") {// login as staff // temp value only
-        return 2;
-    }
-    else if (username == "3") {// login as admin // temp value only
         return 3;
     }
     else {
@@ -40,7 +28,6 @@ int validateUser(string username, string password) {
 
 void loginScreen() {
     string username, password;
-    clearScreen();
 
     do {
         cout << "Login" << endl;
@@ -53,15 +40,14 @@ void loginScreen() {
 
         switch (user) {
         case 1: // navigate to member home page (user module)
-			      clearScreen(); 
+			clearScreen(); 
             memberHomePage(username);
             break;
-		    case 2: // navigate to staff home page (user module)
+		case 2: // navigate to staff home page (user module)
             clearScreen();
             staffHomePage(username);
-            adminHomePage(username);
             break;
-		    case 3: // navigate to admin home page (user module)
+		case 3: // navigate to admin home page (user module)
             clearScreen();
             adminHomePage(username);
             break;
@@ -76,7 +62,6 @@ void loginScreen() {
 
 void registerScreen() {
     string username, phoneNo, password, confirmPassword;
-    clearScreen();
 
     do {
         cout << "Register" << endl;
