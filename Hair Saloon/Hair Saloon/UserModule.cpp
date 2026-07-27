@@ -1,6 +1,9 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <format>
+#include <vector>
+#include <regex>
 #include "Main.h"
 #include "LoginModule.h"
 #include "AppointmentModule.h"
@@ -11,45 +14,69 @@
 
 using namespace std;
 
-void RedeemPointsPage(string phoneNo) { // Redeem points page for customer maintenance
-    // placeholder for now
-    string customerName = "Lim Ah Kau";
-    int points = 1000;
-	int stock[8] = { 10, 5, 8, 12, 15, 20, 7, 3 };
-
-    // Read file to get customer name and points based on phoneNo (TODO)
-    
-    // Read file to get the stock (TODO)
-
-	string itemName[8] = { "shampoo", "dry shampoo", "conditioner", "hair dye", "hair gel", "hair spray", "styling cream", "hair scalp" }; // item name array
-	int itemPointCost[8] = { 600, 675, 570, 450, 375, 480, 510, 825 }; // item point cost array
-
+void RedeemPointsPage(Customer customer) { // Redeem points page for customer maintenance	
 	// Variable declarations
-    int selection = 0, quantity = 0, totalPointCost = 0;
-    char confirm = 'N';  
-
-    // Create an array of items
-    Item items[8];
-    for (int i = 0; i < 8; i++) {
-        items[i].name = itemName[i];
-        items[i].pointCost = itemPointCost[i];
-        items[i].stock = stock[i];
-    }
+    int selection = 0, quantity = 0, totalPointCost = 0, indexFound = 0;
+    char confirm = 'N';
+    string input;
+    bool found = false;
 
 	// Pointer to the chosen item
     Item * itemChosen;
 
-	do { // Display the redeem points page UI
-        cout << "Customer Name: " << customerName << endl;
-        cout << "Membership Points: " << points << "pts" << endl;
+	do { 
+        vector<Customer> customers = readCustomerFile();
+        vector<Item> items = readItemFile();
+
+        for (int i = 0; i < customers.size(); i++) {
+            if (customer.user.phoneNo == customers[i].user.phoneNo) {
+                customer.user.name = customers[i].user.name;
+                customer.user.password = customers[i].user.password;
+                customer.points = customers[i].points;
+                indexFound = i;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            clearScreen();
+            cout << "Phone number not found!" << endl;
+            return;
+        }
+
+        // Display the redeem points page UI
+        cout << "Customer Name: " << customer.user.name << endl;
+        cout << "Membership Points: " << customer.points << "pts" << endl;
         cout << "Select an item to redeem" << endl;
-        cout << left << setw(25) << "1. Shampoo" << setw(15) << "600 pts" << setw(25) << "2. Dry shampoo" << setw(15) << "675 pts" << endl;
-        cout << left << setw(25) << "3. Conditioner" << setw(15) << "570 pts" << setw(25) << "4. Hair dye" << setw(15) << "450 pts" << endl;
-        cout << left << setw(25) << "5. Hair gel" << setw(15) << "375 pts" << setw(25) << "6. Hair spray" << setw(15) << "480 pts" << endl;
-        cout << left << setw(25) << "7. Styling cream" << setw(15) << "510 pts" << setw(25) << "8. Hair scalp" << setw(15) << "825 pts" << endl;
+        cout << left << "1. " << setw(25) << items[0].name << setw(4) << items[0].pointCost << "pts\t2. " << setw(25) << items[1].name << setw(4) << items[1].pointCost << "pts" << endl;
+        cout << left << "3. " << setw(25) << items[2].name << setw(4) << items[2].pointCost << "pts\t4. " << setw(25) << items[3].name << setw(4) << items[3].pointCost << "pts" << endl;
+        cout << left << "5. " << setw(25) << items[4].name << setw(4) << items[4].pointCost << "pts\t6. " << setw(25) << items[5].name << setw(4) << items[5].pointCost << "pts" << endl;
+        cout << left << "7. " << setw(25) << items[6].name << setw(4) << items[6].pointCost << "pts\t8. " << setw(25) << items[7].name << setw(4) << items[7].pointCost << "pts" << endl;
         cout << endl << "Selection (0 to exit): ";
-		cin >> selection;
-        cin.ignore();
+        getline(cin, input);
+
+        if (input.empty()) {
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+            continue;
+        }
+
+        try {
+            size_t pos;
+            selection = stoi(input, &pos);
+
+            if (pos != input.size()) {
+                clearScreen();
+                cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+                continue;
+            }
+        }
+        catch (...) {
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+            continue;
+        }
 
         switch (selection) {
             case 1:
@@ -62,46 +89,93 @@ void RedeemPointsPage(string phoneNo) { // Redeem points page for customer maint
 			case 8: // If the selection is 1-8, proceed to redeem points
 				itemChosen = &items[selection - 1]; // Get the pointer to the chosen item
                 cout << "Quantity (stock available: " << itemChosen->stock << " ): ";
-				cin >> quantity;
-                cin.ignore();
+                getline(cin, input);
+
+                if (input.empty()) {
+                    clearScreen();
+                    cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+                    continue;
+                }
+
+                try {
+                    size_t pos;
+                    quantity = stoi(input, &pos);
+
+                    if (pos != input.size()) {
+                        clearScreen();
+                        cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+                        continue;
+                    }
+                }
+                catch (...) {
+                    clearScreen();
+                    cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+                    continue;
+                }
 
 				if (quantity > itemChosen->stock) { // Only proceed if the quantity is less than or equal to the stock available
                     clearScreen();
                     cout << "Not enough stock available!" << endl;
-                } else {
-					totalPointCost = quantity * itemChosen->pointCost; // Calculate the total point cost
+                }
+                else {
+                    totalPointCost = quantity * itemChosen->pointCost; // Calculate the total point cost
 
-					if (totalPointCost > points) { // Only proceed if the total point cost is less than or equal to the points available
+                    if (totalPointCost > customer.points) { // Only proceed if the total point cost is less than or equal to the points available
                         clearScreen();
                         cout << "Not enough points to redeem!" << endl;
-                    } else {
-                        // Deduct points and stock (TODO)
-						// placeholder for now
-						points -= totalPointCost;
-                        itemChosen->stock -= quantity; 
-
-                        // Update the stock and points in the file (TODO)
-
-
-						// Display confirmation message
-						cout << "Confirm redeem " << quantity << " " << itemChosen->name << " for " << totalPointCost << " pts? (Y/N): ";
-						cin >> confirm;
-                        cin.ignore();
-						confirm = toupper(confirm);
-						
-						if (confirm == 'Y') { // If the user confirms, display success message
-							cout << "Redeem successful! Deducted " << totalPointCost << " points" << endl;
-							cout << "Press any key to continue..." << endl;
-                            cin.get();
-                            clearScreen();
-						}
-						else if (confirm == 'N') { // If the user cancels, display cancel message
-							cout << "Redeem cancelled." << endl;
-							cout << "Press any key to continue..." << endl;
-							cin.get();
-                            clearScreen();
-						}
                     }
+                    else {
+                        do {// Display confirmation message
+                            cout << "Confirm redeem " << quantity << " " << itemChosen->name << " for " << totalPointCost << " pts? (Y/N): ";                   
+                            getline(cin, input);
+
+                            if (input.empty()) {
+                                clearScreen();
+                                cout << "Invalid input! Please enter N or Y!" << endl;
+                                continue;
+                            }
+                            else if (input.size() == 1) {
+                                confirm = input[0];
+                                confirm = toupper(confirm);
+                            }
+                            else {
+                                clearScreen();
+                                cout << "Invalid input! Please enter N or Y!" << endl;
+                                continue;
+                            }
+
+                            if (confirm == 'Y') { // If the user confirms, display success message
+                                for (int i = 0; i < items.size(); i++) {
+                                    if ((*itemChosen).name == items[i].name) {
+                                        items[i].stock -= quantity;
+                                        break;
+                                    }
+                                }
+
+                                customers[indexFound].points -= totalPointCost;
+
+                                overwriteItemFile(items);
+                                overwriteCustomerFile(customers);
+
+                                cout << "Redeem successful! Deducted " << totalPointCost << " points" << endl;
+                                cout << "Press any key to continue..." << endl;
+                                cin.get();
+                                clearScreen();
+                                break;
+                            }
+                            else if (confirm == 'N') { // If the user cancels, display cancel message
+                                cout << "Redeem cancelled." << endl;
+                                cout << "Press any key to continue..." << endl;
+                                cin.get();
+                                clearScreen();
+                                break;
+                            } 
+                            else {
+                                clearScreen();
+                                cout << "Invalid input! Please enter N or Y!" << endl;
+                            }
+                        } while (true);
+                    } 
                 }
                 break;
 			case 0: // Exit the redeem points page
@@ -117,68 +191,201 @@ void RedeemPointsPage(string phoneNo) { // Redeem points page for customer maint
 void customerMaintenancePage() { // Customer maintenance page for staff
 	// Variable declarations
 	int selection = 0;
-    string phoneNo = "";
+    string input;
+    Customer customer;
 
 	do { // Display the customer maintenance page UI
         cout << "Customer Maintenance" << endl;
-        cout << "1. Redeem points\n2. View all appointment\n0. Exit" << endl;
+        cout << "=====================\n";
+        cout << "1. Redeem points\n2. View all appointment\n0. Exit" << endl << endl;
         cout << "selection: ";
-        cin >> selection;
-        cin.ignore();
+        getline(cin, input);
+
+        if (input.empty()) {
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+            continue;
+        }
+
+        try {
+            size_t pos;
+            selection = stoi(input, &pos);
+
+            if (pos != input.size()) {
+                clearScreen();
+                cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+                continue;
+            }
+        }
+        catch (...) {
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+            continue;
+        }
 
 		if (selection == 1 || selection == 2) { // If the selection is 1 or 2, prompt for customer's phone number
             cout << "Customer's phone number: ";
-			getline(cin, phoneNo);
+			getline(cin, customer.user.phoneNo);
         }
 
         switch (selection) {
 		case 1: // navigate to redeem points page (user module)
             clearScreen();
-            RedeemPointsPage(phoneNo);
+            RedeemPointsPage(customer);
             break;
         case 2:
             clearScreen();
             // navigate to view all appointment (appointment module)
             break;
-		case 3: // exit the customer maintenance page
+		case 0: // exit the customer maintenance page
             clearScreen();
             return;
 		default: // Any invalid situation, display error message and prompt user to try again
             clearScreen();
-            cout << "Invalid input! Please enter 0, 1, or 2!";
+            cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
         } 
     } while (true);
 }
 
-void editStaff(string staffCode) {
-	// Read staff data from file (TODO)
-	// Placeholder for now
-	Staff staff = { "S001", "John Doe", "0123456789", "password1", 3000.00, 10 };
+bool editValidationSalary(Staff editStaff, vector<Staff>* satffList) {
+    if (editStaff.salary < 3000.00) {
+        clearScreen();
+        cout << "Salary must be more than 3000! ";
+        return false;
+    }
 
+    return true;
+}
+
+bool editValidationPhoneNo(Staff editStaff, vector<Staff> *staffList) {
+    regex phonePattern(R"(^01\d-\d{7,8}$)"); // regex with pattern like 012-3456789
+
+    vector<Customer> customers = readCustomerFile();
+
+    if ((editStaff.user.phoneNo).empty()) {
+        clearScreen();
+        cout << "Phone number cannot be empty! ";
+        return false;
+    }
+
+    // Validate: phone number is in a certain format
+    if (!(regex_search((editStaff.user.phoneNo), phonePattern))) {
+        clearScreen();
+        cout << "Invalid phone number format! ";
+        return false;
+    }
+
+    // Validate: no redundant phone no.
+    for (int i = 0; i < customers.size(); i++) {
+        if (editStaff.user.phoneNo == (customers.at(i)).user.phoneNo) {
+            clearScreen();
+            cout << "Phone number has been registered! ";
+            return false;
+        }
+    }
+
+    for (int i = 0; i < (*staffList).size(); i++) {
+        if (editStaff.user.phoneNo == ((*staffList).at(i)).user.phoneNo) {
+            clearScreen();
+            cout << "Phone number has been registered! ";
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void editStaff(int indexFound, Staff *inputStaff, vector<Staff> *staffList, bool *success) {
     int selection = 0;
+    string input;
 
     do {
         cout << "Edit Staff" << endl;
-        cout << staff.name << "(" << staff.staffCode << ")" << endl;
-        cout << "1. Phone No.\n2. Salary\n0. Back" << endl;
+        cout << "===========\n";
+        cout << (*inputStaff).user.name << "(" << (*inputStaff).staffCode << ")" << endl;
+        cout << "1. Phone No.\n2. Salary\n0. Back" << endl << endl;
         cout << "Selection: ";
-        cin >> selection;
-        cin.ignore();
+        getline(cin, input);
+
+        if (input.empty()) {
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+            continue;
+        }
+
+        try {
+            size_t pos;
+            selection = stoi(input, &pos);
+
+            if (pos != input.size()) {
+                clearScreen();
+                cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+                continue;
+            }
+        }
+        catch (...) {
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+            continue;
+        }
 
         switch (selection) {
             case 1:
 				cout << "Change phone no. to: ";
-				getline(cin, staff.phoneNo);
-                clearScreen();
-                return;
-				break;
+				getline(cin, (*inputStaff).user.phoneNo);
+
+                if (editValidationPhoneNo(*inputStaff, &(*staffList))) {
+                    (*staffList)[indexFound] = *inputStaff;
+                    *success = true;
+                    overwriteStaffFile(*staffList);
+
+                    clearScreen();
+                    return;
+                    break;
+                }
+                else {
+                    cout << "Please try again!" << endl;
+                    continue;
+                }
 			case 2:
 				cout << "Change salary to: RM ";
-				cin >> staff.salary;
-				cin.ignore();
-                clearScreen();
-                return;
-				break;
+                getline(cin, input);
+
+                if (input.empty()) {
+                    clearScreen();
+                    cout << "Invalid salary input! Please try again!" << endl;
+                    continue;
+                }
+
+                try {
+                    size_t pos;
+                    (*inputStaff).salary = stod(input, &pos);
+
+                    if (pos != input.size()) {
+                        clearScreen();
+                        cout << "Invalid salary input! Please try again!" << endl;
+                        continue;
+                    }
+                }
+                catch (...) {
+                    clearScreen();
+                    cout << "Invalid salary input! Please try again!" << endl;
+                    continue;
+                }
+
+                if (editValidationSalary(*inputStaff, &(*staffList))) {
+                    (*staffList)[indexFound] = *inputStaff;
+                    *success = true;
+                    overwriteStaffFile(*staffList);
+
+                    clearScreen();
+                    return;
+                    break;
+                }
+                else {
+                    cout << "Please try again!" << endl;
+                    continue;
+                }
             case 0:
 				clearScreen();
 				return;
@@ -189,101 +396,240 @@ void editStaff(string staffCode) {
 	} while (true);
 }
 
-void addStaff(int totalStaff) {
-	Staff newStaff;
-	newStaff.staffCode = "S" + to_string(totalStaff + 1); // Generate staff code based on total staff count
+bool staffValidation(Staff newStaff, string confirmPassword, vector<Staff> *staffList) {
+    regex phonePattern(R"(^01\d-\d{7,8}$)"); // regex with pattern like 012-3456789
+
+    vector<Customer> customers = readCustomerFile();
+
+    // Validate: no redundant username
+    for (int i = 0; i < (*staffList).size(); i++) {
+        if (newStaff.user.name == ((*staffList).at(i)).user.name) {
+            clearScreen();
+            cout << "Username has been used! ";
+            return false;
+        }
+    }
+
+    // Validate: username cannot be empty
+    if ((newStaff.user.name).empty()) {
+        clearScreen();
+        cout << "Username cannot be empty! ";
+        return false;
+    }
+
+    // Validate: username's length must more than 3 char
+    if ((newStaff.user.name).length() <= 3) {
+        clearScreen();
+        cout << "Username must more than 3 characters! ";
+        return false;
+    }
+
+    // Validate: no redundant phone no.
+    for (int i = 0; i < customers.size(); i++) {
+        if (newStaff.user.phoneNo == (customers.at(i)).user.phoneNo) {
+            clearScreen();
+            cout << "Phone number has been registered! ";
+            return false;
+        }
+    }
+
+    for (int i = 0; i < (*staffList).size(); i++) {
+        if (newStaff.user.phoneNo == ((*staffList).at(i)).user.phoneNo) {
+            clearScreen();
+            cout << "Phone number has been registered! ";
+            return false;
+        }
+    }
+
+    // Validate: phone number cannot be empty
+    if ((newStaff.user.phoneNo).empty()) {
+        clearScreen();
+        cout << "Phone number cannot be empty! ";
+        return false;
+    }
+
+    // Validate: phone number is in a certain format
+    else if (!(regex_search((newStaff.user.phoneNo), phonePattern))) {
+        clearScreen();
+        cout << "Invalid phone number format! ";
+        return false;
+    }
+
+    if (newStaff.salary < 3000.00) {
+        clearScreen();
+        cout << "Salary must be more than 3000! ";
+        return false;
+    }
+
+    // Validate: password cannot be empty
+    if ((newStaff.user.password).empty()) {
+        clearScreen();
+        cout << "Password cannot be empty! ";
+        return false;
+    }
+
+    // Validate: both password is same
+    if ((newStaff.user.password) != confirmPassword) {
+        clearScreen();
+        cout << "Password not the same! ";
+        return false;
+    }
+
+    (*staffList).push_back(newStaff);
+    return true;    
+}
+
+void addStaff(vector<Staff> *staffList) {
+    Staff newStaff;
+    newStaff.staffCode = format("S{:03d}", ((*staffList).size() + 1)); // Generate staff code based on total staff count
 	newStaff.appointmentDone = 0; // Initialize appointment done to 0
 
-	string confirmPassword = "";
+	string confirmPassword = "", input;
 	char confirm = 'N';
 
     do {
         cout << "Add Staff" << endl;
+        cout << "==========\n";
         cout << "Staff code: " << newStaff.staffCode << endl;
 		cout << "Staff name: ";
-		getline(cin, newStaff.name);
+		getline(cin, newStaff.user.name);
 		cout << "Staff phone No.: ";
-		getline(cin, newStaff.phoneNo);
+		getline(cin, newStaff.user.phoneNo);
         cout << "Staff salary: ";
-		cin >> newStaff.salary;
-        cin.ignore();
+        getline(cin, input);
+
+        if (input.empty()) {
+            clearScreen();
+            cout << "Invalid salary input! Please try again!" << endl;
+            continue;
+        }
+
+        try {
+            size_t pos;
+            newStaff.salary = stod(input, &pos);
+
+            if (pos != input.size()) {
+                clearScreen();
+                cout << "Invalid salary input! Please try again!" << endl;
+                continue;
+            }
+        }
+        catch (...) {
+            clearScreen();
+            cout << "Invalid salary input! Please try again!" << endl;
+            continue;
+        }
+
 		cout << "Staff password: ";
-		getline(cin, newStaff.password);
+		getline(cin, newStaff.user.password);
 		cout << "Confirm password: ";
 		getline(cin, confirmPassword);
 
-		// Validation here (TODO)
-        break;
+        if (staffValidation(newStaff, confirmPassword, &(*staffList))) {
+            clearScreen();
+            break;
+        }
+        else {
+            cout << "Please try again!" << endl;
+        }
+        
 	} while (true);
 
-	clearScreen();
-	cout << "Staff name: " << newStaff.name << endl;
-	cout << "Staff phone No.: " << newStaff.phoneNo << endl;
-	cout << "Staff salary: RM " << newStaff.salary << endl;
-	cout << "Staff password: " << newStaff.password << endl;
-	cout << "Confirm adding staff (Y/N): ";
-	cin >> confirm;
-    cin.ignore();
-	confirm = toupper(confirm);
+    do {
+        cout << "Staff name: " << newStaff.user.name << endl;
+        cout << "Staff phone No.: " << newStaff.user.phoneNo << endl;
+        cout << "Staff salary: RM " << newStaff.salary << endl;
+        cout << "Staff password: " << newStaff.user.password << endl;
+        cout << "\nConfirm adding staff (Y/N): ";
+        getline(cin, input);
 
-    if (confirm == 'Y') { // If the user confirms, display success message
-        cout << "Staff added successfully!" << endl;
-        cout << "Press any key to continue..." << endl;
-        cin.get();
-        clearScreen();
-        return;
-    }
-    else if (confirm == 'N') { // If the user cancels, display cancel message
-        cout << "Staff addition cancelled." << endl;
-        cout << "Press any key to continue..." << endl;
-        cin.get();
-        clearScreen();
-        return;
-    }
+        if (input.empty()) {
+            clearScreen();
+            cout << "Invalid input! Please enter N or Y!" << endl;
+            continue;
+        }
+        else if (input.size() == 1) {
+            confirm = input[0];
+            confirm = toupper(confirm);
+        }
+        else {
+            clearScreen();
+            cout << "Invalid input! Please enter N or Y!" << endl;
+            continue;
+        }
+
+        if (confirm == 'Y') { // If the user confirms, display success message
+            appendStaffToFile(newStaff);
+            cout << "\nStaff added successfully!" << endl;
+            cout << "Press any key to continue..." << endl;
+            cin.get();
+            clearScreen();
+            return;
+        }
+        else if (confirm == 'N') { // If the user cancels, display cancel message
+            cout << "\nStaff addition cancelled." << endl;
+            cout << "Press any key to continue..." << endl;
+            cin.get();
+            clearScreen();
+            return;
+        }
+        else {
+            clearScreen();
+            cout << "Invalid input! Please enter N or Y!" << endl;
+        }
+    } while (true);
 }
 
 void staffMaintenancePage() {
     char selection = 0;
-    int currentpage = 1;
-    string newStaffCode = "";
+    int currentpage = 1, indexFound = 0;
+    bool found = false, success = false;
+    string input;
+    Staff inputStaff;
     const int MAX_STAFF_PER_PAGE = 10;
 
     do {
-		// Read staff data from file (TODO)
-		// Placeholder for now
-		Staff staffList[5] = {
-			{"S001", "John Doe", "0123456789", "password1", 3000.00, 10},
-			{"S002", "Jane Smith", "0987654321", "password2", 3200.00, 15},
-			{"S003", "Alice Johnson", "0112233445", "password3", 2800.00, 8},
-			{"S004", "Bob Brown", "0109876543", "password4", 3500.00, 20},
-			{"S005", "Charlie Davis", "0134567890", "password5", 3100.00, 12}
-		};
+        vector<Staff> staffList = readStaffFile();
 
-		Staff* staffPtr; // Pointer to the staff list
-        int totalStaff = sizeof(staffList) / sizeof(Staff);
+        int totalStaff = staffList.size();
 		int totalPages = ceil(static_cast<double>(totalStaff) / MAX_STAFF_PER_PAGE);
-        cout << totalPages << " " << totalStaff << endl;
 
 		cout << "Staff Maintenance" << endl;
-		cout << left << setw(20) << "Staff code" << setw(25) << "Name" << setw(15) << "Phone No." << setw(10) << "Salary" << setw(16) << "Appointment done" << endl;
+        cout << "==================\n\n";
+		cout << left << setw(20) << "Staff code" << setw(25) << "Name" << setw(15) << "Phone No." << setw(15) << "Salary" << setw(16) << "Appointment done" << endl;
+        cout << left << setw(20) << "===========" << setw(25) << "=====" << setw(15) << "==========" << setw(15) << "=======" << setw(16) << "=================" << endl;
 
         int start = (currentpage - 1) * MAX_STAFF_PER_PAGE;
-        staffPtr = &staffList[start];
+        Staff *staffPtr = &staffList[start]; // Pointer to the start of the staff list
 
         for (int i = 0; i < MAX_STAFF_PER_PAGE && (start + i) < totalStaff; i++) {
             cout << left << setw(20) << staffPtr->staffCode
-                << setw(25) << staffPtr->name
-                << setw(15) << staffPtr->phoneNo
-                << setw(10) << "RM " << staffPtr->salary
+                << setw(25) << staffPtr->user.name
+                << setw(15) << staffPtr->user.phoneNo
+                << "RM " << setw(12) << fixed << setprecision(2) << staffPtr->salary
                 << setw(16) << staffPtr->appointmentDone << endl;
             staffPtr++;
         }
 
-		cout << "Page " << currentpage << "/" << totalPages << endl;
+		cout << "\nPage " << currentpage << "/" << totalPages << endl;
 		cout << "(n = next page, p = previous page, a = add staff, e = edit staff, q = quit)" << endl;
         cout << "Selection: ";
-        cin >> selection;
-        cin.ignore();
+        getline(cin, input);
+
+        if (input.empty()) {
+            clearScreen();
+            cout << "Invalid input! Please enter n, p, a, e, or q!" << endl;
+            continue;
+        }
+        else if (input.size() == 1) {
+            selection = input[0];
+            selection = tolower(selection);
+        }
+        else {
+            clearScreen();
+            cout << "Invalid input! Please enter n, p, a, e, or q!" << endl;
+            continue;
+        }    
 
 		switch (selection) {
 		case 'n':
@@ -306,18 +652,41 @@ void staffMaintenancePage() {
 			break;
 		case 'a':
 			clearScreen();
-			addStaff(totalStaff);
+			addStaff(&staffList);
 			break;
 		case 'e':
 			cout << "Staff code: ";
-			getline(cin, newStaffCode);
+			getline(cin, inputStaff.staffCode);
 
-			// Validation for staff code here (TODO)
+            staffPtr = &staffList[start]; // Pointer to the start of the staff list
+            for (int i = 0; i < totalStaff; i++) {
+                if (inputStaff.staffCode == staffPtr->staffCode) {
+                    inputStaff.user = staffPtr->user;
+                    inputStaff.salary = staffPtr->salary;
+                    inputStaff.appointmentDone = staffPtr->appointmentDone;
+                    indexFound = i;
+                    found = true;
+                    
+                    break;
+                }
+                else {
+                    staffPtr++;
+                }
+            }
 
-			clearScreen();
-            editStaff(newStaffCode);
-			break;
-		case 'q':
+            if (!found) {
+                cout << "Staff code not found!" << endl;
+            }
+            else {
+                clearScreen();
+                editStaff(indexFound, &inputStaff, &staffList, &success);
+                if (success) {
+                    cout << "Staff succesfully updated!" << endl;
+                }
+            }
+            
+            break;
+        case 'q':
 			clearScreen();
 			return;
 		default:
@@ -331,15 +700,38 @@ void staffMaintenancePage() {
 void memberHomePage(Customer customer) {
 	// Variable declarations
     int selection = 0;
+    string input;
 
 	do { // Display the member home page UI
-        cout << "Welcome " << customer.name << "!" << endl;
+        cout << "Welcome " << customer.user.name << "!" << endl;
 		appointmentReminder(customer);
         cout << "What would you like to do?" << endl;
-        cout << "1. Manage an appointment\n2. Buy an item\n3. View receipts\n0. Logout" << endl;
+        cout << "===========================\n";
+        cout << "1. Manage an appointment\n2. Buy an item\n3. View receipts\n0. Logout" << endl << endl;
         cout << "Selection: ";
-        cin >> selection;
-        cin.ignore();
+        getline(cin, input);
+
+        if (input.empty()) {
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, 2, or 3!" << endl;
+            continue;
+        }
+
+        try {
+            size_t pos;
+            selection = stoi(input, &pos);
+
+            if (pos != input.size()) {
+                clearScreen();
+                cout << "Invalid input! Please enter 0, 1, 2, or 3!" << endl;
+                continue;
+            }
+        }
+        catch (...) {
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, 2, or 3!" << endl;
+            continue;
+        }
 
         switch (selection) {
 		case 1: // navigate to manage appointment (appointment module)
@@ -359,7 +751,7 @@ void memberHomePage(Customer customer) {
             return;
         default: // Any invalid situation, display error message and prompt user to try again
             clearScreen();
-            cout << "Invalid input! Please enter 0, 1, 2, or 3!";
+            cout << "Invalid input! Please enter 0, 1, 2, or 3!" << endl;
         }
     } while (true);
 }
@@ -367,15 +759,38 @@ void memberHomePage(Customer customer) {
 void staffHomePage(Staff staff) {
 	// Variable declarations
     int selection = 0;
+    string input;
 
 	do { // Display the staff home page UI
-        cout << "Welcome " << staff.name << "!" << endl;
+        cout << "Welcome " << staff.user.name << "!" << endl;
         cout << "What would you like to do?" << endl;
+        cout << "===========================\n";
         cout << "1. POS system\n2. View assigned appointment\n3. Inventory maintenance \
-            \n4. Customer maintenance\n5. View appointment done\n0. Logout" << endl;
+            \n4. Customer maintenance\n5. View appointment done\n0. Logout" << endl << endl;
         cout << "Selection: ";
-        cin >> selection;
-        cin.ignore();
+        getline(cin, input);
+        
+        if (input.empty()) {
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, 2, 3, 4, or 5!" << endl;
+            continue;
+        }
+
+        try {
+            size_t pos;
+            selection = stoi(input, &pos);
+
+            if (pos != input.size()) {
+                clearScreen();
+                cout << "Invalid input! Please enter 0, 1, 2, 3, 4, or 5!" << endl;
+                continue;
+            }
+        }
+        catch (...) {
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, 2, 3, 4, or 5!" << endl;
+            continue;
+        }
 
         switch (selection) {
         case 1:
@@ -384,7 +799,7 @@ void staffHomePage(Staff staff) {
             break;
 		case 2: // navigate to view assigned appointment (appointment module)
             clearScreen();
-            assignedAppointmentsView(staff.name);
+            assignedAppointmentsView(staff.user.name);
             break;
         case 3:
             //navigate to inventory maintenance (inventory module)
@@ -395,14 +810,14 @@ void staffHomePage(Staff staff) {
             break;
 		case 5: // navigate to view completed appointment (appointment module)
             clearScreen();
-            completedAppointmentsView(staff.name);
+            completedAppointmentsView(staff.user.name);
             break;
 		case 0: // exit the staff home page
             clearScreen();
             return;
 		default: // Any invalid situation, display error message and prompt user to try again
             clearScreen();
-            cout << "Invalid input! Please enter 0, 1, 2, 3, 4, or 5!";
+            cout << "Invalid input! Please enter 0, 1, 2, 3, 4, or 5!" << endl;
         }
     } while(true);
 }
@@ -410,15 +825,38 @@ void staffHomePage(Staff staff) {
 void adminHomePage() {
 	// Variable declarations
     int selection = 0;
+    string input;
 
 	do { // Display the admin home page UI
         cout << "Welcome admin!" << endl;
         cout << "What would you like to do?" << endl;
+        cout << "===========================\n";
         cout << "1. Inventory maintenance\n2. Staff maintenance\n3. Assign appointments \
-        \n4. View reportings\n0. Logout" << endl;
+        \n4. View reportings\n0. Logout" << endl << endl;
         cout << "Selection: ";
-        cin >> selection;
-        cin.ignore();
+        getline(cin, input);
+        
+        if (input.empty()) {
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, 2, 3, or 4!" << endl;
+            continue;
+        }
+
+        try {
+            size_t pos;
+            selection = stoi(input, &pos);
+
+            if (pos != input.size()) {
+                clearScreen();
+                cout << "Invalid input! Please enter 0, 1, 2, 3, or 4!" << endl;
+                continue;
+            }
+        }
+        catch (...) {
+            clearScreen();
+            cout << "Invalid input! Please enter 0, 1, 2, 3, or 4!" << endl;
+            continue;
+        }
 
         switch (selection) {
         case 1:
@@ -442,7 +880,7 @@ void adminHomePage() {
             return;
 		default: // Any invalid situation, display error message and prompt user to try again
             clearScreen();
-            cout << "Invalid input! Please enter 0, 1, 2, 3, or 4!";
+            cout << "Invalid input! Please enter 0, 1, 2, 3, or 4!" << endl;
         }
     } while(true);
 }
