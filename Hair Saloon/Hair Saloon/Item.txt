@@ -1,0 +1,8 @@
+Shampoo,39.9,600,8
+Dry Shampoo,45,675,10
+Conditioner,38,570,9
+Hair Dye,29.9,450,8
+Hair Gel,24.9,375,8
+Hair Spray,32,480,10
+Styling Cream,34,510,10
+Hair Scalp,55,825,10

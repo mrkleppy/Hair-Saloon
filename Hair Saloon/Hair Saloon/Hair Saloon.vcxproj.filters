@@ -42,28 +42,48 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppointmentModule.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BillingModule.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InventoryModule.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LoginModule.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Main.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AppointmentReminder.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ReportingModule.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UserModule.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AppointmentReminder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Customer.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Staff.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Item.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Appointment.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Invoice.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Receipt.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
