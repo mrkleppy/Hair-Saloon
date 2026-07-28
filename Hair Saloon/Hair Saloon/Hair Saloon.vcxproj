@@ -38,6 +38,14 @@
     <ClInclude Include="ReportingModule.h" />
     <ClInclude Include="UserModule.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Appointment.txt" />
+    <Text Include="Customer.txt" />
+    <Text Include="Invoice.txt" />
+    <Text Include="Item.txt" />
+    <Text Include="Receipt.txt" />
+    <Text Include="Staff.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
