@@ -22,21 +22,25 @@
     <ClCompile Include="AppointmentModule.cpp" />
     <ClCompile Include="AppointmentReminder.cpp" />
     <ClCompile Include="BillingModule.cpp" />
+    <ClCompile Include="FileProcessing.cpp" />
     <ClCompile Include="InventoryModule.cpp" />
     <ClCompile Include="LoginModule.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ReportingModule.cpp" />
     <ClCompile Include="UserModule.cpp" />
+    <ClCompile Include="Validation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppointmentModule.h" />
     <ClInclude Include="AppointmentReminder.h" />
     <ClInclude Include="BillingModule.h" />
+    <ClInclude Include="FileProcessing.h" />
     <ClInclude Include="InventoryModule.h" />
     <ClInclude Include="LoginModule.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="ReportingModule.h" />
     <ClInclude Include="UserModule.h" />
+    <ClInclude Include="Validation.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Appointment.txt" />

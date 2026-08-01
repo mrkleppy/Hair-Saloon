@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AppointmentModule.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BillingModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,9 +36,21 @@
     <ClCompile Include="UserModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AppointmentModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileProcessing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Validation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppointmentModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AppointmentReminder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BillingModule.h">
@@ -62,27 +71,30 @@
     <ClInclude Include="UserModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AppointmentReminder.h">
+    <ClInclude Include="FileProcessing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Validation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Customer.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Staff.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Item.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="Appointment.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Customer.txt">
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="Invoice.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Item.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
     <Text Include="Receipt.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Staff.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

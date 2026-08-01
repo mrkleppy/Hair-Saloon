@@ -16,10 +16,12 @@ struct Service {
  
 // Define the item structure
 struct Item {
-    string name;
+	string itemId;
+	string name;
 	double price;
-    int pointCost;
-    int stock;
+	double reorderPrice;
+	int pointCost;
+	int stock;
 };
 
 // Define the user structure
@@ -43,15 +45,26 @@ struct Staff {
 	int appointmentDone;
 };
 
+struct Date {
+	int day;
+	int month;
+	int year;
+};
+
+struct Time {
+	int hour;
+	int minute;
+};
+
 // Define the appointment structure
 struct Appointment {
 	string appointmentNo;
 	string service;
-	string date;
-	string time;
+	Date date;
+	Time time;
 	string status;
 	Customer customer;
-	Staff assignedStaff[3]; // Assuming a maximum of 3 staff can be assigned to an appointment	
+	Staff assignedStaff[5]; // Assuming a maximum of 5 staff can be assigned to an appointment	
 };
 
 // Define the invoice structure
@@ -64,20 +77,19 @@ struct Invoice {
 // Define the receipt structure
 struct Receipt {
 	Invoice receiptId;
-	string date;
+	Date date;
 	double totalPrice;
 	string status;
 };
 
+const Service services[4] = {
+    {"Hair Cut", 25, 45},
+    {"Hair Coloring", 80, 170},
+    {"Hair Treatment", 70, 90},
+    {"Styling", 30, 35}
+};
+
 vector<Appointment> readAppointmentFile();
-vector<Item> readItemFile();
-vector<Staff> readStaffFile();
-vector<Customer> readCustomerFile();
-void overwriteItemFile(vector<Item> items);
-void overwriteStaffFile(vector<Staff> staffs);
-void overwriteCustomerFile(vector<Customer> customers);
-void appendStaffToFile(Staff staff);
-void appendCustomerToFile(Customer customer);
 void clearScreen();
 
 #endif

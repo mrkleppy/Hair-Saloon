@@ -1,27 +1,25 @@
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <string>
 #include <regex>
 #include "Main.h"
 #include "UserModule.h"
+#include "FileProcessing.h"
+#include "Validation.h"
 
 using namespace std;
 
-int validateUser(User user, Customer* customer, Staff* staff) {
-    // validatate user from database
+const regex STAFF_CODE_PATTERN(R"(S\d{3})"); // regex with pattern like S001
+
+int login(User user, Customer* customer, Staff* staff, vector<Customer>& customers, vector<Staff>& staffs) {
     // username must exist in database and password must match with corresponding user
     User currentUser;
-    vector<Customer> customers = readCustomerFile();
-    vector<Staff> staffs = readStaffFile();
-    regex staffCodePattern(R"(S\d{3})");
     bool found = false;
 
     if (user.name == "admin" && user.password == "ADMIN") {
         return 3;
     }
 
-    if (regex_search(user.name, staffCodePattern)) {
+    if (regex_search(user.name, STAFF_CODE_PATTERN)) {
         for (Staff s : staffs) {
             if (user.name == s.staffCode && user.password == s.user.password) {
                 (*staff).user.name = s.user.name;
@@ -60,11 +58,10 @@ int validateUser(User user, Customer* customer, Staff* staff) {
     }
 }
 
-void loginScreen() {
+void loginScreen(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs) {
     User user;
     Customer customer;
     Staff staff;
-    vector<Customer> customers;
 
     do {
         cout << "Login" << endl;
@@ -74,110 +71,41 @@ void loginScreen() {
         cout << "Password: ";
         getline(cin, user.password);
 
-        int userType = validateUser(user, &customer, &staff);
+        int userType = login(user, &customer, &staff, customers, staffs);
 
         switch (userType) {
         case 1: // navigate to member home page (user module)
             clearScreen();
-            memberHomePage(customer);
+            memberHomePage(customer, items, customers, staffs);
             break;
 		case 2: // navigate to staff home page (user module)
             clearScreen();
-            staffHomePage(staff);
+            staffHomePage(staff, items, customers, staffs);
             break;
 		case 3: // navigate to admin home page (user module)
             clearScreen();
-            adminHomePage();
+            adminHomePage(items, customers, staffs);
             break;
 		default: // any invalid situation, display error message and prompt user to try again
             clearScreen();
-            cout << "User not found! Please try again!" << endl;
+            cout << "Incorrect username or password! Please try again!" << endl;
         }
 
         break;
     } while (true);
 }
 
-bool registerValidation(User newUser, string confirmPassword, Customer *newCustomer) {
-    regex phonePattern(R"(^01\d-\d{7,8}$)"); // regex with pattern like 012-3456789
-
-    vector<Customer> customers = readCustomerFile(); // read from file
-    vector<Staff> staffs = readStaffFile();
-
-    // Validate: no redundant username
-    for (int i = 0; i < customers.size(); i++) {
-        if (newUser.name == (customers.at(i)).user.name) {
-            clearScreen();
-            cout << "Username has been used! ";
-            return false;
-        }
-    }
-    
-    // Validate: username cannot be empty
-    if ((newUser.name).empty()) {
-        clearScreen();
-        cout << "Username cannot be empty! ";
-        return false;
+bool registerValidation(User newUser, string confirmPassword, Customer *newCustomer, vector<Customer>& customers, vector<Staff>& staffs, string* message) {
+    if (validateUsername(newUser, customers, staffs, message) && validatePhoneNo(newUser, customers, staffs, message) && validatePassword(newUser, confirmPassword, message)) {
+        (*newCustomer).user = newUser;
+        return true;
     }
 
-    // Validate: username's length must more than 3 char
-    if ((newUser.name).length() <= 3) {
-        clearScreen();
-        cout << "Username must more than 3 characters! ";
-        return false;
-    }
-
-    // Validate: no redundant phone no.
-    for (int i = 0; i < customers.size(); i++) {
-        if (newUser.phoneNo == (customers.at(i)).user.phoneNo) {
-            clearScreen();
-            cout << "Phone number has been registered! ";
-            return false;
-        }
-    }
-
-    for (int i = 0; i < staffs.size(); i++) {
-        if (newUser.phoneNo == (staffs.at(i)).user.phoneNo) {
-            clearScreen();
-            cout << "Phone number has been registered! ";
-            return false;
-        }
-    }
-
-    // Validate: phone number cannot be empty
-    if ((newUser.phoneNo).empty()) {
-        clearScreen();
-        cout << "Phone number cannot be empty! ";
-        return false;
-    }
-
-    // Validate: phone number is in a certain format
-    if (!(regex_search((newUser.phoneNo), phonePattern))) {
-        clearScreen();
-        cout << "Invalid phone number format! ";
-        return false;
-    }
-
-    // Validate: password cannot be empty
-    if ((newUser.password).empty()) {
-        clearScreen();
-        cout << "Password cannot be empty! ";
-        return false;
-    }
-
-    // Validate: both password is same
-    if ((newUser.password) != confirmPassword) {
-        clearScreen();
-        cout << "Password not the same! ";
-        return false;
-    }
-
-    (*newCustomer).user = newUser;
-    return true;     
+    return false;
 }
 
-void registerScreen() {
-    string confirmPassword, input;
+void registerScreen(vector<Staff>& staffs, vector<Customer>& customers) {
+    string confirmPassword, input, message;
     User newUser;
     Customer newCustomer;
     char confirm;
@@ -194,13 +122,13 @@ void registerScreen() {
         cout << "Confirm password: ";
         getline(cin, confirmPassword);
 
-        if (registerValidation(newUser, confirmPassword, &newCustomer)) {
+        if (registerValidation(newUser, confirmPassword, &newCustomer, customers, staffs, &message)) {
             newCustomer.points = 0;
             clearScreen();
             break;
         }
         else {
-            cout << "Please try again!" << endl;
+            cout << message << "Please try again!" << endl;
         }
     } while (true);
 
@@ -227,6 +155,7 @@ void registerScreen() {
 
         if (confirm == 'Y') { // If the user confirms, display success message
             appendCustomerToFile(newCustomer);
+			customers.push_back(newCustomer);
             cout << "\nMember registered successfully!" << endl;
             cout << "Press any key to continue..." << endl;
             cin.get();

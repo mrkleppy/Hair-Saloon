@@ -7,8 +7,8 @@
 using namespace std;
 
 
-int validateUser(string username, string password);
-void loginScreen();
-void registerScreen();
+int loginValidation(User user, Customer* customer, Staff* staff, vector<Customer>& customers, vector<Staff>& staffs);
+void loginScreen(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs);
+void registerScreen(vector<Staff>& staffs, vector<Customer>& customers);
 
 #endif
