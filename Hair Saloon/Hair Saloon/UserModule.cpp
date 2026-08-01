@@ -1,8 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <format>
 #include <vector>
+#include <format>
 #include <regex>
 #include "Main.h"
 #include "LoginModule.h"
@@ -11,10 +11,21 @@
 #include "InventoryModule.h"
 #include "BillingModule.h"
 #include "ReportingModule.h"
+#include "FileProcessing.h"
+#include "Validation.h"
 
 using namespace std;
 
-void RedeemPointsPage(Customer customer) { // Redeem points page for customer maintenance	
+const int MAX_STAFF_PER_PAGE = 10;
+
+void displayItem(vector<Item>& items) {
+    cout << left << "1. " << setw(25) << items[0].name << setw(4) << items[0].pointCost << "pts\t2. " << setw(25) << items[1].name << setw(4) << items[1].pointCost << "pts" << endl;
+    cout << left << "3. " << setw(25) << items[2].name << setw(4) << items[2].pointCost << "pts\t4. " << setw(25) << items[3].name << setw(4) << items[3].pointCost << "pts" << endl;
+    cout << left << "5. " << setw(25) << items[4].name << setw(4) << items[4].pointCost << "pts\t6. " << setw(25) << items[5].name << setw(4) << items[5].pointCost << "pts" << endl;
+    cout << left << "7. " << setw(25) << items[6].name << setw(4) << items[6].pointCost << "pts\t8. " << setw(25) << items[7].name << setw(4) << items[7].pointCost << "pts" << endl;
+}
+
+void RedeemPointsPage(Customer customer, vector<Customer>& customers, vector<Item>& items) { // Redeem points page for customer maintenance	
 	// Variable declarations
     int selection = 0, quantity = 0, totalPointCost = 0, indexFound = 0;
     char confirm = 'N';
@@ -25,9 +36,6 @@ void RedeemPointsPage(Customer customer) { // Redeem points page for customer ma
     Item * itemChosen;
 
 	do { 
-        vector<Customer> customers = readCustomerFile();
-        vector<Item> items = readItemFile();
-
         for (int i = 0; i < customers.size(); i++) {
             if (customer.user.phoneNo == customers[i].user.phoneNo) {
                 customer.user.name = customers[i].user.name;
@@ -49,10 +57,7 @@ void RedeemPointsPage(Customer customer) { // Redeem points page for customer ma
         cout << "Customer Name: " << customer.user.name << endl;
         cout << "Membership Points: " << customer.points << "pts" << endl;
         cout << "Select an item to redeem" << endl;
-        cout << left << "1. " << setw(25) << items[0].name << setw(4) << items[0].pointCost << "pts\t2. " << setw(25) << items[1].name << setw(4) << items[1].pointCost << "pts" << endl;
-        cout << left << "3. " << setw(25) << items[2].name << setw(4) << items[2].pointCost << "pts\t4. " << setw(25) << items[3].name << setw(4) << items[3].pointCost << "pts" << endl;
-        cout << left << "5. " << setw(25) << items[4].name << setw(4) << items[4].pointCost << "pts\t6. " << setw(25) << items[5].name << setw(4) << items[5].pointCost << "pts" << endl;
-        cout << left << "7. " << setw(25) << items[6].name << setw(4) << items[6].pointCost << "pts\t8. " << setw(25) << items[7].name << setw(4) << items[7].pointCost << "pts" << endl;
+        displayItem(items);
         cout << endl << "Selection (0 to exit): ";
         getline(cin, input);
 
@@ -188,7 +193,7 @@ void RedeemPointsPage(Customer customer) { // Redeem points page for customer ma
 	} while (true);
 }
 
-void customerMaintenancePage() { // Customer maintenance page for staff
+void customerMaintenancePage(vector<Customer>& customers, vector<Item>& items) { // Customer maintenance page for staff
 	// Variable declarations
 	int selection = 0;
     string input;
@@ -231,7 +236,7 @@ void customerMaintenancePage() { // Customer maintenance page for staff
         switch (selection) {
 		case 1: // navigate to redeem points page (user module)
             clearScreen();
-            RedeemPointsPage(customer);
+            RedeemPointsPage(customer, customers, items);
             break;
         case 2:
             clearScreen();
@@ -247,57 +252,9 @@ void customerMaintenancePage() { // Customer maintenance page for staff
     } while (true);
 }
 
-bool editValidationSalary(Staff editStaff, vector<Staff>* satffList) {
-    if (editStaff.salary < 3000.00) {
-        clearScreen();
-        cout << "Salary must be more than 3000! ";
-        return false;
-    }
-
-    return true;
-}
-
-bool editValidationPhoneNo(Staff editStaff, vector<Staff> *staffList) {
-    regex phonePattern(R"(^01\d-\d{7,8}$)"); // regex with pattern like 012-3456789
-
-    vector<Customer> customers = readCustomerFile();
-
-    if ((editStaff.user.phoneNo).empty()) {
-        clearScreen();
-        cout << "Phone number cannot be empty! ";
-        return false;
-    }
-
-    // Validate: phone number is in a certain format
-    if (!(regex_search((editStaff.user.phoneNo), phonePattern))) {
-        clearScreen();
-        cout << "Invalid phone number format! ";
-        return false;
-    }
-
-    // Validate: no redundant phone no.
-    for (int i = 0; i < customers.size(); i++) {
-        if (editStaff.user.phoneNo == (customers.at(i)).user.phoneNo) {
-            clearScreen();
-            cout << "Phone number has been registered! ";
-            return false;
-        }
-    }
-
-    for (int i = 0; i < (*staffList).size(); i++) {
-        if (editStaff.user.phoneNo == ((*staffList).at(i)).user.phoneNo) {
-            clearScreen();
-            cout << "Phone number has been registered! ";
-            return false;
-        }
-    }
-
-    return true;
-}
-
-void editStaff(int indexFound, Staff *inputStaff, vector<Staff> *staffList, bool *success) {
+void editStaff(int indexFound, Staff *inputStaff, vector<Staff> &staffs, vector<Customer> &customers, bool *success) {
     int selection = 0;
-    string input;
+    string input, message;
 
     do {
         cout << "Edit Staff" << endl;
@@ -334,17 +291,17 @@ void editStaff(int indexFound, Staff *inputStaff, vector<Staff> *staffList, bool
 				cout << "Change phone no. to: ";
 				getline(cin, (*inputStaff).user.phoneNo);
 
-                if (editValidationPhoneNo(*inputStaff, &(*staffList))) {
-                    (*staffList)[indexFound] = *inputStaff;
+                if (validatePhoneNo((*inputStaff).user, customers, staffs, &message)) {
+                    staffs[indexFound] = *inputStaff;
                     *success = true;
-                    overwriteStaffFile(*staffList);
+                    overwriteStaffFile(staffs);
 
                     clearScreen();
                     return;
                     break;
                 }
                 else {
-                    cout << "Please try again!" << endl;
+                    cout << message << "Please try again!" << endl;
                     continue;
                 }
 			case 2:
@@ -373,17 +330,17 @@ void editStaff(int indexFound, Staff *inputStaff, vector<Staff> *staffList, bool
                     continue;
                 }
 
-                if (editValidationSalary(*inputStaff, &(*staffList))) {
-                    (*staffList)[indexFound] = *inputStaff;
+                if (validateSalary(*inputStaff, &message)) {
+                    staffs[indexFound] = *inputStaff;
                     *success = true;
-                    overwriteStaffFile(*staffList);
+                    overwriteStaffFile(staffs);
 
                     clearScreen();
                     return;
                     break;
                 }
                 else {
-                    cout << "Please try again!" << endl;
+                    cout << message << "Please try again!" << endl;
                     continue;
                 }
             case 0:
@@ -396,95 +353,22 @@ void editStaff(int indexFound, Staff *inputStaff, vector<Staff> *staffList, bool
 	} while (true);
 }
 
-bool staffValidation(Staff newStaff, string confirmPassword, vector<Staff> *staffList) {
-    regex phonePattern(R"(^01\d-\d{7,8}$)"); // regex with pattern like 012-3456789
-
-    vector<Customer> customers = readCustomerFile();
-
-    // Validate: no redundant username
-    for (int i = 0; i < (*staffList).size(); i++) {
-        if (newStaff.user.name == ((*staffList).at(i)).user.name) {
-            clearScreen();
-            cout << "Username has been used! ";
-            return false;
-        }
+bool staffValidation(Staff newStaff, string confirmPassword, vector<Staff> &staffs, vector<Customer> &customers, string &message) {
+    if (validateUsername(newStaff.user, customers, staffs, &message) && validatePhoneNo(newStaff.user, customers, staffs, &message) 
+        && validateSalary(newStaff, &message) && validatePassword(newStaff.user, confirmPassword, &message)) {
+		return true;
     }
-
-    // Validate: username cannot be empty
-    if ((newStaff.user.name).empty()) {
-        clearScreen();
-        cout << "Username cannot be empty! ";
+    else {
         return false;
-    }
-
-    // Validate: username's length must more than 3 char
-    if ((newStaff.user.name).length() <= 3) {
-        clearScreen();
-        cout << "Username must more than 3 characters! ";
-        return false;
-    }
-
-    // Validate: no redundant phone no.
-    for (int i = 0; i < customers.size(); i++) {
-        if (newStaff.user.phoneNo == (customers.at(i)).user.phoneNo) {
-            clearScreen();
-            cout << "Phone number has been registered! ";
-            return false;
-        }
-    }
-
-    for (int i = 0; i < (*staffList).size(); i++) {
-        if (newStaff.user.phoneNo == ((*staffList).at(i)).user.phoneNo) {
-            clearScreen();
-            cout << "Phone number has been registered! ";
-            return false;
-        }
-    }
-
-    // Validate: phone number cannot be empty
-    if ((newStaff.user.phoneNo).empty()) {
-        clearScreen();
-        cout << "Phone number cannot be empty! ";
-        return false;
-    }
-
-    // Validate: phone number is in a certain format
-    else if (!(regex_search((newStaff.user.phoneNo), phonePattern))) {
-        clearScreen();
-        cout << "Invalid phone number format! ";
-        return false;
-    }
-
-    if (newStaff.salary < 3000.00) {
-        clearScreen();
-        cout << "Salary must be more than 3000! ";
-        return false;
-    }
-
-    // Validate: password cannot be empty
-    if ((newStaff.user.password).empty()) {
-        clearScreen();
-        cout << "Password cannot be empty! ";
-        return false;
-    }
-
-    // Validate: both password is same
-    if ((newStaff.user.password) != confirmPassword) {
-        clearScreen();
-        cout << "Password not the same! ";
-        return false;
-    }
-
-    (*staffList).push_back(newStaff);
-    return true;    
+    }   
 }
 
-void addStaff(vector<Staff> *staffList) {
+void addStaff(vector<Staff> &staffs, vector<Customer> &customers) {
     Staff newStaff;
-    newStaff.staffCode = format("S{:03d}", ((*staffList).size() + 1)); // Generate staff code based on total staff count
+    newStaff.staffCode = format("S{:03d}", (staffs.size() + 1)); // Generate staff code based on total staff count
 	newStaff.appointmentDone = 0; // Initialize appointment done to 0
 
-	string confirmPassword = "", input;
+	string confirmPassword = "", input, message;
 	char confirm = 'N';
 
     do {
@@ -525,7 +409,7 @@ void addStaff(vector<Staff> *staffList) {
 		cout << "Confirm password: ";
 		getline(cin, confirmPassword);
 
-        if (staffValidation(newStaff, confirmPassword, &(*staffList))) {
+        if (staffValidation(newStaff, confirmPassword, staffs, customers, message)) {
             clearScreen();
             break;
         }
@@ -560,6 +444,7 @@ void addStaff(vector<Staff> *staffList) {
 
         if (confirm == 'Y') { // If the user confirms, display success message
             appendStaffToFile(newStaff);
+			staffs.push_back(newStaff);
             cout << "\nStaff added successfully!" << endl;
             cout << "Press any key to continue..." << endl;
             cin.get();
@@ -580,18 +465,15 @@ void addStaff(vector<Staff> *staffList) {
     } while (true);
 }
 
-void staffMaintenancePage() {
+void staffMaintenancePage(vector<Staff>& staffs, vector<Customer>& customers) {
     char selection = 0;
     int currentpage = 1, indexFound = 0;
     bool found = false, success = false;
     string input;
     Staff inputStaff;
-    const int MAX_STAFF_PER_PAGE = 10;
 
     do {
-        vector<Staff> staffList = readStaffFile();
-
-        int totalStaff = staffList.size();
+        int totalStaff = staffs.size();
 		int totalPages = ceil(static_cast<double>(totalStaff) / MAX_STAFF_PER_PAGE);
 
 		cout << "Staff Maintenance" << endl;
@@ -600,7 +482,7 @@ void staffMaintenancePage() {
         cout << left << setw(20) << "===========" << setw(25) << "=====" << setw(15) << "==========" << setw(15) << "=======" << setw(16) << "=================" << endl;
 
         int start = (currentpage - 1) * MAX_STAFF_PER_PAGE;
-        Staff *staffPtr = &staffList[start]; // Pointer to the start of the staff list
+        Staff *staffPtr = &staffs[start]; // Pointer to the start of the staff list
 
         for (int i = 0; i < MAX_STAFF_PER_PAGE && (start + i) < totalStaff; i++) {
             cout << left << setw(20) << staffPtr->staffCode
@@ -652,13 +534,13 @@ void staffMaintenancePage() {
 			break;
 		case 'a':
 			clearScreen();
-			addStaff(&staffList);
+			addStaff(staffs, customers);
 			break;
 		case 'e':
 			cout << "Staff code: ";
 			getline(cin, inputStaff.staffCode);
 
-            staffPtr = &staffList[start]; // Pointer to the start of the staff list
+            staffPtr = &staffs[start]; // Pointer to the start of the staff list
             for (int i = 0; i < totalStaff; i++) {
                 if (inputStaff.staffCode == staffPtr->staffCode) {
                     inputStaff.user = staffPtr->user;
@@ -679,7 +561,7 @@ void staffMaintenancePage() {
             }
             else {
                 clearScreen();
-                editStaff(indexFound, &inputStaff, &staffList, &success);
+                editStaff(indexFound, &inputStaff, staffs, customers, &success);
                 if (success) {
                     cout << "Staff succesfully updated!" << endl;
                 }
@@ -697,7 +579,7 @@ void staffMaintenancePage() {
 	} while (true);
 }
 
-void memberHomePage(Customer customer) {
+void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs) {
 	// Variable declarations
     int selection = 0;
     string input;
@@ -756,7 +638,7 @@ void memberHomePage(Customer customer) {
     } while (true);
 }
 
-void staffHomePage(Staff staff) {
+void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs) {
 	// Variable declarations
     int selection = 0;
     string input;
@@ -806,7 +688,7 @@ void staffHomePage(Staff staff) {
             break;
 		case 4: // navigate to customer maintenance (user module)
             clearScreen();
-            customerMaintenancePage();
+            customerMaintenancePage(customers, items);
             break;
 		case 5: // navigate to view completed appointment (appointment module)
             clearScreen();
@@ -822,7 +704,7 @@ void staffHomePage(Staff staff) {
     } while(true);
 }
 
-void adminHomePage() {
+void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs) {
 	// Variable declarations
     int selection = 0;
     string input;
@@ -865,7 +747,7 @@ void adminHomePage() {
             break;
 		case 2: //navigate to staff maintenance (user module)
             clearScreen();
-            staffMaintenancePage();
+            staffMaintenancePage(staffs, customers);
             break;
 		case 3: // navigate to assign appointments (appointment module)
             clearScreen();
