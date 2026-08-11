@@ -7,9 +7,15 @@
 #include <vector>
 using namespace std;
 
+const int MAX_PERSONS_PER_SLOT = 7; // Maximum number of persons allowed per time slot
+const int MAX_SERVICES_PER_APPOINTMENT = 7; // Maximum number of services allowed per appointment
+const int MAX_STAFF_PER_PAGE = 10;
+const int MAX_APPOINTMENTS_PER_PAGE = 10;
+
 // Define the service structure
 struct Service {
-	string type;
+	string serviceId;
+	string name;
 	double malePrice;
 	double femalePrice;
 };
@@ -57,14 +63,25 @@ struct Time {
 };
 
 // Define the appointment structure
+struct AppointmentService {
+	string serviceId;
+	char gender;
+	int persons;
+	double subtotal;
+};
+
 struct Appointment {
 	string appointmentNo;
-	string service;
+	AppointmentService bookedServices[7]; // Assuming a maximum of 7 services can be booked per appointment
+	int serviceCount;
+	int totalPersons;
 	Date date;
 	Time time;
 	string status;
-	Customer customer;
-	Staff assignedStaff[5]; // Assuming a maximum of 5 staff can be assigned to an appointment	
+	string customerName;
+	string assignedStaffIds[7]; // Assuming a maximum of 7 staff can be assigned to an appointment
+	int staffCount;
+	double total;
 };
 
 // Define the invoice structure
@@ -76,20 +93,19 @@ struct Invoice {
 // These two struct based on condition, can be merge together if want so
 // Define the receipt structure
 struct Receipt {
-	Invoice receiptId;
+	string receiptId; // temporary
 	Date date;
 	double totalPrice;
 	string status;
 };
 
 const Service services[4] = {
-    {"Hair Cut", 25, 45},
-    {"Hair Coloring", 80, 170},
-    {"Hair Treatment", 70, 90},
-    {"Styling", 30, 35}
+    {"SV001", "Hair Cut", 25, 45},
+    {"SV002", "Hair Coloring", 80, 170},
+    {"SV003", "Hair Treatment", 70, 90},
+    {"SV004", "Styling", 30, 35}
 };
 
-vector<Appointment> readAppointmentFile();
 void clearScreen();
 
 #endif

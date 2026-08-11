@@ -16,8 +16,6 @@
 
 using namespace std;
 
-const int MAX_STAFF_PER_PAGE = 10;
-
 void displayItem(vector<Item>& items) {
     cout << left << "1. " << setw(25) << items[0].name << setw(4) << items[0].pointCost << "pts\t2. " << setw(25) << items[1].name << setw(4) << items[1].pointCost << "pts" << endl;
     cout << left << "3. " << setw(25) << items[2].name << setw(4) << items[2].pointCost << "pts\t4. " << setw(25) << items[3].name << setw(4) << items[3].pointCost << "pts" << endl;
@@ -473,8 +471,8 @@ void staffMaintenancePage(vector<Staff>& staffs, vector<Customer>& customers) {
     Staff inputStaff;
 
     do {
-        int totalStaff = staffs.size();
-		int totalPages = ceil(static_cast<double>(totalStaff) / MAX_STAFF_PER_PAGE);
+        int totalStaff = int(staffs.size());
+		int totalPages = int(ceil(static_cast<double>(totalStaff) / MAX_STAFF_PER_PAGE));
 
 		cout << "Staff Maintenance" << endl;
         cout << "==================\n\n";
@@ -579,7 +577,7 @@ void staffMaintenancePage(vector<Staff>& staffs, vector<Customer>& customers) {
 	} while (true);
 }
 
-void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs) {
+void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments) {
 	// Variable declarations
     int selection = 0;
     string input;
@@ -616,17 +614,18 @@ void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& cu
         }
 
         switch (selection) {
-		case 1: // navigate to manage appointment (appointment module)
+		case 1: // navigate to manage appointment (Appointment module)
             clearScreen();
-            appointmentManager();
+            appointmentManager(customer, customers, appointments);
             break;
-        case 2:
+        case 2: // navigate to purchasing items (Inventory module)
             clearScreen();
-            //navigate to buy item (inventory module)
+            purchaseItemPage(items);
             break;
         case 3:
             clearScreen();
-            //navigate to view reciept (billing module)
+            //navigate to view reciept (Billing module)
+            viewReceiptScreen();
             break;
 		case 0: // exit the member home page
             clearScreen();
@@ -638,7 +637,7 @@ void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& cu
     } while (true);
 }
 
-void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs) {
+void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments) {
 	// Variable declarations
     int selection = 0;
     string input;
@@ -681,10 +680,11 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
             break;
 		case 2: // navigate to view assigned appointment (appointment module)
             clearScreen();
-            assignedAppointmentsView(staff.user.name);
+            assignedAppointmentsView(staff, staffs, appointments);
             break;
         case 3:
-            //navigate to inventory maintenance (inventory module)
+            clearScreen();
+            inventoryMaintenancePage(items);
             break;
 		case 4: // navigate to customer maintenance (user module)
             clearScreen();
@@ -692,7 +692,7 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
             break;
 		case 5: // navigate to view completed appointment (appointment module)
             clearScreen();
-            completedAppointmentsView(staff.user.name);
+            completedAppointmentsView(staff, appointments);
             break;
 		case 0: // exit the staff home page
             clearScreen();
@@ -743,7 +743,7 @@ void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staf
         switch (selection) {
         case 1:
             clearScreen();
-            //navigate to inventory maintenance (inventory module)
+            inventoryMaintenancePage(items);
             break;
 		case 2: //navigate to staff maintenance (user module)
             clearScreen();
