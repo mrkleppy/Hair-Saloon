@@ -627,6 +627,7 @@ void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& cu
         case 3:
             clearScreen();
             //navigate to view reciept (billing module)
+            viewReceiptScreen();
             break;
 		case 0: // exit the member home page
             clearScreen();
@@ -678,6 +679,7 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
         case 1:
             clearScreen();
             //navigate to POS system (billing and payment module)
+            
             break;
 		case 2: // navigate to view assigned appointment (appointment module)
             clearScreen();
