@@ -6,6 +6,10 @@
 #include <string>
 using namespace std;
 
-// Jarrett
+void viewInvoiceScreen(const string& invoiceNo);
+void showPaymentTypeScreen();
+void viewReceiptScreen();
+void showInvoiceDetailsScreen();
 
 #endif
+ 

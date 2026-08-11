@@ -76,8 +76,8 @@ struct Invoice {
 // These two struct based on condition, can be merge together if want so
 // Define the receipt structure
 struct Receipt {
-	Invoice receiptId;
-	Date date;
+	string receiptId;
+	string date;
 	double totalPrice;
 	string status;
 };
