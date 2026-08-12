@@ -6,6 +6,9 @@
 #include <string>
 using namespace std;
 
-// Jarrett
+void viewInvoiceDetailScreen(Invoice& invoice);
+void viewReceiptScreen();
+void viewPOSScreen(vector<Item> &items);
 
 #endif
+ 

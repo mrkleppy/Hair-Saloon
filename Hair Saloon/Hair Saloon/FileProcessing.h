@@ -10,10 +10,14 @@
 void readItemFile(vector<Item>& items);
 void readStaffFile(vector<Staff>& staffs);
 void readCustomerFile(vector<Customer>& customers);
+void readAppointmentFile(vector<Appointment>& appointments);
 void overwriteItemFile(vector<Item>& items);
 void overwriteStaffFile(vector<Staff>& staffs);
 void overwriteCustomerFile(vector<Customer>& customers);
+void overwriteAppointmentFile(vector<Appointment>& appointments);
 void appendStaffToFile(Staff staff);
 void appendCustomerToFile(Customer customer);
+void appendAppointmentToFile(Appointment appointment);
+void appendCancelledAppointmentToFile(Appointment appointment, string& reason);
 
 #endif

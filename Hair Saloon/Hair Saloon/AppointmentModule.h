@@ -6,9 +6,9 @@
 #include <string>
 using namespace std;
 
-void appointmentManager();
-void assignedAppointmentsView(string username);
-void completedAppointmentsView(string username);
-void assignAppointmentsPage();
+void appointmentManager(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments);
+void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments);
+void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments);
+void assignAppointmentsPage(vector<Appointment>& appointments);
 
 #endif

@@ -10,10 +10,11 @@ void clearScreen() { // Clear the console screen
     cout << "\033[2J\033[H";
 }
 
-void loadData(vector<Item>& items, vector<Staff>& staffs, vector<Customer>& customers) {
+void loadData(vector<Item>& items, vector<Staff>& staffs, vector<Customer>& customers, vector<Appointment>& appointments) {
 	readItemFile(items); // Load item data from file
 	readStaffFile(staffs); // Load staff data from file
 	readCustomerFile(customers); // Load customer data from file
+	readAppointmentFile(appointments); // Load appointment data from file
 }
 
 int main() {
@@ -22,8 +23,9 @@ int main() {
 	vector<Item> items;
 	vector<Staff> staffs;
 	vector<Customer> customers;
+	vector<Appointment> appointments;
 
-	loadData(items, staffs, customers); // Load data from files // Add more later
+	loadData(items, staffs, customers, appointments); // Load data from files // Add more later
 
 	do { // Display the main menu UI
         cout << "Welcome to XYZ Saloon!" << endl;
@@ -40,7 +42,7 @@ int main() {
         
         try {
             size_t pos;
-            selection = stoi(input, &pos);
+            selection = stoi(input, &pos); // mismatch
 
             if (pos != input.size()) {
                 clearScreen();
@@ -57,7 +59,7 @@ int main() {
         switch (selection) {
 		case 1: // navigate to login screen (login module)
             clearScreen();
-            loginScreen(items, customers, staffs);
+            loginScreen(items, customers, staffs, appointments);
             break;
 		case 2: // navigate to register screen (login module)
             clearScreen();
@@ -67,7 +69,7 @@ int main() {
             exit(0);
 		default: // any invalid situation, display error message and prompt user to try again
             clearScreen();
-            cout << "Invalid input! Please enter 0, 1 or 2!";
+            cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
         }
     } while (true);
 

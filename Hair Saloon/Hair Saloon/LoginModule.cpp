@@ -58,7 +58,7 @@ int login(User user, Customer* customer, Staff* staff, vector<Customer>& custome
     }
 }
 
-void loginScreen(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs) {
+void loginScreen(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments) {
     User user;
     Customer customer;
     Staff staff;
@@ -76,15 +76,15 @@ void loginScreen(vector<Item>& items, vector<Customer>& customers, vector<Staff>
         switch (userType) {
         case 1: // navigate to member home page (user module)
             clearScreen();
-            memberHomePage(customer, items, customers, staffs);
+            memberHomePage(customer, items, customers, staffs, appointments);
             break;
 		case 2: // navigate to staff home page (user module)
             clearScreen();
-            staffHomePage(staff, items, customers, staffs);
+            staffHomePage(staff, items, customers, staffs, appointments);
             break;
 		case 3: // navigate to admin home page (user module)
             clearScreen();
-            adminHomePage(items, customers, staffs);
+            adminHomePage(items, customers, staffs, appointments);
             break;
 		default: // any invalid situation, display error message and prompt user to try again
             clearScreen();
@@ -113,14 +113,38 @@ void registerScreen(vector<Staff>& staffs, vector<Customer>& customers) {
     do {
         cout << "Register as Member" << endl;
         cout << "===================\n";
-        cout << "Username: ";
+        cout << "Enter \'q\' to exit\n";
+        cout << "Username (no less then 3 characters): ";
         getline(cin, newUser.name);
-        cout << "Phone number: ";
+
+        if (newUser.name == "q" || newUser.name == "Q") {
+            clearScreen();
+            return;
+        }
+
+        cout << "Phone number (e.g: 012-3456789): ";
         getline(cin, newUser.phoneNo);
+
+        if (newUser.phoneNo == "q" || newUser.phoneNo == "Q") {
+            clearScreen();
+            return;
+        }
+
         cout << "Password: ";
         getline(cin, newUser.password);
+
+        if (newUser.password == "q" || newUser.password == "Q") {
+            clearScreen();
+            return;
+        }
+
         cout << "Confirm password: ";
         getline(cin, confirmPassword);
+
+        if (confirmPassword == "q" || confirmPassword == "Q") {
+            clearScreen();
+            return;
+        }
 
         if (registerValidation(newUser, confirmPassword, &newCustomer, customers, staffs, &message)) {
             newCustomer.points = 0;
@@ -157,14 +181,14 @@ void registerScreen(vector<Staff>& staffs, vector<Customer>& customers) {
             appendCustomerToFile(newCustomer);
 			customers.push_back(newCustomer);
             cout << "\nMember registered successfully!" << endl;
-            cout << "Press any key to continue..." << endl;
+            cout << "Press enter to continue..." << endl;
             cin.get();
             clearScreen();
             return;
         }
         else if (confirm == 'N') { // If the user cancels, display cancel message
             cout << "\nMember registration cancelled." << endl;
-            cout << "Press any key to continue..." << endl;
+            cout << "Press enter to continue..." << endl;
             cin.get();
             clearScreen();
             return;

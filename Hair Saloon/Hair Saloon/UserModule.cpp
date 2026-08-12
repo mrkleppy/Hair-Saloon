@@ -16,8 +16,6 @@
 
 using namespace std;
 
-const int MAX_STAFF_PER_PAGE = 10;
-
 void displayItem(vector<Item>& items) {
     cout << left << "1. " << setw(25) << items[0].name << setw(4) << items[0].pointCost << "pts\t2. " << setw(25) << items[1].name << setw(4) << items[1].pointCost << "pts" << endl;
     cout << left << "3. " << setw(25) << items[2].name << setw(4) << items[2].pointCost << "pts\t4. " << setw(25) << items[3].name << setw(4) << items[3].pointCost << "pts" << endl;
@@ -133,7 +131,7 @@ void RedeemPointsPage(Customer customer, vector<Customer>& customers, vector<Ite
                         do {// Display confirmation message
                             cout << "Confirm redeem " << quantity << " " << itemChosen->name << " for " << totalPointCost << " pts? (Y/N): ";                   
                             getline(cin, input);
-
+                            
                             if (input.empty()) {
                                 clearScreen();
                                 cout << "Invalid input! Please enter N or Y!" << endl;
@@ -163,14 +161,14 @@ void RedeemPointsPage(Customer customer, vector<Customer>& customers, vector<Ite
                                 overwriteCustomerFile(customers);
 
                                 cout << "Redeem successful! Deducted " << totalPointCost << " points" << endl;
-                                cout << "Press any key to continue..." << endl;
+                                cout << "Press enter to continue..." << endl;
                                 cin.get();
                                 clearScreen();
                                 break;
                             }
                             else if (confirm == 'N') { // If the user cancels, display cancel message
                                 cout << "Redeem cancelled." << endl;
-                                cout << "Press any key to continue..." << endl;
+                                cout << "Press enter to continue..." << endl;
                                 cin.get();
                                 clearScreen();
                                 break;
@@ -374,13 +372,31 @@ void addStaff(vector<Staff> &staffs, vector<Customer> &customers) {
     do {
         cout << "Add Staff" << endl;
         cout << "==========\n";
+        cout << "Enter \'q\' to exit\n";
         cout << "Staff code: " << newStaff.staffCode << endl;
-		cout << "Staff name: ";
+		cout << "Staff name (no less than 3 characters): ";
 		getline(cin, newStaff.user.name);
-		cout << "Staff phone No.: ";
+
+        if (newStaff.user.name == "q" || newStaff.user.name == "Q") {
+            clearScreen();
+            return;
+        }
+
+		cout << "Staff phone No. (e.g.: 012-3456789): ";
 		getline(cin, newStaff.user.phoneNo);
-        cout << "Staff salary: ";
+
+        if (newStaff.user.phoneNo == "q" || newStaff.user.phoneNo == "Q") {
+            clearScreen();
+            return;
+        }
+
+        cout << "Staff salary (no less than RM 3000): RM ";
         getline(cin, input);
+
+        if (input == "q" || input == "Q") {
+            clearScreen();
+            return;
+        }
 
         if (input.empty()) {
             clearScreen();
@@ -446,14 +462,14 @@ void addStaff(vector<Staff> &staffs, vector<Customer> &customers) {
             appendStaffToFile(newStaff);
 			staffs.push_back(newStaff);
             cout << "\nStaff added successfully!" << endl;
-            cout << "Press any key to continue..." << endl;
+            cout << "Press enter to continue..." << endl;
             cin.get();
             clearScreen();
             return;
         }
         else if (confirm == 'N') { // If the user cancels, display cancel message
             cout << "\nStaff addition cancelled." << endl;
-            cout << "Press any key to continue..." << endl;
+            cout << "Press enter to continue..." << endl;
             cin.get();
             clearScreen();
             return;
@@ -473,8 +489,8 @@ void staffMaintenancePage(vector<Staff>& staffs, vector<Customer>& customers) {
     Staff inputStaff;
 
     do {
-        int totalStaff = staffs.size();
-		int totalPages = ceil(static_cast<double>(totalStaff) / MAX_STAFF_PER_PAGE);
+        int totalStaff = int(staffs.size());
+		int totalPages = int(ceil(static_cast<double>(totalStaff) / MAX_STAFF_PER_PAGE));
 
 		cout << "Staff Maintenance" << endl;
         cout << "==================\n\n";
@@ -557,6 +573,7 @@ void staffMaintenancePage(vector<Staff>& staffs, vector<Customer>& customers) {
             }
 
             if (!found) {
+                clearScreen();
                 cout << "Staff code not found!" << endl;
             }
             else {
@@ -579,7 +596,7 @@ void staffMaintenancePage(vector<Staff>& staffs, vector<Customer>& customers) {
 	} while (true);
 }
 
-void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs) {
+void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments) {
 	// Variable declarations
     int selection = 0;
     string input;
@@ -616,17 +633,18 @@ void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& cu
         }
 
         switch (selection) {
-		case 1: // navigate to manage appointment (appointment module)
+		case 1: // navigate to manage appointment (Appointment module)
             clearScreen();
-            appointmentManager();
+            appointmentManager(customer, customers, appointments);
             break;
-        case 2:
+        case 2: // navigate to purchasing items (Inventory module)
             clearScreen();
-            //navigate to buy item (inventory module)
+            purchaseItemPage(items);
             break;
         case 3:
             clearScreen();
-            //navigate to view reciept (billing module)
+            //navigate to view reciept (Billing module)
+            viewReceiptScreen();
             break;
 		case 0: // exit the member home page
             clearScreen();
@@ -638,7 +656,7 @@ void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& cu
     } while (true);
 }
 
-void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs) {
+void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments) {
 	// Variable declarations
     int selection = 0;
     string input;
@@ -678,13 +696,15 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
         case 1:
             clearScreen();
             //navigate to POS system (billing and payment module)
+            viewPOSScreen(items);
             break;
 		case 2: // navigate to view assigned appointment (appointment module)
             clearScreen();
-            assignedAppointmentsView(staff.user.name);
+            assignedAppointmentsView(staff, staffs, appointments);
             break;
         case 3:
-            //navigate to inventory maintenance (inventory module)
+            clearScreen();
+            inventoryMaintenancePage(items);
             break;
 		case 4: // navigate to customer maintenance (user module)
             clearScreen();
@@ -692,7 +712,7 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
             break;
 		case 5: // navigate to view completed appointment (appointment module)
             clearScreen();
-            completedAppointmentsView(staff.user.name);
+            completedAppointmentsView(staff, appointments);
             break;
 		case 0: // exit the staff home page
             clearScreen();
@@ -704,7 +724,7 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
     } while(true);
 }
 
-void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs) {
+void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments) {
 	// Variable declarations
     int selection = 0;
     string input;
@@ -743,7 +763,7 @@ void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staf
         switch (selection) {
         case 1:
             clearScreen();
-            //navigate to inventory maintenance (inventory module)
+            inventoryMaintenancePage(items);
             break;
 		case 2: //navigate to staff maintenance (user module)
             clearScreen();
@@ -751,7 +771,7 @@ void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staf
             break;
 		case 3: // navigate to assign appointments (appointment module)
             clearScreen();
-            assignAppointmentsPage();
+            assignAppointmentsPage(appointments);
             break;
         case 4:
             clearScreen();
