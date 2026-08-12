@@ -16,6 +16,7 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
 void completeTransaction(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments, Appointment& appointment);
 void cancelAppointment(Customer customer, vector<Appointment>& appointments);
 void appointmentStatusManager(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, Appointment* appointmentPtr);
+void assignAppointmentsPage(vector<Appointment>& appointments);
 void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments);
 void assignAppointmentToStaff(Appointment* appointmentPtr);
 

@@ -8,6 +8,7 @@ using namespace std;
 
 void viewInvoiceScreen(const string& invoiceNo);
 void viewReceiptScreen();
+void viewPOSScreen();
 
 #endif
  

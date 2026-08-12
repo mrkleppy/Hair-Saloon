@@ -7,6 +7,7 @@ using namespace std;
 
 void viewInvoiceScreen(const string& invoiceNo);
 void viewReceiptScreen();
+void viewPOSScreen();
 
 // Mwmber
 void viewReceiptScreen() {
@@ -31,7 +32,7 @@ void viewReceiptScreen() {
 
 		for (const Receipt& r : receipts) {
 			cout << left << setw(15) << r.receiptId
-				<< setw(15) << r.date.day << "/" << r.date.month << "/" << r.date.year
+				<< setw(15) << r.date
 				<< setw(15) << fixed << setprecision(2) << r.totalPrice
 				<< setw(15) << r.status << "\n";
 		}
@@ -85,6 +86,63 @@ void viewInvoiceScreen(const string& invoiceNo) {
 	cin.get();
 }
 
-// Staff
+// Staff;
+void viewPOSScreen() {
+	string memberPhone;
+	string selection;
+	string gender;
+	int quantity;
 
+	cout << "\nEnter member phone (\"cash\" for non-member): ";
+	cin >> memberPhone;
 
+	cout << "\nC to complete transaction, Q to quit\n";
+	cout << "Add an item:\n\n";
+
+	cout << "Services\n";
+	cout << "---------------------------------------------\n";
+	cout << left << setw(30) << "1. Hair Cut"
+		<< "2. Hair Coloring\n";
+	cout << left << setw(30) << "3. Hair Treatment"
+		<< "4. Styling\n\n";
+
+	cout << "Items\n";
+	cout << "---------------------------------------------\n";
+	cout << left << setw(30) << "5. Shampoo        RM39.90"
+		<< "6. Dry Shampoo    RM45.00\n";
+	cout << left << setw(30) << "7. Conditioner    RM36.00"
+		<< "8. Hair Dye       RM27.90\n";
+	cout << left << setw(30) << "9. Hair Gel       RM24.90"
+		<< "10. Hair Spray    RM32.00\n";
+	cout << left << setw(30) << "11. Styling Cream RM34.00"
+		<< "12. Hair Scalp    RM35.00\n\n";
+
+	cout << "Selection : ";
+	cin >> selection;
+
+	if (selection == "1" || selection == "2" || selection == "3" || selection == "4") {
+		cout << "\nGender : ";
+		cin >> gender;
+
+		cout << "Quantity : ";
+		cin >> quantity;
+
+		cout << "\nService added successfully.\n";
+	}
+	else if (selection == "5" || selection == "6" || selection == "7" || selection == "8" ||
+		selection == "9" || selection == "10" || selection == "11" || selection == "12") {
+		cout << "\nQuantity (Stock available : x) : ";
+		cin >> quantity;
+
+		cout << "\nItem added successfully.\n";
+	}
+	else if (selection == "C" || selection == "c") {
+		cout << "\nTransaction completed.\n";
+	}
+	else if (selection == "Q" || selection == "q") {
+		cout << "\nExit POS screen.\n";
+	}
+	else {
+		cout << "\nInvalid selection.\n";
+	}
+}
