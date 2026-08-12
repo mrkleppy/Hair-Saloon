@@ -131,7 +131,7 @@ void RedeemPointsPage(Customer customer, vector<Customer>& customers, vector<Ite
                         do {// Display confirmation message
                             cout << "Confirm redeem " << quantity << " " << itemChosen->name << " for " << totalPointCost << " pts? (Y/N): ";                   
                             getline(cin, input);
-
+                            
                             if (input.empty()) {
                                 clearScreen();
                                 cout << "Invalid input! Please enter N or Y!" << endl;
@@ -161,14 +161,14 @@ void RedeemPointsPage(Customer customer, vector<Customer>& customers, vector<Ite
                                 overwriteCustomerFile(customers);
 
                                 cout << "Redeem successful! Deducted " << totalPointCost << " points" << endl;
-                                cout << "Press any key to continue..." << endl;
+                                cout << "Press enter to continue..." << endl;
                                 cin.get();
                                 clearScreen();
                                 break;
                             }
                             else if (confirm == 'N') { // If the user cancels, display cancel message
                                 cout << "Redeem cancelled." << endl;
-                                cout << "Press any key to continue..." << endl;
+                                cout << "Press enter to continue..." << endl;
                                 cin.get();
                                 clearScreen();
                                 break;
@@ -372,13 +372,31 @@ void addStaff(vector<Staff> &staffs, vector<Customer> &customers) {
     do {
         cout << "Add Staff" << endl;
         cout << "==========\n";
+        cout << "Enter \'q\' to exit\n";
         cout << "Staff code: " << newStaff.staffCode << endl;
-		cout << "Staff name: ";
+		cout << "Staff name (no less than 3 characters): ";
 		getline(cin, newStaff.user.name);
-		cout << "Staff phone No.: ";
+
+        if (newStaff.user.name == "q" || newStaff.user.name == "Q") {
+            clearScreen();
+            return;
+        }
+
+		cout << "Staff phone No. (e.g.: 012-3456789): ";
 		getline(cin, newStaff.user.phoneNo);
-        cout << "Staff salary: ";
+
+        if (newStaff.user.phoneNo == "q" || newStaff.user.phoneNo == "Q") {
+            clearScreen();
+            return;
+        }
+
+        cout << "Staff salary (no less than RM 3000): RM ";
         getline(cin, input);
+
+        if (input == "q" || input == "Q") {
+            clearScreen();
+            return;
+        }
 
         if (input.empty()) {
             clearScreen();
@@ -444,14 +462,14 @@ void addStaff(vector<Staff> &staffs, vector<Customer> &customers) {
             appendStaffToFile(newStaff);
 			staffs.push_back(newStaff);
             cout << "\nStaff added successfully!" << endl;
-            cout << "Press any key to continue..." << endl;
+            cout << "Press enter to continue..." << endl;
             cin.get();
             clearScreen();
             return;
         }
         else if (confirm == 'N') { // If the user cancels, display cancel message
             cout << "\nStaff addition cancelled." << endl;
-            cout << "Press any key to continue..." << endl;
+            cout << "Press enter to continue..." << endl;
             cin.get();
             clearScreen();
             return;
@@ -555,6 +573,7 @@ void staffMaintenancePage(vector<Staff>& staffs, vector<Customer>& customers) {
             }
 
             if (!found) {
+                clearScreen();
                 cout << "Staff code not found!" << endl;
             }
             else {
@@ -677,7 +696,7 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
         case 1:
             clearScreen();
             //navigate to POS system (billing and payment module)
-            viewPOSScreen();
+            viewPOSScreen(items);
             break;
 		case 2: // navigate to view assigned appointment (appointment module)
             clearScreen();

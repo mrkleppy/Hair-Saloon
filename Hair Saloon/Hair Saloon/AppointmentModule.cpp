@@ -6,7 +6,6 @@
 #include <ctime>
 #include <vector>
 #include "Main.h"
-#include "UserModule.h"
 #include "FileProcessing.h"
 
 using namespace std;
@@ -234,7 +233,7 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
             "\n\nEnter 'c' to complete your appointments!" << endl;
 
         cout << "Selection: ";
-        cin >> selection;
+        cin >> selection; 
         cin.ignore();
 
         if (selection == 'q' || selection == 'Q') {
@@ -300,7 +299,7 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
 
         do {
             cout << "Person(s) (Not more than " << remainingPersons << "): ";
-            cin >> persons;
+            cin >> persons; // got BUG // advice: last person dont prompt this
             cin.ignore();
 
 			if (persons < 1 || persons > remainingPersons) {

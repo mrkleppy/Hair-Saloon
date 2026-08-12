@@ -89,6 +89,7 @@ struct Invoice {
 	string invoiceId;
 	vector<Item> items;
 	vector<int> quantity;
+	string date;
 };
 // These two struct based on condition, can be merge together if want so
 // Define the receipt structure

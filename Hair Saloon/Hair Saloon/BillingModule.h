@@ -6,9 +6,9 @@
 #include <string>
 using namespace std;
 
-void viewInvoiceScreen(const string& invoiceNo);
+void viewInvoiceDetailScreen(Invoice& invoice);
 void viewReceiptScreen();
-void viewPOSScreen();
+void viewPOSScreen(vector<Item> &items);
 
 #endif
  

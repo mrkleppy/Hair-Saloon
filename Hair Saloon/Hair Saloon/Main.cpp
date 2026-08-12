@@ -42,7 +42,7 @@ int main() {
         
         try {
             size_t pos;
-            selection = stoi(input, &pos);
+            selection = stoi(input, &pos); // mismatch
 
             if (pos != input.size()) {
                 clearScreen();
@@ -69,7 +69,7 @@ int main() {
             exit(0);
 		default: // any invalid situation, display error message and prompt user to try again
             clearScreen();
-            cout << "Invalid input! Please enter 0, 1 or 2!";
+            cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
         }
     } while (true);
 

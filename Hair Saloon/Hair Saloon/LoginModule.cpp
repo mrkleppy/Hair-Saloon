@@ -113,14 +113,38 @@ void registerScreen(vector<Staff>& staffs, vector<Customer>& customers) {
     do {
         cout << "Register as Member" << endl;
         cout << "===================\n";
-        cout << "Username: ";
+        cout << "Enter \'q\' to exit\n";
+        cout << "Username (no less then 3 characters): ";
         getline(cin, newUser.name);
-        cout << "Phone number: ";
+
+        if (newUser.name == "q" || newUser.name == "Q") {
+            clearScreen();
+            return;
+        }
+
+        cout << "Phone number (e.g: 012-3456789): ";
         getline(cin, newUser.phoneNo);
+
+        if (newUser.phoneNo == "q" || newUser.phoneNo == "Q") {
+            clearScreen();
+            return;
+        }
+
         cout << "Password: ";
         getline(cin, newUser.password);
+
+        if (newUser.password == "q" || newUser.password == "Q") {
+            clearScreen();
+            return;
+        }
+
         cout << "Confirm password: ";
         getline(cin, confirmPassword);
+
+        if (confirmPassword == "q" || confirmPassword == "Q") {
+            clearScreen();
+            return;
+        }
 
         if (registerValidation(newUser, confirmPassword, &newCustomer, customers, staffs, &message)) {
             newCustomer.points = 0;
@@ -157,14 +181,14 @@ void registerScreen(vector<Staff>& staffs, vector<Customer>& customers) {
             appendCustomerToFile(newCustomer);
 			customers.push_back(newCustomer);
             cout << "\nMember registered successfully!" << endl;
-            cout << "Press any key to continue..." << endl;
+            cout << "Press enter to continue..." << endl;
             cin.get();
             clearScreen();
             return;
         }
         else if (confirm == 'N') { // If the user cancels, display cancel message
             cout << "\nMember registration cancelled." << endl;
-            cout << "Press any key to continue..." << endl;
+            cout << "Press enter to continue..." << endl;
             cin.get();
             clearScreen();
             return;
