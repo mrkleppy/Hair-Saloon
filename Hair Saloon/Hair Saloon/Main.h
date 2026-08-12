@@ -94,7 +94,7 @@ struct Invoice {
 // Define the receipt structure
 struct Receipt {
 	string receiptId; // temporary
-	Date date;
+	string date;
 	double totalPrice;
 	string status;
 };

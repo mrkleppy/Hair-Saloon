@@ -84,7 +84,7 @@ void loginScreen(vector<Item>& items, vector<Customer>& customers, vector<Staff>
             break;
 		case 3: // navigate to admin home page (user module)
             clearScreen();
-            adminHomePage(items, customers, staffs);
+            adminHomePage(items, customers, staffs, appointments);
             break;
 		default: // any invalid situation, display error message and prompt user to try again
             clearScreen();
