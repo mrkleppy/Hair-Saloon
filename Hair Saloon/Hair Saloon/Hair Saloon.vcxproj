@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Appointment.txt" />
+    <Text Include="CancelledAppointments.txt" />
     <Text Include="Customer.txt" />
     <Text Include="Invoice.txt" />
     <Text Include="Item.txt" />
