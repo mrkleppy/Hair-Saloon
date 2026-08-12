@@ -6,6 +6,7 @@
 #include <string>
 using namespace std;
 
-// Stephen
+void purchaseItemPage(vector<Item>& items);
+void inventoryMaintenancePage(vector<Item>& items);
 
 #endif

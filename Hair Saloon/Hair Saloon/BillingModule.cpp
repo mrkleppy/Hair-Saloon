@@ -6,8 +6,7 @@
 using namespace std;
 
 void viewInvoiceScreen(const string& invoiceNo);
-void viewReceiptsScreen();
-
+void viewReceiptScreen();
 
 // Mwmber
 void viewReceiptScreen() {
@@ -32,7 +31,7 @@ void viewReceiptScreen() {
 
 		for (const Receipt& r : receipts) {
 			cout << left << setw(15) << r.receiptId
-				<< setw(15) << r.date
+				<< setw(15) << r.date.day << "/" << r.date.month << "/" << r.date.year
 				<< setw(15) << fixed << setprecision(2) << r.totalPrice
 				<< setw(15) << r.status << "\n";
 		}
