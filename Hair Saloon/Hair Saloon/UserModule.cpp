@@ -603,7 +603,7 @@ void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& cu
 
 	do { // Display the member home page UI
         cout << "Welcome " << customer.user.name << "!" << endl;
-		appointmentReminder(customer);
+		appointmentReminder(customer, appointments);
         cout << "What would you like to do?" << endl;
         cout << "===========================\n";
         cout << "1. Manage an appointment\n2. Buy an item\n3. View receipts\n0. Logout" << endl << endl;

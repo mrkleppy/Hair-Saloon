@@ -1,28 +1,52 @@
 #include <iostream>
-#include <iomanip>
-#include <string>
-#include <chrono>
+#include <format>
 #include "Main.h"
+#include "AppointmentModule.h"
 
 using namespace std;
 
-void appointmentReminder(Customer customer) {
-	// Read file to get appointment details based on customer (TODO)
-	bool hasAppointment = true;
-	string date = "12/12/2026", time = "15:00";
+Appointment findNearestAppointment(Customer customer, vector<Appointment>& customerAppointment) {
+	Appointment nearestAppointment;
 
-	/*vector<Appointment> appointments = readAppointmentFile();
-	for (Appointment appointment : appointments) {
-		if (customer.user.name == appointment.customer.user.name) {
-			date = appointment.date;
-			time = appointment.time;
-			hasAppointment = true;
-			break;
+	nearestAppointment = customerAppointment[0];
+
+	for (int i = 1; i < customerAppointment.size(); i++) {
+		if (customerAppointment[i].date.year > nearestAppointment.date.year) {
+			continue;
 		}
-	}*/	
+		else if (customerAppointment[i].date.month > nearestAppointment.date.month) {
+			continue;
+		}
+		else if (customerAppointment[i].date.day > nearestAppointment.date.day) {
+			continue;
+		}
+		else if (customerAppointment[i].time.hour > nearestAppointment.time.hour) {
+			continue;
+		}
+		else if (customerAppointment[i].time.minute > nearestAppointment.time.minute) {
+			continue;
+		}
+		else {
+			nearestAppointment = customerAppointment[i];
+		}
+	}
 
-	if (hasAppointment) {
-		cout << "You have an upcoming appointment in " << date << " (" << time << ")!" << endl;
+	return nearestAppointment;
+}
+
+void appointmentReminder(Customer customer, vector<Appointment> &appointments) {
+	vector<Appointment> customerAppointment;
+	string appointmentDate;
+	string appointmentTime;
+	
+	loadCustomerPendingAppointments(customer, appointments, customerAppointment);
+
+	if (customerAppointment.size() > 0) {
+		Appointment nearestAppointment = findNearestAppointment(customer, customerAppointment);
+		appointmentDate = format("{:02d}/{:02d}/{:d}",nearestAppointment.date.day, nearestAppointment.date.month, nearestAppointment.date.year);
+		appointmentTime = format("{:02d}:{:02d}", nearestAppointment.time.hour, nearestAppointment.time.minute);
+
+		cout << "You have an upcoming appointment in " << appointmentDate << " (" << appointmentTime << ")!" << endl;
 	}
 	else {
 		cout << "You have no upcoming appointments!" << endl;

@@ -10,5 +10,6 @@ void appointmentManager(Customer customer, vector<Customer>& customers, vector<A
 void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments);
 void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments);
 void assignAppointmentsPage(vector<Appointment>& appointments);
+void loadCustomerPendingAppointments(Customer& customer, vector<Appointment>& appointments, vector<Appointment>& customerPendingAppointments);
 
 #endif

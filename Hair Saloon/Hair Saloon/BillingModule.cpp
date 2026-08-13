@@ -12,8 +12,6 @@ void processInvoiceItem(vector<Item> items, vector<int> quantity, double& grandT
 void viewReceiptScreen();
 void viewPOSScreen(vector<Item>& items);
 
-const int MAX_RECEIPT_PER_PAGE = 10;
-
 // Mwmber
 void viewReceiptScreen() {
 	int currentPage = 1;
