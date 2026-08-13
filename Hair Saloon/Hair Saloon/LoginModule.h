@@ -6,8 +6,6 @@
 #include <string>
 using namespace std;
 
-
-int loginValidation(User user, Customer* customer, Staff* staff, vector<Customer>& customers, vector<Staff>& staffs);
 void loginScreen(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments);
 void registerScreen(vector<Staff>& staffs, vector<Customer>& customers);
 

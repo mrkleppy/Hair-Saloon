@@ -771,7 +771,7 @@ void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staf
             break;
 		case 3: // navigate to assign appointments (appointment module)
             clearScreen();
-            assignAppointmentsPage(appointments);
+            assignAppointmentsPage(appointments, staffs);
             break;
         case 4:
             clearScreen();

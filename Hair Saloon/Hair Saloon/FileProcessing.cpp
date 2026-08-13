@@ -26,7 +26,8 @@ void readItemFile(vector<Item>& items) {
             elements.push_back(element);
         }
 
-        Item item = { elements.at(0), elements.at(1), stod(elements.at(2)), stod(elements.at(3)), stoi(elements.at(4)), stoi(elements.at(5)) };
+        Item item = { elements.at(0), 
+            elements.at(1), stod(elements.at(2)), stod(elements.at(3)),stoi(elements.at(4)), stoi(elements.at(5)),stoi(elements.at(6)) };
         items.push_back(item);
     }
 
@@ -160,7 +161,13 @@ void overwriteItemFile(vector<Item>& items) {
     }
 
     for (Item item : items) {
-        outFile << item.itemId << "," << item.name << "," << item.price << "," << item.reorderPrice << "," << item.pointCost << "," << item.stock << "\n";
+        outFile << item.itemId << "," 
+            << item.name << "," 
+            << item.price << "," 
+            << item.reorderPrice << "," 
+            << item.pointCost << "," 
+            << item.stock << ","
+            << item.restockCounter << "\n";
     }
 
     outFile.close();

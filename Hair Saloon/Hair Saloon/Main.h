@@ -11,6 +11,7 @@ const int MAX_PERSONS_PER_SLOT = 7; // Maximum number of persons allowed per tim
 const int MAX_SERVICES_PER_APPOINTMENT = 7; // Maximum number of services allowed per appointment
 const int MAX_STAFF_PER_PAGE = 10;
 const int MAX_APPOINTMENTS_PER_PAGE = 10;
+const int MAX_RECEIPT_PER_PAGE = 10;
 
 // Define the service structure
 struct Service {
@@ -21,6 +22,13 @@ struct Service {
 };
  
 // Define the item structure
+struct CartItem {
+	string itemId;
+	string name;
+	double price;
+	int quantity;
+};
+
 struct Item {
 	string itemId;
 	string name;
@@ -28,6 +36,7 @@ struct Item {
 	double reorderPrice;
 	int pointCost;
 	int stock;
+	int restockCounter;
 };
 
 // Define the user structure
