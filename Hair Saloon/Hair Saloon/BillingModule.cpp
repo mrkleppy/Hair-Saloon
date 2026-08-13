@@ -2,19 +2,25 @@
 #include <iomanip>
 #include <string>
 #include <format>
+#include <sstream>
 #include "Main.h"
+#include "AppointmentModule.h"
+#include "FileProcessing.h"
+#include "InventoryModule.h"
 
 using namespace std;
 
-void viewInvoiceScreen();
+void viewInvoiceScreen(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments, Appointment& appointment);
+void viewInvoiceScreen(Customer customer, vector<Customer>& customers, vector<Item>& items, vector<CartItem>& cart);
 void viewInvoiceDetailScreen(Invoice& invoice);
 void processInvoiceItem(vector<Item> items, vector<int> quantity, double& grandTotal);
 void viewReceiptScreen();
 void viewPOSScreen(vector<Item>& items);
 
-const int MAX_RECEIPT_PER_PAGE = 10;
+// Helpers
+string generateNextInvoiceId();
 
-// Mwmber
+// Member
 void viewReceiptScreen() {
 	int currentPage = 1;
 	char selection;
@@ -111,59 +117,72 @@ void processInvoiceItem(vector<Item> items, vector<int> quantity, double &grandT
 	}
 }
 
-void viewInvoiceScreen() {
-	// temporaty placeholder
-	Customer customer = { "XXXX" };
-	Invoice invoice = { "INV00001" };
-	invoice.items[0] = { "I001", "Shampoo", 39.90, 79.80, 5, 2 };
-	invoice.items[1] = { "I002", "Hair gel", 24.90, 24.90, 5, 2 };
-	invoice.quantity[0] = 2;
-	invoice.quantity[1] = 1;
-	invoice.date = "xx/xx/xxxx";
-
-	double grandTotal;
+void viewInvoiceScreen(Customer customer,
+	vector<Customer>& customers,
+	vector<Appointment>& appointments,
+	Appointment& appointment) {
 	string input;
 	char confirm;
-	int selection, memberPoints;
+	int selection;
+	int memberPointsAdded = 0;
+	int updatedMemberPoints = 0;
 
 	do {
+		clearScreen();
+
 		cout << "Invoice Detail\n";
 		cout << "===============\n";
-		cout << "Customer Name : " << customer.user.name;
+		cout << "Customer Name : " << customer.user.name << endl;
+		cout << "Reference No. : " << appointment.appointmentNo << endl;
+		cout << "Date          : "
+			<< left << setw(2) << setfill('0') << appointment.date.day << "/"
+			<< right << setw(2) << appointment.date.month << "/"
+			<< left << setw(4) << appointment.date.year << setfill(' ') << endl;
+		cout << "Time          : "
+			<< setw(2) << setfill('0') << appointment.time.hour << ":"
+			<< setw(2) << appointment.time.minute << setfill(' ') << endl;
 
-		cout << left << setw(35) << ("Invoice : " + invoice.invoiceId) << "Date : " << invoice.date;
-		cout << left << setw(6) << "No."<< setw(22) << "Item" << setw(14) << "Price (RM)" << setw(12) << "Quantity" << setw(14) << "Total (RM)" << endl;
-		cout << left << setw(6) << "===" << setw(22) << "=====" << setw(14) << "===========" << setw(12) << "=========" << setw(14) << "===========" << endl;
+		cout << "\nBooked Services\n";
+		cout << left << setw(6) << "No."
+			<< setw(20) << "Service"
+			<< setw(10) << "Gender"
+			<< setw(10) << "Persons"
+			<< setw(12) << "Price(RM)" << endl;
 
-		processInvoiceItem(invoice.items, invoice.quantity, grandTotal);
-		memberPoints = static_cast<int>(grandTotal);
+		for (int i = 0; i < appointment.serviceCount; i++) {
+			cout << left << setw(6) << (i + 1)
+				<< setw(20) << getServiceNameById(appointment.bookedServices[i].serviceId)
+				<< setw(10) << (appointment.bookedServices[i].gender == 'M' ? "Male" : "Female")
+				<< setw(10) << appointment.bookedServices[i].persons
+				<< setw(12) << fixed << setprecision(2) << appointment.bookedServices[i].subtotal
+				<< endl;
+		}
 
-		cout << right << setw(58) << "Grand Total (RM) " << setw(10) << fixed << setprecision(2) << grandTotal;
-
-		cout << "Proceed with transaction? (Y/N) : ";
+		cout << "\nGrand Total: RM " << fixed << setprecision(2) << appointment.total << endl;
+		cout << "\nProceed with transaction? (Y/N): ";
 		getline(cin, input);
 
 		if (input.empty()) {
 			clearScreen();
-			cout << "Invalid input! Please enter N or Y!" << endl;
+			cout << "Invalid input! Please enter Y or N!" << endl;
 			continue;
 		}
 		else if (input.size() == 1) {
-			confirm = input[0];
-			confirm = toupper(confirm);
+			confirm = toupper(input[0]);
 		}
 		else {
 			clearScreen();
-			cout << "Invalid input! Please enter N or Y!" << endl;
+			cout << "Invalid input! Please enter Y or N!" << endl;
 			continue;
 		}
 
 		if (confirm == 'N') {
-			// TODO: navigate to buy item
+			clearScreen();
+			cout << "Transaction cancelled!" << endl;
 			return;
 		}
 		else if (confirm == 'Y') {
-			cout << "Payment type : ";
+			cout << "\nPayment type :" << endl;
 			cout << "1. Cash" << endl;
 			cout << "2. Bank" << endl;
 			cout << "0. Cancel Payment" << endl;
@@ -193,30 +212,205 @@ void viewInvoiceScreen() {
 			}
 
 			switch (selection) {
-				case 1:
-				case 2:
-					cout << memberPoints << "member points has been credited!" << endl; // TODO: add the point to corresponding customer
-					cout << "Press enter to continue..." << endl;
-					cin.get();
-					clearScreen();
-					return;
-					break;
-				case 0:
-					cout << "Payment cancelled!" << endl;
-					cout << "Press enter to continue..." << endl;
-					cin.get();
-					clearScreen();
-					return;
-					break;
-				default:
-					clearScreen();
-					cout << "Invalid payment selection!" << endl;
+			case 1:
+			case 2:
+				appointments.push_back(appointment);
+				appendAppointmentToFile(appointment);
+
+				memberPointsAdded = static_cast<int>(appointment.total);
+
+				for (Customer& customerRecord : customers) {
+					if (customerRecord.user.name == customer.user.name) {
+						customerRecord.points += memberPointsAdded;
+						updatedMemberPoints = customerRecord.points;
+						break;
+					}
+				}
+
+				overwriteCustomerFile(customers);
+
+				clearScreen();
+				cout << "Payment Done!" <<
+					"\nAppointment Request Added!" <<
+					"\n" << memberPointsAdded << " points has been credited to your account!" <<
+					"\nCurrent Member Points: " << updatedMemberPoints <<
+					"\nPress enter to continue...";
+				cin.get();
+
+				clearScreen();
+				return;
+
+			case 0:
+				clearScreen();
+				cout << "Payment cancelled!" << endl;
+				cout << "Press enter to continue...";
+				cin.get();
+				clearScreen();
+				return;
+
+			default:
+				clearScreen();
+				cout << "Invalid payment selection!" << endl;
 			}
-			
 		}
 		else {
-			cout << "Invalid input. Please enter Y or N" << endl;
-		}	
+			clearScreen();
+			cout << "Invalid input! Please enter Y or N!" << endl;
+		}
+
+	} while (true);
+}
+
+void viewInvoiceScreen(Customer customer,
+	vector<Customer>& customers,
+	vector<Item>& items,
+	vector<CartItem>& cart) {
+	string input;
+	char confirm;
+	int selection;
+	int memberPointsAdded = 0;
+	int updatedMemberPoints = 0;
+	double grandTotal = 0;
+
+	string invoiceId = generateNextInvoiceId(); // e.g. INV00001
+
+	do {
+		clearScreen();
+		grandTotal = 0;
+
+		cout << "Invoice Detail\n";
+		cout << "===============\n";
+		cout << "Customer Name : " << customer.user.name << endl;
+		cout << "Invoice No.   : " << invoiceId << endl;
+
+		cout << left << setw(6) << "\nNo."
+			<< setw(22) << "Item"
+			<< setw(14) << "Price (RM)"
+			<< setw(12) << "Quantity"
+			<< setw(14) << "Total (RM)" << endl;
+
+		for (int i = 0; i < cart.size(); i++) {
+			double lineTotal = cart[i].price * cart[i].quantity;
+			grandTotal += lineTotal;
+
+			cout << left << setw(6) << (i + 1)
+				<< setw(22) << cart[i].name
+				<< setw(14) << fixed << setprecision(2) << cart[i].price
+				<< setw(12) << cart[i].quantity
+				<< setw(14) << fixed << setprecision(2) << lineTotal
+				<< endl;
+		}
+
+		cout << "\nGrand Total: RM " << fixed << setprecision(2) << grandTotal << endl;
+		cout << "\nProceed with transaction? (Y/N): ";
+		getline(cin, input);
+
+		if (input.empty()) {
+			clearScreen();
+			cout << "Invalid input! Please enter Y or N!" << endl;
+			continue;
+		}
+		else if (input.size() == 1) {
+			confirm = toupper(input[0]);
+		}
+		else {
+			clearScreen();
+			cout << "Invalid input! Please enter Y or N!" << endl;
+			continue;
+		}
+
+		if (confirm == 'N') {
+			restoreCartStock(items, cart);
+			cart.clear();
+
+			clearScreen();
+			cout << "Transaction cancelled. Items have been returned to stock." << endl;
+			return;
+		}
+		else if (confirm == 'Y') {
+			cout << "\nPayment type :" << endl;
+			cout << "1. Cash" << endl;
+			cout << "2. Bank" << endl;
+			cout << "0. Cancel Payment" << endl;
+			cout << "Selection: ";
+			getline(cin, input);
+
+			if (input.empty()) {
+				clearScreen();
+				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+				continue;
+			}
+
+			try {
+				size_t pos;
+				selection = stoi(input, &pos);
+
+				if (pos != input.size()) {
+					clearScreen();
+					cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+					continue;
+				}
+			}
+			catch (...) {
+				clearScreen();
+				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+				continue;
+			}
+
+			switch (selection) {
+			case 1:
+			case 2:
+				overwriteItemFile(items);
+
+				memberPointsAdded = static_cast<int>(grandTotal);
+
+				for (Customer& customerRecord : customers) {
+					if (customerRecord.user.name == customer.user.name) {
+						customerRecord.points += memberPointsAdded;
+						updatedMemberPoints = customerRecord.points;
+						break;
+					}
+				}
+
+				overwriteCustomerFile(customers);
+
+				// Optional: append invoice to file here
+				// appendInvoiceToFile(invoiceId, customer.user.name, cart, grandTotal);
+
+				cart.clear();
+
+				clearScreen();
+				cout << "Payment Done!" <<
+					"\nInvoice " << invoiceId << " generated!" <<
+					"\n" << memberPointsAdded << " points has been credited to your account!" <<
+					"\nCurrent Member Points: " << updatedMemberPoints <<
+					"\nPress enter to continue...";
+				cin.get();
+
+				clearScreen();
+				return;
+
+			case 0:
+				restoreCartStock(items, cart);
+				cart.clear();
+
+				clearScreen();
+				cout << "Payment cancelled! Items have been returned to stock." << endl;
+				cout << "Press enter to continue...";
+				cin.get();
+				clearScreen();
+				return;
+
+			default:
+				clearScreen();
+				cout << "Invalid payment selection!" << endl;
+			}
+		}
+		else {
+			clearScreen();
+			cout << "Invalid input! Please enter Y or N!" << endl;
+		}
+
 	} while (true);
 }
 
@@ -371,4 +565,13 @@ void viewPOSScreen(vector<Item> &items) {
 			}
 		} while (true);
 	} while (true);
+}
+
+// Helpers
+string generateNextInvoiceId() {
+	static int nextNumber = 1;
+
+	stringstream ss;
+	ss << "INV" << setw(5) << setfill('0') << nextNumber++;
+	return ss.str();
 }
