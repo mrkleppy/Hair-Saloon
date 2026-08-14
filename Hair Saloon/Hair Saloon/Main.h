@@ -22,6 +22,13 @@ struct Service {
 };
  
 // Define the item structure
+struct CartItem {
+	string itemId;
+	string name;
+	double price;
+	int quantity;
+};
+
 struct Item {
 	string itemId;
 	string name;
@@ -29,6 +36,7 @@ struct Item {
 	double reorderPrice;
 	int pointCost;
 	int stock;
+	int restockCounter;
 };
 
 // Define the user structure
