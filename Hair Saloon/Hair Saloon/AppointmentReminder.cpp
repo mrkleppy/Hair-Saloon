@@ -1,15 +1,11 @@
 #include <iostream>
-<<<<<<< Updated upstream
-=======
 #include <ctime>
->>>>>>> Stashed changes
 #include <format>
 #include "Main.h"
 #include "AppointmentModule.h"
 
 using namespace std;
 
-<<<<<<< Updated upstream
 Appointment findNearestAppointment(Customer customer, vector<Appointment>& customerAppointment) {
 	Appointment nearestAppointment;
 
@@ -36,7 +32,9 @@ Appointment findNearestAppointment(Customer customer, vector<Appointment>& custo
 		}
 	}
 
-=======
+	return nearestAppointment;
+}
+
 void getCurrentDateTime(Date &currentDate, Time &currentTime) {
 	time_t now = time(nullptr);
 	tm local_tm{};
@@ -138,31 +136,20 @@ Appointment findNearestAppointment(const vector<Appointment>& upcomingAppointmen
 		}
 	}
 
->>>>>>> Stashed changes
 	return nearestAppointment;
 }
 
-void appointmentReminder(Customer customer, vector<Appointment> &appointments) {
-<<<<<<< Updated upstream
-	vector<Appointment> customerAppointment;
-=======
+void appointmentReminder(Customer customer, vector<Appointment>& appointments) {
 	vector<Appointment> upcomingAppointment, customerAppointment;
->>>>>>> Stashed changes
 	string appointmentDate;
 	string appointmentTime;
-	
-	loadCustomerPendingAppointments(customer, appointments, customerAppointment);
-<<<<<<< Updated upstream
 
-	if (customerAppointment.size() > 0) {
-		Appointment nearestAppointment = findNearestAppointment(customer, customerAppointment);
-=======
+	loadCustomerPendingAppointments(customer, appointments, customerAppointment);
 	compareDateTime(customerAppointment, upcomingAppointment);
 
 	if (upcomingAppointment.size() > 0) {
 		Appointment nearestAppointment = findNearestAppointment(upcomingAppointment);
->>>>>>> Stashed changes
-		appointmentDate = format("{:02d}/{:02d}/{:d}",nearestAppointment.date.day, nearestAppointment.date.month, nearestAppointment.date.year);
+		appointmentDate = format("{:02d}/{:02d}/{:d}", nearestAppointment.date.day, nearestAppointment.date.month, nearestAppointment.date.year);
 		appointmentTime = format("{:02d}:{:02d}", nearestAppointment.time.hour, nearestAppointment.time.minute);
 
 		cout << "You have an upcoming appointment in " << appointmentDate << " (" << appointmentTime << ")!" << endl;

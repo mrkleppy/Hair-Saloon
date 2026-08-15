@@ -12,8 +12,6 @@ void appointmentManager(Customer customer, vector<Customer>& customers, vector<A
 // Staff side Appointment Management Module
 void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments);
 void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments);
-void assignAppointmentsPage(vector<Appointment>& appointments);
-void loadCustomerPendingAppointments(Customer& customer, vector<Appointment>& appointments, vector<Appointment>& customerPendingAppointments);
 
 // Admin side Appointment Management Module
 void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& staffs);
@@ -21,5 +19,6 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
 // Helpers
 string getServiceNameById(const string& serviceId);
 string generateNextAppointmentNo(const vector<Appointment>& appointments);
+void loadCustomerPendingAppointments(Customer& customer, vector<Appointment>& appointments, vector<Appointment>& customerPendingAppointments);
 
 #endif

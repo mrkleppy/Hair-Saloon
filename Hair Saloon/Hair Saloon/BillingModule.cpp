@@ -17,7 +17,10 @@ void processInvoiceItem(vector<Item> items, vector<int> quantity, double& grandT
 void viewReceiptScreen();
 void viewPOSScreen(vector<Item>& items);
 
-// Mwmber
+// Helpers
+string generateNextInvoiceId();
+
+// Member
 void viewReceiptScreen() {
 	int currentPage = 1;
 	char selection;
