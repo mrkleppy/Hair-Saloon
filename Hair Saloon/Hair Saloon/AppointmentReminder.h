@@ -4,9 +4,9 @@
 #define AppointmentReminderModule
 
 #include <string>
+#include <vector>
 using namespace std;
 
-// TengLok
-void appointmentReminder(Customer customer);
+void appointmentReminder(Customer customer, vector<Appointment>& appoinments);
 
 #endif
