@@ -3,6 +3,7 @@
 #include <string>
 #include "Main.h"
 #include "FileProcessing.h"
+#include "BillingModule.h"
 
 using namespace std;
 
@@ -95,7 +96,8 @@ void purchaseItemPage(vector<Item>& items) {
                 continue;
             }
             else {
-                // invoiceScreen(); // placeholder for invoice screen
+                // invoice screen
+                break;
             }
 
             break;
@@ -151,7 +153,7 @@ void viewCartPage(vector<Item>& items, vector<CartItem>& cart) {
         switch (selection) {
         case 'c':
             clearScreen();
-            // invoiceScreen(); // placeholder for invoice screen
+            // invoice screen
             return;
 
         case 'r':
