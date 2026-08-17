@@ -21,4 +21,14 @@ string getServiceNameById(const string& serviceId);
 string generateNextAppointmentNo(const vector<Appointment>& appointments);
 void loadCustomerPendingAppointments(Customer& customer, vector<Appointment>& appointments, vector<Appointment>& customerPendingAppointments);
 
+template <typename T, typename Predicate>
+T* findBy(vector<T>& items, Predicate condition) {
+    for (T& item : items) {
+        if (condition(item)) {
+            return &item;
+        }
+    }
+    return nullptr;
+}
+
 #endif

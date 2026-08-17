@@ -4,6 +4,7 @@
 #include "Main.h"
 #include "FileProcessing.h"
 #include "BillingModule.h"
+#include "AppointmentModule.h"
 
 using namespace std;
 
@@ -365,13 +366,9 @@ void inventoryMaintenancePage(vector<Item>& items) {
 
 // Helpers
 Item* findItemById(vector<Item>& items, const string& itemId) {
-    for (Item& item : items) {
-        if (item.itemId == itemId) {
-            return &item;
-        }
-    }
-
-    return nullptr;
+    return findBy(items, [&](Item& item) {
+        return item.itemId == itemId;
+        });
 }
 
 void addToCart(vector<Item>& items, vector<CartItem>& cart, int itemIndex, int quantity) {

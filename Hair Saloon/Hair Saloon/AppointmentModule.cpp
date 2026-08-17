@@ -9,6 +9,7 @@
 #include "Main.h"
 #include "FileProcessing.h"
 #include "BillingModule.h"
+#include "AppointmentModule.h"
 
 using namespace std;
 
@@ -969,21 +970,26 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
 // ===============================================================================================
 // Helpers
 string generateNextAppointmentNo(const vector<Appointment>& appointments) {
-    int maxNumber = 0;
+    static int nextNumber = -1;
 
-    for (const Appointment& appointment : appointments) {
-        string id = appointment.appointmentNo;
+    if (nextNumber == -1) {
+        for (const Appointment& appointment : appointments) {
+            const string& id = appointment.appointmentNo;
 
-        if (id.length() >= 7 && id.substr(0, 2) == "AP") {
-            int number = stoi(id.substr(2));
-            if (number > maxNumber) {
-                maxNumber = number;
+            if (id.length() == 7 && id.substr(0, 2) == "AP") {
+                try {
+                    nextNumber = max(nextNumber, stoi(id.substr(2)));
+                }
+                catch (...) {
+                }
             }
         }
+
+        nextNumber++;
     }
 
     stringstream ss;
-    ss << "AP" << setw(5) << setfill('0') << (maxNumber + 1);
+    ss << "AP" << setw(5) << setfill('0') << nextNumber++;
     return ss.str();
 }
 
@@ -1195,7 +1201,7 @@ void loadUnassignedAppointments(vector<Appointment>& appointments, vector<Appoin
 }
 
 void printPendingAppointments(const vector<Appointment> loadedAppointments) {
-    cout << left << setw(20) << "Appointment No."
+    cout << left << setw(20) << setfill(' ') << "Appointment No."
         << setw(14) << "Date"
         << setw(9) << "Time"
         << setw(14) << "Person(s)"
@@ -1213,13 +1219,9 @@ void printPendingAppointments(const vector<Appointment> loadedAppointments) {
 }
 
 Appointment* findAppointment(vector<Appointment>& appointments, const string& appointmentNo) {
-    for (Appointment& appointment : appointments) {
-        if (appointment.appointmentNo == appointmentNo) {
-            return &appointment;
-        }
-    }
-
-    return nullptr;
+    return findBy(appointments, [&](Appointment& appointment) {
+        return appointment.appointmentNo == appointmentNo;
+        });
 }
 
 bool isStaffAvailable(const string& staffId, const Appointment& targetAppointment, vector<Appointment> appointments) {
