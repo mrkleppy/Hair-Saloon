@@ -11,6 +11,7 @@ void appointmentManager(Customer customer, vector<Customer>& customers, vector<A
 
 // Staff side Appointment Management Module
 void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments);
+void allAppointmentsView(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments);
 void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments);
 
 // Admin side Appointment Management Module

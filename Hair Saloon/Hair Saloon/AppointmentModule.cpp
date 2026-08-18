@@ -23,6 +23,7 @@ void cancelAppointment(Customer customer, vector<Appointment>& appointments);
 // Staff side Appointment Management Module
 void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments);
 void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments);
+void allAppointmentsView(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments);
 
 // ==============================================================================================
 // Admin side Appointment Management Module
@@ -614,6 +615,52 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
 		}
         break;
 	} while (true);
+}
+
+// View all appointments (under Customer Maintenance)
+void allAppointmentsView(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments) {
+    clearScreen();
+    int indexFound = 0;
+    bool found = false;
+    vector<Appointment> customerPendingAppointments{};
+
+    do {
+        for (int i = 0; i < customers.size(); i++) {
+            if (customer.user.phoneNo == customers[i].user.phoneNo) {
+                customer.user.name = customers[i].user.name;
+                customer.user.password = customers[i].user.password;
+                customer.points = customers[i].points;
+                indexFound = i;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            clearScreen();
+            cout << "Phone number not found!" << endl;
+            return;
+        }
+
+        loadCustomerPendingAppointments(customer, appointments, customerPendingAppointments);
+
+        if (customerPendingAppointments.empty()) {
+            cout << "No pending appointments found." << endl;
+            cout << "Press enter to continue...";
+            cin.get();
+            clearScreen();
+            return;
+        }
+
+        cout << "Customer Name: " << customer.user.name << endl;
+        cout << "Pending Appointments" << endl;
+        printPendingAppointments(customerPendingAppointments);
+
+        cout << "\n\nPress any key to continue...";
+        cin.ignore();
+        break;
+
+    } while (true);
 }
 
 // View all completed past Appointments

@@ -191,7 +191,7 @@ void RedeemPointsPage(Customer customer, vector<Customer>& customers, vector<Ite
     } while (true);
 }
 
-void customerMaintenancePage(vector<Customer>& customers, vector<Item>& items) { // Customer maintenance page for staff
+void customerMaintenancePage(vector<Customer>& customers, vector<Item>& items, vector<Appointment>& appointments) { // Customer maintenance page for staff
     // Variable declarations
     int selection = 0;
     string input;
@@ -237,8 +237,8 @@ void customerMaintenancePage(vector<Customer>& customers, vector<Item>& items) {
             RedeemPointsPage(customer, customers, items);
             break;
         case 2:
-            clearScreen();
-            // navigate to view all appointment (appointment module)
+            clearScreen(); // navigate to view all appointment (appointment module)
+            allAppointmentsView(customer, customers, appointments);
             break;
         case 0: // exit the customer maintenance page
             clearScreen();
@@ -708,7 +708,7 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
             break;
         case 4: // navigate to customer maintenance (user module)
             clearScreen();
-            customerMaintenancePage(customers, items);
+            customerMaintenancePage(customers, items, appointments);
             break;
         case 5: // navigate to view completed appointment (appointment module)
             clearScreen();
@@ -774,8 +774,8 @@ void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staf
             assignAppointmentsPage(appointments, staffs);
             break;
         case 4:
-            clearScreen();
-            //navigate to view reportings (reporting module)
+            clearScreen(); //navigate to view reportings (reporting module)
+            reportingHomePage();
             break;
         case 0: // exit the admin home page
             clearScreen();
