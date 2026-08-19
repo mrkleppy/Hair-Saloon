@@ -8,7 +8,7 @@
 using namespace std;
 
 // Liew Teng Lok
-void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments);
+void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Receipt>& receipts, vector<Invoice>& invoices);
 void staffHomePage(Staff staf, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments);
 void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments);
 

@@ -1,8 +1,8 @@
-I001,Shampoo,39.9,30.0,600,8,0
-I002,Dry Shampoo,45.0,33.9,675,10,0
-I003,Conditioner,38.0,28.9,570,9,0
+I001,Shampoo,39.9,30,600,8,0
+I002,Dry Shampoo,45,33.9,675,10,0
+I003,Conditioner,38,28.9,570,0,0
 I004,Hair Dye,29.9,22.5,450,8,0
-I005,Hair Gel,24.9,17.0,375,8,0
-I006,Hair Spray,32.0,24.0,480,10,0
-I007,Styling Cream,34.0,25.5,510,10,0
-I008,Hair Scalp,55.0,44.5,825,10,0
+I005,Hair Gel,24.9,17,375,8,0
+I006,Hair Spray,32,24,480,10,0
+I007,Styling Cream,34,25.5,510,10,0
+I008,Hair Scalp,55,44.5,825,10,0

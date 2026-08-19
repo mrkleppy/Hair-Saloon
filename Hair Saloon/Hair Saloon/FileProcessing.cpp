@@ -152,6 +152,117 @@ void readAppointmentFile(vector<Appointment>& appointments) {
 	inFile.close();
 }
 
+void readReceiptFile(vector<Receipt>& receipts) {
+    ifstream inFile("Receipt.txt");
+    string line;
+
+    if (!inFile.is_open()) {
+        cerr << "Error: Could not open the file!" << endl;
+        return;
+    }
+
+    while (getline(inFile, line)) {
+        if (line.empty()) {
+            continue;
+        }
+
+        stringstream ss(line);
+        vector<string> elements;
+        string element;
+
+        while (getline(ss, element, ',')) {
+            elements.push_back(element);
+        }
+
+        // Preserve the final empty field if the line ends with a comma
+        if (!line.empty() && line.back() == ',') {
+            elements.push_back("");
+        }
+
+        try {
+            Receipt receipt{};
+            int index = 0;
+
+            receipt.receiptId = elements.at(index++);
+            receipt.invoiceId = elements.at(index++);
+
+            receipt.date.day = stoi(elements.at(index++));
+            receipt.date.month = stoi(elements.at(index++));
+            receipt.date.year = stoi(elements.at(index++));
+
+            receipt.customerName = elements.at(index++);
+            receipt.totalPrice = stod(elements.at(index++));
+            receipt.status = elements.at(index++);
+            receipt.paymentType = elements.at(index++);
+
+            receipts.push_back(receipt);
+        }
+        catch (const exception& e) {
+            cerr << "Error parsing receipt data: "
+                << e.what() << endl;
+            continue;
+        }
+    }
+
+    inFile.close();
+}
+
+void readInvoiceFile(vector<Invoice>& invoices) {
+    ifstream inFile("Invoice.txt");
+    string line;
+
+    if (!inFile.is_open()) {
+        cerr << "Error: Could not open the file!" << endl;
+        return;
+    }
+
+    while (getline(inFile, line)) {
+        if (line.empty()) {
+            continue;
+        }
+
+        stringstream ss(line);
+        vector<string> elements;
+        string element;
+
+        while (getline(ss, element, ',')) {
+            elements.push_back(element);
+        }
+
+        // Preserve the final empty field if the line ends with a comma
+        if (!line.empty() && line.back() == ',') {
+            elements.push_back("");
+        }
+
+        try {
+            Invoice invoice{};
+            int index = 0;
+
+            invoice.invoiceId = elements.at(index++);
+
+            invoice.date.day = stoi(elements.at(index++));
+            invoice.date.month = stoi(elements.at(index++));
+            invoice.date.year = stoi(elements.at(index++));
+
+            invoice.customerName = elements.at(index++);
+            
+            for (int i = 0; i < invoice.invoiceItem.size(); i++) {
+                invoice.invoiceItem[i].itemId = elements.at(index++);
+                invoice.invoiceItem[i].quantity = stod(elements.at(index++));
+            }
+
+            invoices.push_back(invoice);
+        }
+        catch (const exception& e) {
+            cerr << "Error parsing invoice data: "
+                << e.what() << endl;
+            continue;
+        }
+    }
+
+    inFile.close();
+}
+
 void overwriteItemFile(vector<Item>& items) {
     ofstream outFile("Item.txt");
 
@@ -245,6 +356,32 @@ void overwriteAppointmentFile(vector<Appointment>& appointments) {
     outFile.close();
 }
 
+void overwriteReceiptFile(vector<Receipt>& receipts) {
+    ofstream outFile("Receipt.txt");
+
+    if (!outFile.is_open()) {
+        cerr << "Error: Could not open the file!" << endl;
+        return;
+    }
+
+    for (Receipt receipt : receipts) {
+        outFile
+            << receipt.receiptId << ","
+            << receipt.invoiceId << ","
+            << receipt.date.day << ","
+            << receipt.date.month << ","
+            << receipt.date.year << ","
+            << receipt.customerName << ","
+            << receipt.totalPrice << ","
+            << receipt.status << ","
+            << receipt.paymentType;
+
+        outFile << "\n";
+    }
+
+    outFile.close();
+}
+
 void appendStaffToFile(Staff staff) {
     ofstream outFile("Staff.txt", ios::app);
 
@@ -331,6 +468,56 @@ void appendCancelledAppointmentToFile(Appointment appointment, string& reason) {
         << appointment.time.minute << ", "
         << appointment.status << ", "
         << reason;
+
+    outFile << endl;
+
+    outFile.close();
+}
+
+void appendInvoiceToFile(Invoice invoice) {
+    ofstream outFile("Invoice.txt", ios::app);
+
+    if (!outFile.is_open()) {
+        cerr << "Error: Could not open the file!" << endl;
+        return;
+    }
+
+    outFile
+        << invoice.invoiceId << ","
+        << invoice.date.day << ","
+        << invoice.date.month << ","
+        << invoice.date.year << ","
+        << invoice.customerName;
+
+    for (int i = 0; i < invoice.invoiceItem.size(); i++) {
+        outFile
+            << "," << invoice.invoiceItem[i].itemId
+            << "," << invoice.invoiceItem[i].quantity;
+    }
+
+    outFile << endl;
+
+    outFile.close();
+}
+
+void appendReceiptToFile(Receipt receipt) {
+    ofstream outFile("Receipt.txt", ios::app);
+
+    if (!outFile.is_open()) {
+        cerr << "Error: Could not open the file!" << endl;
+        return;
+    }
+
+    outFile
+        << receipt.receiptId << ","
+        << receipt.invoiceId << ","
+        << receipt.date.day << ","
+        << receipt.date.month << ","
+        << receipt.date.year << ","
+        << receipt.customerName << ","
+        << receipt.totalPrice << ","
+        << receipt.status << ","
+        << receipt.paymentType;
 
     outFile << endl;
 

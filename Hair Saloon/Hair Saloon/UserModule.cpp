@@ -596,7 +596,7 @@ void staffMaintenancePage(vector<Staff>& staffs, vector<Customer>& customers) {
     } while (true);
 }
 
-void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments) {
+void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Receipt>& receipts, vector<Invoice>& invoices) {
     // Variable declarations
     int selection = 0;
     string input;
@@ -639,12 +639,12 @@ void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& cu
             break;
         case 2: // navigate to purchasing items (Inventory module)
             clearScreen();
-            purchaseItemPage(items);
+            purchaseItemPage(customer, customers, items, invoices, receipts);
             break;
         case 3:
             clearScreen();
             //navigate to view reciept (Billing module)
-            viewReceiptScreen();
+            viewReceiptScreen(customer, receipts);
             break;
         case 0: // exit the member home page
             clearScreen();

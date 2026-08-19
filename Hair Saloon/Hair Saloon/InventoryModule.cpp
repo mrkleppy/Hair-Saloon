@@ -9,7 +9,7 @@
 using namespace std;
 
 // Functions to be defined early
-void viewCartPage(vector<Item>& items, vector<CartItem>& cart);
+void viewCartPage(Customer customer, vector<Customer>& customers, vector<Item>& items, vector<Invoice>& invoices, vector<Receipt>& receipts, vector<CartItem>& cart);
 void inventoryMaintenancePage(vector<Item>& items);
 void removeItemFromCart(vector<Item>& items, vector<CartItem>& cart);
 
@@ -20,7 +20,7 @@ void restoreCartStock(vector<Item>& items, const vector<CartItem>& cart);
 double calculateCartTotal(const vector<CartItem>& cart);
 
 // Member side Inventory Module
-void purchaseItemPage(vector<Item>& items) {
+void purchaseItemPage(Customer customer, vector<Customer>& customers, vector<Item>& items, vector<Invoice>& invoices, vector<Receipt>& receipts) {
     vector<CartItem> cart;
     int quantity;
     char selection, confirmation;
@@ -97,7 +97,7 @@ void purchaseItemPage(vector<Item>& items) {
                 continue;
             }
             else {
-                // invoice screen
+                viewInvoiceScreen(customer, customers, items, invoices, receipts, cart);
                 break;
             }
 
@@ -105,7 +105,7 @@ void purchaseItemPage(vector<Item>& items) {
 
         case 'v':
             clearScreen();
-            viewCartPage(items, cart);
+            viewCartPage(customer, customers, items, invoices, receipts, cart);
             continue;
 
         default:
@@ -116,7 +116,7 @@ void purchaseItemPage(vector<Item>& items) {
     } while (true);
 }
 
-void viewCartPage(vector<Item>& items, vector<CartItem>& cart) {
+void viewCartPage(Customer customer, vector<Customer>& customers, vector<Item>& items, vector<Invoice>& invoices, vector<Receipt>& receipts, vector<CartItem>& cart) {
     string input;
     char selection;
 
@@ -168,7 +168,7 @@ void viewCartPage(vector<Item>& items, vector<CartItem>& cart) {
         switch (selection) {
         case 'c':
             clearScreen();
-            // invoice screen
+            viewInvoiceScreen(customer, customers, items, invoices, receipts, cart);
             return;
 
         case 'r':

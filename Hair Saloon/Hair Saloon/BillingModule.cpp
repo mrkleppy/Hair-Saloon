@@ -5,53 +5,83 @@
 #include <sstream>
 #include "Main.h"
 #include "AppointmentModule.h"
+#include "AppointmentReminder.h"
 #include "FileProcessing.h"
 #include "InventoryModule.h"
 
 using namespace std;
 
 void viewInvoiceScreen(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments, Appointment& appointment);
-void viewInvoiceScreen(Customer customer, vector<Customer>& customers, vector<Item>& items, vector<CartItem>& cart);
-void viewInvoiceDetailScreen(Invoice& invoice);
-void processInvoiceItem(vector<Item> items, vector<int> quantity, double& grandTotal);
+void viewInvoiceScreen(Customer customer, vector<Customer>& customers, vector<Item>& items, vector<Invoice>& invoices, vector<Receipt>& receipts, vector<CartItem>& cart);
+void viewInvoiceDetailScreen(Invoice& invoice, vector<Item>& items);
+void processInvoiceItem(vector<InvoiceItem> invoiceItem, vector<Item> items, double& grandTotal);
 void viewReceiptScreen();
 void viewPOSScreen(vector<Item>& items);
 
 // Helpers
-string generateNextInvoiceId();
+string generateNextInvoiceId(vector<Invoice>& invoices);
+string generateNextReceiptId(vector<Receipt>& receipts);
+void loadCustomerReceipts(Customer customer, vector<Receipt>& receipts, vector<Receipt>& customerReceipts);
+Receipt* findReceipt(vector<Receipt>& receipts, string receiptId);
 
 // Member
-void viewReceiptScreen() {
+// Displays full details of a single receipt
+void printReceiptDetails(Receipt receipt) {
+	clearScreen();
+	cout << "Receipt Details\n";
+	cout << "================\n\n";
+	cout << "Receipt ID   : " << receipt.receiptId << "\n";
+	cout << "Date         : " << right << setw(2) << setfill('0') << receipt.date.day << "/" << setw(2) << receipt.date.month << "/" << setw(4) << receipt.date.year << left << setfill(' ') << "\n";
+	cout << "Total (RM)   : " << fixed << setprecision(2) << receipt.totalPrice << "\n";
+	cout << "Picked up?   : " << receipt.status << "\n";
+	cout << "Payment Type : " << receipt.paymentType << "\n\n";
+	cout << "Press enter to continue...";
+	cin.get();
+	clearScreen();
+}
+
+// Done
+void viewReceiptScreen(Customer customer, vector<Receipt>& receipts) {
 	int currentPage = 1;
 	char selection;
 	string input;
 
-	// temporary data
-	vector<Receipt> receipts = {
-		{"INV00001", "xx/xx/xxxx", 104.70, "No"},
-		{"AP00001",  "xx/xx/xxxx",  22.30, "-"}
-	};
+	vector<Receipt> customerReceipts{};
 
 	do {
-		int totalReceipt = int(receipts.size());
-		int totalPages = int(ceil(static_cast<double>(totalReceipt) / MAX_RECEIPT_PER_PAGE));
+		loadCustomerReceipts(customer, receipts, customerReceipts);
+
+		int totalReceipt = int(customerReceipts.size());
+		int totalPages = totalReceipt > 0
+			? int(ceil(static_cast<double>(totalReceipt) / MAX_RECEIPT_PER_PAGE))
+			: 1;
+
+		if (currentPage > totalPages) currentPage = totalPages;
 
 		cout << "View Receipts\n";
 		cout << "==============\n\n";
 		cout << "Kindly show the e-receipt to the cashier to pick up your item(s)! "
 			<< "(Invoice number to see receipt details)\n\n";
 
-		cout << left << setw(15) << "Receipt(s)" << setw(15) << "Date" << setw(15) << "Total (RM)" << setw(15) << "Picked up?" << "\n";
-		cout << left << setw(15) << "===========" << setw(15) << "=====" << setw(15) << "===========" << setw(15) << "===========" << "\n";
+		if (customerReceipts.empty()) {
+			cout << "No receipts found." << endl;
+			cout << "Press enter to continue...";
+			cin.get();
+			clearScreen();
+			return;
+		}
 
-		int start = (currentPage - 1) * MAX_STAFF_PER_PAGE;
-		Receipt* receiptPtr = &receipts[start];
+		cout << left << setw(15) << "Receipt(s)" << setw(15) << "Date" << setw(15) << "Total (RM)" << setw(15) << "Picked up?" << "\n";
+		cout << left << setw(15) << "===========" << setw(15) << "==========" << setw(15) << "===========" << setw(15) << "===========" << "\n";
+
+		int start = (currentPage - 1) * MAX_RECEIPT_PER_PAGE;
+		Receipt* receiptPtr = &customerReceipts[start];
 
 		for (int i = 0; i < MAX_RECEIPT_PER_PAGE && (start + i) < totalReceipt; i++) {
 			cout << left << setw(15) << receiptPtr->receiptId
-				<< setw(15) << receiptPtr->date
+				<< setw(15) << right << setw(2) << setfill('0') << receiptPtr->date.day << "/" << setw(2) << receiptPtr->date.month << "/" << setw(4) << receiptPtr->date.year << left << setfill(' ') << setw(5) << " "
 				<< "RM " << setw(15) << fixed << setprecision(2) << receiptPtr->totalPrice
-				<< setw(15) << receiptPtr->status << endl;
+				<< setw(12) << receiptPtr->status << endl;
 			receiptPtr++;
 		}
 
@@ -63,17 +93,14 @@ void viewReceiptScreen() {
 
 		if (input.empty()) {
 			clearScreen();
-			cout << "Invalid input! Please enter valid recipet ID, n, p, or q!" << endl;
+			cout << "Invalid input! Please enter valid receipt ID, n, p, or q!" << endl;
 			continue;
 		}
 		else if (input.size() == 1) {
-			selection = input[0];
-			selection = tolower(selection);
+			selection = tolower(input[0]);
 		}
 		else {
-			clearScreen();
-			cout << "Invalid input! Please enter valid recipet ID, n, p, or q!" << endl;
-			continue;
+			selection = '\0'; // multi-char input, fall through to receipt ID lookup
 		}
 
 		switch (selection) {
@@ -98,25 +125,46 @@ void viewReceiptScreen() {
 		case 'q':
 			clearScreen();
 			return;
-		default:
-			// TODO: do the reciept ID checks
-			clearScreen();
-			cout << "Invalid input! Please enter valid recipet ID, n, p, or q!" << endl;
+		default: {
+			Receipt* found = findReceipt(customerReceipts, input);
+			if (found != nullptr) {
+				printReceiptDetails(*found);
+			}
+			else {
+				clearScreen();
+				cout << "Invalid input! Please enter valid receipt ID, n, p, or q!" << endl;
+			}
+			break;
+		}
 		}
 	} while (true);
 }
 
-void processInvoiceItem(vector<Item> items, vector<int> quantity, double &grandTotal) {
-	int totalItem = items.size();
+// Done
+void processInvoiceItem(vector<InvoiceItem> invoiceItem, vector<Item> items, double &grandTotal) {
+	int totalItem = invoiceItem.size();
 	double totalItemPrice;
+	Item itemChosen;
 
 	for (int i = 0; i < totalItem; i++) {
-		totalItemPrice = items[i].price + quantity[i];
-		cout << left << setw(6) << i << setw(22) << items[i].name << setw(14) << items[i].price << setw(12) << quantity[i] << setw(14) << totalItemPrice << endl;
+		for (Item item : items) {
+			if (item.itemId == invoiceItem[i].itemId) {
+				itemChosen = item;
+				break;
+			}
+			else {
+				cout << "Item not found!" << endl;
+				return;
+			}
+		}
+
+		totalItemPrice = itemChosen.price * invoiceItem[i].quantity;
+		cout << left << setw(6) << i << setw(22) << itemChosen.name << setw(14) << itemChosen.price << setw(12) << invoiceItem[i].quantity << setw(14) << totalItemPrice << endl;
 		grandTotal += totalItemPrice;
 	}
 }
 
+// Done
 void viewInvoiceScreen(Customer customer,
 	vector<Customer>& customers,
 	vector<Appointment>& appointments,
@@ -126,6 +174,7 @@ void viewInvoiceScreen(Customer customer,
 	int selection;
 	int memberPointsAdded = 0;
 	int updatedMemberPoints = 0;
+	Receipt newReceipt;
 
 	do {
 		clearScreen();
@@ -229,6 +278,8 @@ void viewInvoiceScreen(Customer customer,
 
 				overwriteCustomerFile(customers);
 
+				// TODO
+
 				clearScreen();
 				cout << "Payment Done!" <<
 					"\nAppointment Request Added!" <<
@@ -261,9 +312,12 @@ void viewInvoiceScreen(Customer customer,
 	} while (true);
 }
 
+// Done
 void viewInvoiceScreen(Customer customer,
 	vector<Customer>& customers,
 	vector<Item>& items,
+	vector<Invoice>& invoices,
+	vector<Receipt>& receipts,
 	vector<CartItem>& cart) {
 	string input;
 	char confirm;
@@ -271,8 +325,10 @@ void viewInvoiceScreen(Customer customer,
 	int memberPointsAdded = 0;
 	int updatedMemberPoints = 0;
 	double grandTotal = 0;
-
-	string invoiceId = generateNextInvoiceId(); // e.g. INV00001
+	Invoice newInvoice;
+	Receipt newReceipt;
+	string invoiceId = generateNextInvoiceId(invoices);
+	string receiptId = generateNextReceiptId(receipts);
 
 	do {
 		clearScreen();
@@ -374,8 +430,29 @@ void viewInvoiceScreen(Customer customer,
 
 				overwriteCustomerFile(customers);
 
-				// Optional: append invoice to file here
-				// appendInvoiceToFile(invoiceId, customer.user.name, cart, grandTotal);
+				// Build the new invoice
+				Time placeholder; // Only get the date so time is not needed, thats why a placeholder is needed
+
+				newInvoice.invoiceId = invoiceId;
+				getCurrentDateTime(newInvoice.date, placeholder);
+				newInvoice.customerName = customer.user.name;
+				for (CartItem& c : cart) {
+					newInvoice.invoiceItem.push_back({ c.itemId, c.quantity });
+				}
+				invoices.push_back(newInvoice); // Update memory
+				appendInvoiceToFile(newInvoice); // Update File
+
+				// Build the new receipt
+				newReceipt.receiptId = receiptId;
+				newReceipt.invoiceId = invoiceId;
+				getCurrentDateTime(newReceipt.date, placeholder);
+				newReceipt.customerName = customer.user.name;
+				newReceipt.totalPrice = grandTotal;
+				newReceipt.status = "Not Picked Up";
+				newReceipt.paymentType = (selection == 1 ? "Cash" : "Bank");
+
+				receipts.push_back(newReceipt);
+				appendReceiptToFile(newReceipt);
 
 				cart.clear();
 
@@ -414,14 +491,15 @@ void viewInvoiceScreen(Customer customer,
 	} while (true);
 }
 
-void viewInvoiceDetailScreen(Invoice& invoice) {
+// Done
+void viewInvoiceDetailScreen(Invoice& invoice, vector<Item>& items) {
 	double grandTotal;
-
-	cout << left << setw(35) << ("Invoice : " + invoice.invoiceId) << "Date : " << invoice.date;
+	vector<InvoiceItem> invoiceItem;
+	// cout << left << setw(35) << ("Invoice : " + invoice.invoiceId) << "Date : " << invoice.date;
 	cout << left << setw(6) << "No." << setw(22) << "Item" << setw(14) << "Price (RM)" << setw(12) << "Quantity" << setw(14) << "Total (RM)" << endl;
 	cout << left << setw(6) << "===" << setw(22) << "=====" << setw(14) << "===========" << setw(12) << "=========" << setw(14) << "===========" << endl;
 
-	processInvoiceItem(invoice.items, invoice.quantity, grandTotal);
+	processInvoiceItem(invoiceItem, items, grandTotal);
 
 	cout << right << setw(58) << "Grand Total (RM) " << setw(10) << fixed << setprecision(2) << grandTotal;
 
@@ -431,17 +509,31 @@ void viewInvoiceDetailScreen(Invoice& invoice) {
 	return;
 }
 
-// Staff;
-void viewPOSScreen(vector<Item> &items) {
+// Staff
+// WIP
+void viewPOSScreen(vector<Item> &items, vector<Customer> &customers) {
+	Customer customerChosen;
 	string input, memberPhone, selection;
 	char gender;
 	int quantity, totalPerson;
+	vector<AppointmentService> orderedServices;
+	vector<InvoiceItem> orderedItem;
 
 	do {
 		cout << "\nEnter member phone (\"cash\" for non-member): ";
 		cin >> memberPhone;
 		cin.ignore();
 		// TODO: Verify the phone No is in the database
+		for (Customer customer : customers) {
+			if (memberPhone == customer.user.phoneNo) {
+				customerChosen = customer;
+			}
+			else {
+				clearScreen();
+				cout << "Customer not found!" << endl;
+				continue;
+			}
+		}
 
 		clearScreen();
 		do {
@@ -502,12 +594,24 @@ void viewPOSScreen(vector<Item> &items) {
 							cout << "Invalid input! Please enter an integer!" << endl;
 							continue;
 						}
+
+						if (totalPerson > 7) {
+							clearScreen();
+							cout << "Please enter a maximum person of 7 persons." << endl;
+							continue;
+						}
 					}
 					catch (...) {
 						clearScreen();
 						cout << "Invalid input! Please enter an integer!" << endl;
 						continue;
 					}
+
+					AppointmentService newService;
+					newService.serviceId = services[stoi(selection) - 1].serviceId;
+					newService.gender = gender;
+					newService.persons = totalPerson;
+					newService.subtotal = ;
 
 					cout << "\nService added successfully.\n";
 					cout << "\nPress enter to go back...\n";
@@ -568,10 +672,71 @@ void viewPOSScreen(vector<Item> &items) {
 }
 
 // Helpers
-string generateNextInvoiceId() {
-	static int nextNumber = 1;
+string generateNextInvoiceId(vector<Invoice>& invoices) {
+	static int nextNumber = 0;
+
+	if (nextNumber == 0) {
+		for (const Invoice& invoice : invoices) {
+			const string& id = invoice.invoiceId;
+
+			if (id.length() == 8 && id.substr(0, 3) == "INV") {
+				try {
+					nextNumber = max(nextNumber, stoi(id.substr(3)));
+				}
+				catch (...) {
+				}
+			}
+		}
+
+		nextNumber++;
+	}
 
 	stringstream ss;
 	ss << "INV" << setw(5) << setfill('0') << nextNumber++;
 	return ss.str();
 }
+
+string generateNextReceiptId(vector<Receipt>& receipts) {
+	static int nextNumber = 0;
+
+	if (nextNumber == 0) {
+		for (const Receipt& receipt : receipts) {
+			const string& id = receipt.receiptId;
+
+			if (id.length() == 8 && id.substr(0, 3) == "REC") {
+				try {
+					nextNumber = max(nextNumber, stoi(id.substr(3)));
+				}
+				catch (...) {
+				}
+			}
+		}
+
+		nextNumber++;
+	}
+
+	stringstream ss;
+	ss << "REC" << setw(5) << setfill('0') << nextNumber++;
+	return ss.str();
+}
+
+// Filters the master receipts list down to this customer's receipts
+void loadCustomerReceipts(Customer customer, vector<Receipt>& receipts, vector<Receipt>& customerReceipts) {
+	customerReceipts.clear();
+	for (Receipt& r : receipts) {
+		if (r.customerName == customer.user.name) {  // adjust field name to match your Customer/Receipt linkage
+			customerReceipts.push_back(r);
+		}
+	}
+}
+
+// Finds a receipt by ID within a given vector, returns nullptr if not found
+Receipt* findReceipt(vector<Receipt>& receipts, string receiptId) {
+	for (Receipt& r : receipts) {
+		if (r.receiptId == receiptId) {
+			return &r;
+		}
+	}
+	return nullptr;
+}
+

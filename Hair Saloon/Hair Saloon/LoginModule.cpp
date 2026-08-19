@@ -58,7 +58,7 @@ int login(User user, Customer* customer, Staff* staff, vector<Customer>& custome
     }
 }
 
-void loginScreen(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments) {
+void loginScreen(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Receipt>& receipts, vector<Invoice>& invoices) {
     User user;
     Customer customer;
     Staff staff;
@@ -76,7 +76,7 @@ void loginScreen(vector<Item>& items, vector<Customer>& customers, vector<Staff>
         switch (userType) {
         case 1: // navigate to member home page (user module)
             clearScreen();
-            memberHomePage(customer, items, customers, staffs, appointments);
+            memberHomePage(customer, items, customers, staffs, appointments, receipts, invoices);
             break;
 		case 2: // navigate to staff home page (user module)
             clearScreen();

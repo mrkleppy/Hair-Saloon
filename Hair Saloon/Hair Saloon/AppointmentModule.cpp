@@ -1017,9 +1017,9 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
 // ===============================================================================================
 // Helpers
 string generateNextAppointmentNo(const vector<Appointment>& appointments) {
-    static int nextNumber = -1;
+    static int nextNumber = 0;
 
-    if (nextNumber == -1) {
+    if (nextNumber == 0) {
         for (const Appointment& appointment : appointments) {
             const string& id = appointment.appointmentNo;
 
