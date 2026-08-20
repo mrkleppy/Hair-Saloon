@@ -41,7 +41,7 @@ void updateReceiptStatus(Receipt receipt, vector<Receipt>& receipts) {
     }
 }
 
-void getNotPickedUpReciept(vector<Receipt>& notPickedUpReceipts, vector<Receipt>& receipts) {
+void getNotPickedUpReceipt(vector<Receipt>& notPickedUpReceipts, vector<Receipt>& receipts) {
     for (Receipt receipt : receipts) {
         if (receipt.status == "Not Picked Up") {
             notPickedUpReceipts.push_back(receipt);
@@ -54,13 +54,13 @@ void manageReceiptPage(Customer customer, vector<Receipt>& receipts) {
     string selection;
 
     do {
-        getNotPickedUpReciept(notPickedUpReceipts, receipts);
+        getNotPickedUpReceipt(notPickedUpReceipts, receipts);
 
         cout << left << setw(15) << "Receipt ID" << setw(15) << "Invoice ID" << setw(15) << "Date" << setw(20) << "Status" << endl;
         cout << left << setw(15) << "===========" << setw(15) << "===========" << setw(15) << "=====" << setw(20) << "=======" << endl;
 
         if (notPickedUpReceipts.empty()) {
-            cout << "No Not Picked Up Receipts" << endl;
+            cout << "No Non-Picked Up Receipts Found." << endl;
         }
         else {
             displayReceipt(notPickedUpReceipts);
@@ -577,7 +577,6 @@ void staffMaintenancePage(vector<Staff>& staffs, vector<Customer>& customers) {
         cout << "==================\n\n";
         cout << left << setw(20) << "Staff code" << setw(25) << "Name" << setw(15) << "Phone No." << setw(15) << "Salary" << setw(16) << "Appointment done" << endl;
         cout << left << setw(20) << "===========" << setw(25) << "=====" << setw(15) << "==========" << setw(15) << "=======" << setw(16) << "=================" << endl;
-
         
         if (staffs.empty()) {
             cout << "No staff found!" << endl;
