@@ -19,6 +19,8 @@ struct Service {
 	string name;
 	double malePrice;
 	double femalePrice;
+	int maleCounter;
+	int femaleCounter;
 };
  
 // Define the item structure
@@ -36,6 +38,7 @@ struct Item {
 	double reorderPrice;
 	int pointCost;
 	int stock;
+	int soldCounter;
 	int restockCounter;
 };
 
@@ -94,26 +97,27 @@ struct Appointment {
 };
 
 // Define the invoice structure
-struct Invoice {
-	string invoiceId;
-	vector<Item> items;
-	vector<int> quantity;
-	string date;
-};
-// These two struct based on condition, can be merge together if want so
-// Define the receipt structure
-struct Receipt {
-	string receiptId; // temporary
-	string date;
-	double totalPrice;
-	string status;
+struct InvoiceItem {
+	string itemId;
+	int quantity;
 };
 
-const Service services[4] = {
-    {"SV001", "Hair Cut", 25, 45},
-    {"SV002", "Hair Coloring", 80, 170},
-    {"SV003", "Hair Treatment", 70, 90},
-    {"SV004", "Styling", 30, 35}
+struct Invoice {
+	string invoiceId;
+	Date date;
+	string customerName;
+	vector<InvoiceItem> invoiceItem;
+};
+
+// Define the receipt structure
+struct Receipt {
+	string receiptId;
+	string referenceId;
+	Date date;
+	string customerName;
+	double totalPrice;
+	string status;
+	string paymentType;
 };
 
 void clearScreen();
