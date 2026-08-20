@@ -7,7 +7,7 @@
 using namespace std;
 
 // Member side
-void purchaseItemPage(Customer customer, vector<Customer>& customers, vector<Item>& items, vector<Invoice>& invoices, vector<Receipt>& receipts);
+void purchaseItemPage(vector<Item>& items);
 
 // Staff and Admin side
 void inventoryMaintenancePage(vector<Item>& items);

@@ -3,13 +3,11 @@
 #include <string>
 #include "Main.h"
 #include "FileProcessing.h"
-#include "BillingModule.h"
-#include "AppointmentModule.h"
 
 using namespace std;
 
 // Functions to be defined early
-void viewCartPage(Customer customer, vector<Customer>& customers, vector<Item>& items, vector<Invoice>& invoices, vector<Receipt>& receipts, vector<CartItem>& cart);
+void viewCartPage(vector<Item>& items, vector<CartItem>& cart);
 void inventoryMaintenancePage(vector<Item>& items);
 void removeItemFromCart(vector<Item>& items, vector<CartItem>& cart);
 
@@ -20,7 +18,7 @@ void restoreCartStock(vector<Item>& items, const vector<CartItem>& cart);
 double calculateCartTotal(const vector<CartItem>& cart);
 
 // Member side Inventory Module
-void purchaseItemPage(Customer customer, vector<Customer>& customers, vector<Item>& items, vector<Invoice>& invoices, vector<Receipt>& receipts) {
+void purchaseItemPage(vector<Item>& items) {
     vector<CartItem> cart;
     int quantity;
     char selection, confirmation;
@@ -32,12 +30,8 @@ void purchaseItemPage(Customer customer, vector<Customer>& customers, vector<Ite
         
         for (int i = 0; i < items.size(); i++) {
             cout << left << (i + 1) << ". " << setw(15) << items[i].name << setw(3) << "RM " << fixed << setprecision(2) << items[i].price << setw(5) << " ";
-            
             i++;
-
-            cout << left << (i + 1) << ". " << setw(15) << items[i].name << setw(3) << "RM " << fixed << setprecision(2) << items[i].price;
-
-            cout << endl;
+            cout << left << (i + 1) << ". " << setw(15) << items[i].name << setw(3) << "RM " << fixed << setprecision(2) << items[i].price << endl;
         }
 
         cout << endl << "Selection (0 to exit): ";
@@ -56,12 +50,6 @@ void purchaseItemPage(Customer customer, vector<Customer>& customers, vector<Ite
         case '7':
         case '8':
             itemChosen = &items[selection - '1']; // Get the pointer to the chosen item
-
-            if (itemChosen->stock <= 0) {
-                clearScreen();
-                cout << itemChosen->name << " is out of stock! Please select another item!" << endl;
-                continue;
-            }
 
             cout << "Quantity (Stock available: " << itemChosen->stock << "): ";
             cin >> quantity;
@@ -107,15 +95,14 @@ void purchaseItemPage(Customer customer, vector<Customer>& customers, vector<Ite
                 continue;
             }
             else {
-                viewInvoiceScreen(customer, customers, items, invoices, receipts, cart);
-                break;
+                // invoiceScreen(); // placeholder for invoice screen
             }
 
             break;
 
         case 'v':
             clearScreen();
-            viewCartPage(customer, customers, items, invoices, receipts, cart);
+            viewCartPage(items, cart);
             continue;
 
         default:
@@ -126,13 +113,12 @@ void purchaseItemPage(Customer customer, vector<Customer>& customers, vector<Ite
     } while (true);
 }
 
-void viewCartPage(Customer customer, vector<Customer>& customers, vector<Item>& items, vector<Invoice>& invoices, vector<Receipt>& receipts, vector<CartItem>& cart) {
-    string input;
+void viewCartPage(vector<Item>& items, vector<CartItem>& cart) {
     char selection;
-
     clearScreen();
 
     if (cart.empty()) {
+        clearScreen();
         cout << "Cart is empty." << endl;
         cout << "Press enter to go back...";
         cin.get();
@@ -141,58 +127,36 @@ void viewCartPage(Customer customer, vector<Customer>& customers, vector<Item>& 
 
     do {
         double total = 0;
-        clearScreen();
 
         cout << "Cart page" << endl;
         cout << "=========" << endl;
-        cout << left << setw(20) << "Item Name"
-            << setw(13) << "Quantity"
-            << setw(10) << "Price" << endl;
+        cout << left << setw(15) << "Item Name" << setw(13) << "Quantity" << setw(10) << "Price" << endl;
 
         for (const CartItem& cartItem : cart) {
             double subtotal = cartItem.price * cartItem.quantity;
             total += subtotal;
 
-            cout << left << setw(24) << cartItem.name
-                << setw(9) << cartItem.quantity
+            cout << left << setw(20) << cartItem.name
+                << setw(10) << cartItem.quantity
                 << "RM " << fixed << setprecision(2) << subtotal << endl;
         }
 
-        cout << "\nTotal: RM " << fixed << setprecision(2) << total << endl;
+        cout << "\nTotal: RM " << fixed << setprecision(2) << total << endl; // Placeholder for total price
         cout << "\n(c = complete transaction, r = remove an item, q = exit cart)" << endl;
-        cout << "Selection: ";
-        getline(cin, input);
-
-        if (input.empty()) {
-            cout << "Invalid input! Please enter c, r, or q!" << endl;
-            continue;
-        }
-
-        if (input.length() != 1) {
-            cout << "Invalid input! Please enter only one character: c, r, or q!" << endl;
-            continue;
-        }
-
-        selection = tolower(input[0]);
+        
+        cin >> selection;
+        cin.ignore();
+        selection = tolower(selection);
 
         switch (selection) {
         case 'c':
             clearScreen();
-            viewInvoiceScreen(customer, customers, items, invoices, receipts, cart);
+            // invoiceScreen(); // placeholder for invoice screen
             return;
 
         case 'r':
+            clearScreen();
             removeItemFromCart(items, cart);
-
-            if (cart.empty()) {
-                clearScreen();
-                cout << "Cart is now empty." << endl;
-                cout << "Press enter to go back...";
-                cin.get();
-
-                clearScreen();
-                return;
-            }
             break;
 
         case 'q':
@@ -200,22 +164,19 @@ void viewCartPage(Customer customer, vector<Customer>& customers, vector<Item>& 
             return;
 
         default:
+            clearScreen();
             cout << "Invalid input! Please enter c, r, or q!" << endl;
-            break;
+            continue;
         }
     } while (true);
 }
 
 void removeItemFromCart(vector<Item>& items, vector<CartItem>& cart) {
-    string input;
     int itemIndexToRemove;
-    Item* itemChosen = nullptr;
-
+    Item* itemChosen;
     clearScreen();
 
     do {
-        clearScreen();
-
         cout << "Remove item from cart" << endl;
         cout << "=====================" << endl;
 
@@ -228,40 +189,24 @@ void removeItemFromCart(vector<Item>& items, vector<CartItem>& cart) {
             cout << left << setw(5) << (i + 1)
                 << setw(20) << cart[i].name
                 << setw(10) << cart[i].quantity
-                << "RM " << fixed << setprecision(2)
-                << cart[i].price * cart[i].quantity << endl;
+                << "RM " << fixed << setprecision(2) << cart[i].price * cart[i].quantity
+                << endl;
         }
 
         cout << "\nEnter item number to remove (0 to cancel): ";
-        getline(cin, input);
-
-        if (input.empty()) {
-            cout << "Invalid input! Please enter a number." << endl;
-            continue;
-        }
-
-        try {
-            size_t pos;
-            itemIndexToRemove = stoi(input, &pos);
-
-            if (pos != input.length()) {
-                throw invalid_argument("Extra characters found");
-            }
-        }
-        catch (...) {
-            cout << "Invalid input! Please enter a valid number." << endl;
-            continue;
-        }
+        cin >> itemIndexToRemove;
+        cin.ignore();
 
         if (itemIndexToRemove == 0) {
             clearScreen();
             return;
         }
 
-        if (itemIndexToRemove < 1 || itemIndexToRemove > cart.size()) {
-            cout << "Invalid item index! Please enter a valid index." << endl;
-            continue;
-        }
+		if (itemIndexToRemove < 1 || itemIndexToRemove > cart.size()) {
+			clearScreen();
+			cout << "Invalid item index! Please enter a valid index." << endl;
+			continue;
+		}
 
         itemChosen = findItemById(items, cart[itemIndexToRemove - 1].itemId);
 
@@ -275,10 +220,7 @@ void removeItemFromCart(vector<Item>& items, vector<CartItem>& cart) {
         cart.erase(cart.begin() + (itemIndexToRemove - 1));
 
         clearScreen();
-        cout << "Item " << removedItemName << " x " << removedQuantity
-            << " has been removed from the cart." << endl;
-        cout << "Press enter to continue...";
-        cin.get();
+        cout << "Item " << removedItemName << " x " << removedQuantity << " has been removed from the cart." << endl;
         return;
 
     } while (true);
@@ -362,7 +304,7 @@ void inventoryMaintenancePage(vector<Item>& items) {
 
                     clearScreen();
                     cout << quantity << " " << itemChosen->name << "(s) have been restocked!" << endl;
-                    break;
+                    return;
                 }
                 else {
                     cout << "Invalid choice! Please enter Y or N!" << endl;
@@ -376,9 +318,13 @@ void inventoryMaintenancePage(vector<Item>& items) {
 
 // Helpers
 Item* findItemById(vector<Item>& items, const string& itemId) {
-    return findBy(items, [&](Item& item) {
-        return item.itemId == itemId;
-        });
+    for (Item& item : items) {
+        if (item.itemId == itemId) {
+            return &item;
+        }
+    }
+
+    return nullptr;
 }
 
 void addToCart(vector<Item>& items, vector<CartItem>& cart, int itemIndex, int quantity) {

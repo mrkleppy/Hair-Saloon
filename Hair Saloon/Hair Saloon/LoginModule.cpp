@@ -58,7 +58,7 @@ int login(User user, Customer* customer, Staff* staff, vector<Customer>& custome
     }
 }
 
-void loginScreen(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Receipt>& receipts, vector<Invoice>& invoices, vector<Service>& services) {
+void loginScreen(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments) {
     User user;
     Customer customer;
     Staff staff;
@@ -76,15 +76,15 @@ void loginScreen(vector<Item>& items, vector<Customer>& customers, vector<Staff>
         switch (userType) {
         case 1: // navigate to member home page (user module)
             clearScreen();
-            memberHomePage(customer, items, customers, staffs, appointments, receipts, invoices, services);
+            memberHomePage(customer, items, customers, staffs, appointments);
             break;
 		case 2: // navigate to staff home page (user module)
             clearScreen();
-            staffHomePage(staff, items, customers, staffs, appointments, services, receipts);
+            staffHomePage(staff, items, customers, staffs, appointments);
             break;
 		case 3: // navigate to admin home page (user module)
             clearScreen();
-            adminHomePage(items, customers, staffs, appointments, services);
+            adminHomePage(items, customers, staffs, appointments);
             break;
 		default: // any invalid situation, display error message and prompt user to try again
             clearScreen();
