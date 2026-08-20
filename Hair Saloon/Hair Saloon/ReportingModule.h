@@ -6,6 +6,7 @@
 #include <string>
 using namespace std;
 
-// Aiden
+// Aiden Lengzai
+void reportingHomePage();
 
 #endif
