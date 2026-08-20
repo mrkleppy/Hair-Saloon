@@ -10,31 +10,31 @@
 #include "FileProcessing.h"
 #include "BillingModule.h"
 #include "AppointmentModule.h"
+#include "AppointmentReminder.h"
 
 using namespace std;
 
 // ==============================================================================================
 // Member side Appointment Management Module
-void appointmentManager(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments);
-void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments);
+void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments, vector<Receipt>& receipts, vector<Service>& services);
 void cancelAppointment(Customer customer, vector<Appointment>& appointments);
 
 // ==============================================================================================
 // Staff side Appointment Management Module
-void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments);
-void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments);
+void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services);
+void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services);
 void allAppointmentsView(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments);
 
 // ==============================================================================================
 // Admin side Appointment Management Module
-void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& staffs);
-void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& appointments, vector<Staff>& staffs);
+void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& staffs, vector<Service>& services);
+void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& appointments, vector<Staff>& staffs, vector<Service>& services);
 
 // ==============================================================================================
 // Helpers
 string generateNextAppointmentNo(const vector<Appointment>& appointments);
 Appointment* findAppointment(vector<Appointment>& appointments, const string& appointmentNo);
-string getServiceNameById(const string& serviceId);
+string getServiceNameById(const string& serviceId, const vector<Service>& services);
 bool parseDate(const string& input, Date& date);
 bool parseTime(const string& input, Time& time);
 bool isValidDate(const Date& date);
@@ -51,7 +51,7 @@ void printPendingAppointments(const vector<Appointment> loadedAppointments);
 
 // ==============================================================================================
 // Member side Appointment Management Module
-void appointmentManager(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments) {
+void appointmentManager(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments, vector<Receipt>& receipts, vector<Service>& services) {
     char selection;
     string input;
     clearScreen();
@@ -76,7 +76,7 @@ void appointmentManager(Customer customer, vector<Customer>& customers, vector<A
         switch(selection) {
         case '1':
             clearScreen();
-            bookAppointment(customer, customers, appointments);
+            bookAppointment(customer, customers, appointments, receipts, services);
             break;
 
         case '2':
@@ -96,7 +96,7 @@ void appointmentManager(Customer customer, vector<Customer>& customers, vector<A
 }
 
 // Book appointment
-void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments) {
+void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments, vector<Receipt>& receipts, vector<Service>& services) {
     Appointment appointment{};
     appointment.appointmentNo = generateNextAppointmentNo(appointments);
     appointment.customerName = customer.user.name;
@@ -230,7 +230,7 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
             cout << "\nCurrent Services: " << endl;
             for (int i = 0; i < appointment.serviceCount; i++) {
                 cout << i + 1 << ". "
-                    << getServiceNameById(appointment.bookedServices[i].serviceId)
+                    << getServiceNameById(appointment.bookedServices[i].serviceId, services)
                     << " (" << appointment.bookedServices[i].gender << ") x "
                     << appointment.bookedServices[i].persons
                     << " - RM " << fixed << setprecision(2) << appointment.bookedServices[i].subtotal << endl;
@@ -239,12 +239,22 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
             cout << "\nCurrent Total: RM " << fixed << setprecision(2) << appointment.total << endl;
         }
 
-        cout << "\nQ to exit\n\nChoose Service Type:\t(M)ale\t\t(F)emale" <<
-            "\n1. Hair Cut\t\tRM 25.00\tRM 45.00" <<
-            "\n2. Hair Coloring\tRM 80.00\tRM 170.00" <<
-            "\n3. Hair Treatment\tRM 70.00\tRM 90.00" <<
-            "\n4. Hair Styling\t\tRM 30.00\tRM 35.00" << 
-            "\n\nEnter 'c' to complete your appointments!" << endl;
+        cout << setfill(' ') << "\nQ to exit" << endl;
+        cout << "\nChoose Service Type:" << endl;
+        cout << left << setw(5) << "No."
+            << setw(22) << "Service"
+            << setw(15) << "Male (RM)"
+            << setw(15) << "Female (RM)" << endl;
+
+        for (int i = 0; i < services.size(); i++) {
+            cout << left << setw(5) << (i + 1)
+                << setw(22) << services[i].name
+                << setw(15) << fixed << setprecision(2) << services[i].malePrice
+                << setw(15) << fixed << setprecision(2) << services[i].femalePrice
+                << endl;
+        }
+
+        cout << "\nEnter 'c' to complete your appointments!" << endl;
 
         cout << "Selection: ";
         cin >> selection; 
@@ -270,7 +280,7 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
             }
 
 			clearScreen();
-            viewInvoiceScreen(customer, customers, appointments, appointment);
+            viewInvoiceScreen(customer, customers, appointments, services, receipts, appointment);
             break;
 		}
 
@@ -443,7 +453,7 @@ void cancelAppointment(Customer customer, vector<Appointment>& appointments) {
 // ==============================================================================================
 // Staff side Appointment Management Module
 // View assigned Appointments
-void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments) {
+void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services) {
     clearScreen();
     vector<Appointment> staffAssignedAppointments{};
 
@@ -480,13 +490,13 @@ void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appoin
             continue;
         }
         else {
-            appointmentStatusManager(appointmentPtr, staff, staffs, appointments);
+            appointmentStatusManager(appointmentPtr, staff, staffs, appointments, services);
         }
     } while(true);
-}
+}   
 
 // Manage Appointment Status
-void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments) {
+void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services) {
     string reason;
     char selection, confirmation;
     clearScreen();
@@ -516,7 +526,7 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
 
         for (int i = 0; i < appointmentPtr->serviceCount; i++) {
             cout << left << setw(5) << (i + 1)
-                << setw(18) << getServiceNameById(appointmentPtr->bookedServices[i].serviceId)
+                << setw(18) << getServiceNameById(appointmentPtr->bookedServices[i].serviceId, services)
                 << setw(10) << (appointmentPtr->bookedServices[i].gender == 'M' ? "Male" : "Female")
                 << setw(13) << appointmentPtr->bookedServices[i].persons
                 << endl;
@@ -544,7 +554,18 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
 
 				if (toupper(confirmation) == 'Y') {
 					appointmentPtr->status = "Completed";
+
+                    for (int i = 0; i < appointmentPtr->staffCount; i++) {
+                        for (Staff& assignedStaff : staffs) {
+                            if (appointmentPtr->assignedStaffIds[i] == assignedStaff.staffCode) {
+                                assignedStaff.appointmentDone++;
+                                break;
+                            }
+                        }
+                    }
+
 					overwriteAppointmentFile(appointments);
+                    overwriteStaffFile(staffs);
 
 					clearScreen();
 					cout << "Appointment No. " << appointmentPtr->appointmentNo << " has been marked as completed!" << endl;
@@ -681,7 +702,7 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
         }
 
         int totalAppointments = int(staffCompletedAppointments.size());
-        int totalPages = int(ceil(static_cast<double>(totalAppointments / MAX_APPOINTMENTS_PER_PAGE)));
+        int totalPages = int(ceil(static_cast<double>(totalAppointments) / MAX_APPOINTMENTS_PER_PAGE));
 
 		cout << "Completed Appointments for " << staff.user.name << endl << endl;
 		cout << left << setw(20) << "Appointment No."
@@ -715,6 +736,7 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
 
         char selection;
         cin >> selection;
+        cin.ignore();
 
         selection = tolower(selection);
 
@@ -751,7 +773,7 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
 
 // ===============================================================================================
 // Admin side Appointment Management Module
-void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& staffs) {
+void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& staffs, vector<Service>& services) {
     clearScreen();
     int currentPage = 1;
     vector<Appointment> unassignedAppointments{};
@@ -818,7 +840,7 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
                 cout << "You are already on the last page!";
             }
         }
-        else if (tolower(appointmentNo[0] == 'p')) {
+        else if (tolower(appointmentNo[0]) == 'p') {
             if (currentPage > 1) {
                 currentPage--;
                 clearScreen();
@@ -828,7 +850,7 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
                 cout << "You are already on the first page!";
             }
         }
-        else if (tolower(appointmentNo[0] == 'q')) {
+        else if (tolower(appointmentNo[0]) == 'q') {
             clearScreen();
             return;
         }
@@ -841,13 +863,13 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
             continue;
         }
         else {
-            assignAppointmentToStaff(appointmentPtr, appointments, staffs);
+            assignAppointmentToStaff(appointmentPtr, appointments, staffs, services);
         }
     } while(true);
 }
 
 // Assign Appointment to Staff
-void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& appointments, vector<Staff>& staffs) {
+void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& appointments, vector<Staff>& staffs, vector<Service>& services) {
 	clearScreen();
     int staffCount = 0; // Initialise
 
@@ -865,7 +887,7 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
 
         for (int i = 0; i < appointmentPtr->serviceCount; i++) {
             cout << left << setw(6) << (i + 1)
-                << setw(18) << getServiceNameById(appointmentPtr->bookedServices[i].serviceId)
+                << setw(18) << getServiceNameById(appointmentPtr->bookedServices[i].serviceId, services)
                 << setw(10) << (appointmentPtr->bookedServices[i].gender == 'M' ? "Male" : "Female")
                 << setw(13) << appointmentPtr->bookedServices[i].persons
                 << endl;
@@ -1017,9 +1039,9 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
 // ===============================================================================================
 // Helpers
 string generateNextAppointmentNo(const vector<Appointment>& appointments) {
-    static int nextNumber = -1;
+    static int nextNumber = 0;
 
-    if (nextNumber == -1) {
+    if (nextNumber == 0) {
         for (const Appointment& appointment : appointments) {
             const string& id = appointment.appointmentNo;
 
@@ -1040,7 +1062,7 @@ string generateNextAppointmentNo(const vector<Appointment>& appointments) {
     return ss.str();
 }
 
-string getServiceNameById(const string& serviceId) {
+string getServiceNameById(const string& serviceId, const vector<Service>& services) {
     for (const Service& service : services) {
         if (service.serviceId == serviceId) {
             return service.name;
@@ -1125,13 +1147,15 @@ bool isFutureAppointment(const Date& appointmentDate) {
     }
 
 	// Get today's date (system's current date)
-    time_t now = time(nullptr);
-    tm todayTm{}; // Convert to local time
-    if (localtime_s(&todayTm, &now) != 0) {
-        return false;
-    }
+    Date currentDate;
+    Time currentTime;
+    getCurrentDateTime(currentDate, currentTime);
 
-	// Set the time to 00:00:00 for today's date
+    // Set the time to 00:00:00 for today's date
+    tm todayTm = {};
+    todayTm.tm_mday = currentDate.day;
+	todayTm.tm_mon = currentDate.month - 1;
+	todayTm.tm_year = currentDate.year - 1900;
     todayTm.tm_hour = 0;
 	todayTm.tm_min = 0;
 	todayTm.tm_sec = 0;
@@ -1209,7 +1233,7 @@ void loadStaffAssignedAppointments(Staff& staff, vector<Appointment>& appointmen
     staffAssignedAppointments.clear();
 
     for (Appointment& appointment : appointments) {
-        for (int i = 0; i < appointment.totalPersons; i++) {
+        for (int i = 0; i < appointment.staffCount; i++) {
             if (staff.staffCode == appointment.assignedStaffIds[i] && appointment.status == "Pending") {
                 staffAssignedAppointments.push_back(appointment);
             }
@@ -1221,7 +1245,7 @@ void loadStaffCompletedAppointments(Staff& staff, vector<Appointment>& appointme
     staffCompletedAppointments.clear();
 
     for (Appointment& appointment : appointments) {
-        for (int i = 0; i < appointment.totalPersons; i++) {
+        for (int i = 0; i < appointment.staffCount; i++) {
             if (staff.staffCode == appointment.assignedStaffIds[i] && appointment.status == "Completed") {
                 staffCompletedAppointments.push_back(appointment);
             }
@@ -1241,7 +1265,7 @@ void loadUnassignedAppointments(vector<Appointment>& appointments, vector<Appoin
             }
         }
 
-        if (assignedCount < appointment.totalPersons) {
+        if (appointment.status == "Pending" && assignedCount < appointment.totalPersons) {
             unassignedAppointments.push_back(appointment);
         }
     }
