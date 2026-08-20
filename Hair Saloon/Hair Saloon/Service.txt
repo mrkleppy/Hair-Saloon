@@ -1,0 +1,4 @@
+SV001,Hair Cut,25,45,2,1
+SV002,Hair Coloring,80,170,0,3
+SV003,Hair Treatment,70,90,1,0
+SV004,Styling,30,35,0,0

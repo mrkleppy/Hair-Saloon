@@ -10,22 +10,28 @@ void clearScreen() { // Clear the console screen
     cout << "\033[2J\033[H";
 }
 
-void loadData(vector<Item>& items, vector<Staff>& staffs, vector<Customer>& customers, vector<Appointment>& appointments) {
+void loadData(vector<Item>& items, vector<Service>& services, vector<Staff>& staffs, vector<Customer>& customers, vector<Appointment>& appointments, vector<Receipt>& receipts, vector<Invoice>& invoices) {
 	readItemFile(items); // Load item data from file
+	readServiceFile(services); // Load service data from file
 	readStaffFile(staffs); // Load staff data from file
 	readCustomerFile(customers); // Load customer data from file
 	readAppointmentFile(appointments); // Load appointment data from file
+    readReceiptFile(receipts); // Load receipt data from file
+    readInvoiceFile(invoices); // Load invoice data from file
 }
 
 int main() {
     int selection = 0;
     string input;
 	vector<Item> items;
+	vector<Service> services;
 	vector<Staff> staffs;
 	vector<Customer> customers;
 	vector<Appointment> appointments;
+    vector<Receipt> receipts;
+    vector<Invoice> invoices;
 
-	loadData(items, staffs, customers, appointments); // Load data from files // Add more later
+	loadData(items, services, staffs, customers, appointments, receipts, invoices); // Load data from files
 
 	do { // Display the main menu UI
         cout << "Welcome to XYZ Saloon!" << endl;
@@ -59,7 +65,7 @@ int main() {
         switch (selection) {
 		case 1: // navigate to login screen (login module)
             clearScreen();
-            loginScreen(items, customers, staffs, appointments);
+            loginScreen(items, customers, staffs, appointments, receipts, invoices, services);
             break;
 		case 2: // navigate to register screen (login module)
             clearScreen();

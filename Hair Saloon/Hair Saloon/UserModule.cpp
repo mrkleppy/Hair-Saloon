@@ -596,7 +596,7 @@ void staffMaintenancePage(vector<Staff>& staffs, vector<Customer>& customers) {
     } while (true);
 }
 
-void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments) {
+void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Receipt>& receipts, vector<Invoice>& invoices, vector<Service>& services) {
     // Variable declarations
     int selection = 0;
     string input;
@@ -635,16 +635,16 @@ void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& cu
         switch (selection) {
         case 1: // navigate to manage appointment (Appointment module)
             clearScreen();
-            appointmentManager(customer, customers, appointments);
+            appointmentManager(customer, customers, appointments, receipts, services);
             break;
         case 2: // navigate to purchasing items (Inventory module)
             clearScreen();
-            purchaseItemPage(items);
+            purchaseItemPage(customer, customers, items, invoices, receipts);
             break;
         case 3:
             clearScreen();
             //navigate to view reciept (Billing module)
-            viewReceiptScreen();
+            viewReceiptScreen(customer, receipts);
             break;
         case 0: // exit the member home page
             clearScreen();
@@ -656,7 +656,7 @@ void memberHomePage(Customer customer, vector<Item>& items, vector<Customer>& cu
     } while (true);
 }
 
-void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments) {
+void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services, vector<Receipt>& receipts) {
     // Variable declarations
     int selection = 0;
     string input;
@@ -696,11 +696,11 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
         case 1:
             clearScreen();
             //navigate to POS system (billing and payment module)
-            viewPOSScreen(items);
+            viewPOSScreen(items, customers, services, receipts);
             break;
         case 2: // navigate to view assigned appointment (appointment module)
             clearScreen();
-            assignedAppointmentsView(staff, staffs, appointments);
+            assignedAppointmentsView(staff, staffs, appointments, services);
             break;
         case 3:
             clearScreen();
@@ -724,7 +724,7 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
     } while (true);
 }
 
-void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments) {
+void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services) {
     // Variable declarations
     int selection = 0;
     string input;
@@ -771,7 +771,7 @@ void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staf
             break;
         case 3: // navigate to assign appointments (appointment module)
             clearScreen();
-            assignAppointmentsPage(appointments, staffs);
+            assignAppointmentsPage(appointments, staffs, services);
             break;
         case 4:
             clearScreen(); //navigate to view reportings (reporting module)
