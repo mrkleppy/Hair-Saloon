@@ -16,11 +16,87 @@
 
 using namespace std;
 
-void displayItem(vector<Item>& items) {
+void displayItem(vector<Item> items) {
     cout << left << "1. " << setw(25) << items[0].name << setw(4) << items[0].pointCost << "pts\t2. " << setw(25) << items[1].name << setw(4) << items[1].pointCost << "pts" << endl;
     cout << left << "3. " << setw(25) << items[2].name << setw(4) << items[2].pointCost << "pts\t4. " << setw(25) << items[3].name << setw(4) << items[3].pointCost << "pts" << endl;
     cout << left << "5. " << setw(25) << items[4].name << setw(4) << items[4].pointCost << "pts\t6. " << setw(25) << items[5].name << setw(4) << items[5].pointCost << "pts" << endl;
     cout << left << "7. " << setw(25) << items[6].name << setw(4) << items[6].pointCost << "pts\t8. " << setw(25) << items[7].name << setw(4) << items[7].pointCost << "pts" << endl;
+}
+
+void displayReceipt(vector<Receipt> receipts) {
+    for (Receipt receipt : receipts) {
+        cout << left << setw(15) << receipt.receiptId 
+            << setw(15) << receipt.referenceId 
+            << setw(15) << format("{:02d}/{:02d}/{:04d}", receipt.date.day, receipt.date.month, receipt.date.year)
+            << setw(20) << receipt.status << endl;
+    }
+}
+
+void updateReceiptStatus(Receipt receipt, vector<Receipt>& receipts) {
+    for (int i = 0; i < receipts.size(); i++) {
+        if (receipt.receiptId == receipts[i].receiptId) {
+            receipts[i].status = "Picked Up";
+            break;
+        }
+    }
+}
+
+void getNotPickedUpReceipt(vector<Receipt>& notPickedUpReceipts, vector<Receipt>& receipts) {
+    for (Receipt receipt : receipts) {
+        if (receipt.status == "Not Picked Up") {
+            notPickedUpReceipts.push_back(receipt);
+        }
+    }
+}
+
+void manageReceiptPage(Customer customer, vector<Receipt>& receipts) {
+    vector<Receipt> notPickedUpReceipts;
+    string selection;
+
+    do {
+        getNotPickedUpReceipt(notPickedUpReceipts, receipts);
+
+        cout << left << setw(15) << "Receipt ID" << setw(15) << "Invoice ID" << setw(15) << "Date" << setw(20) << "Status" << endl;
+        cout << left << setw(15) << "===========" << setw(15) << "===========" << setw(15) << "=====" << setw(20) << "=======" << endl;
+
+        if (notPickedUpReceipts.empty()) {
+            cout << "No Non-Picked Up Receipts Found." << endl;
+        }
+        else {
+            displayReceipt(notPickedUpReceipts);
+        }
+
+        cout << "\nEnter \'q\' to exit" << endl;
+        cout << "Enter a receipt id to edit status: ";
+        getline(cin, selection);
+
+        if (selection.empty()) {
+            clearScreen();
+            cout << "Input cannot be empty!" << endl;
+            continue;
+        }
+
+        if (selection == "q") {
+            clearScreen();
+            return;
+        }
+
+        for (Receipt receipt : notPickedUpReceipts) {
+            if (selection == receipt.receiptId) {
+                updateReceiptStatus(receipt, receipts);
+                overwriteReceiptFile(receipts);
+                notPickedUpReceipts.clear();
+                cout << "Receipt " << receipt.receiptId << " has now been picked up!" << endl;
+                cout << "Press enter to continue..." << endl;
+                cin.get();
+                clearScreen();
+                continue;
+            }
+        }
+
+        cout << "Receipt not found!" << endl;
+        clearScreen();
+    } while (true);
 }
 
 void RedeemPointsPage(Customer customer, vector<Customer>& customers, vector<Item>& items) { // Redeem points page for customer maintenance	
@@ -191,7 +267,7 @@ void RedeemPointsPage(Customer customer, vector<Customer>& customers, vector<Ite
     } while (true);
 }
 
-void customerMaintenancePage(vector<Customer>& customers, vector<Item>& items, vector<Appointment>& appointments) { // Customer maintenance page for staff
+void customerMaintenancePage(vector<Customer>& customers, vector<Item>& items, vector<Appointment>& appointments, vector<Receipt>& receipts) { // Customer maintenance page for staff
     // Variable declarations
     int selection = 0;
     string input;
@@ -200,13 +276,13 @@ void customerMaintenancePage(vector<Customer>& customers, vector<Item>& items, v
     do { // Display the customer maintenance page UI
         cout << "Customer Maintenance" << endl;
         cout << "=====================\n";
-        cout << "1. Redeem points\n2. View all appointment\n0. Exit" << endl << endl;
+        cout << "1. Redeem points\n2. View all appointment\n3. Manage Receipts\n0. Exit" << endl << endl;
         cout << "selection: ";
         getline(cin, input);
 
         if (input.empty()) {
             clearScreen();
-            cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+            cout << "Invalid input! Please enter 0, 1, 2 or 3!" << endl;
             continue;
         }
 
@@ -216,13 +292,13 @@ void customerMaintenancePage(vector<Customer>& customers, vector<Item>& items, v
 
             if (pos != input.size()) {
                 clearScreen();
-                cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+                cout << "Invalid input! Please enter 0, 1, 2 or 3!" << endl;
                 continue;
             }
         }
         catch (...) {
             clearScreen();
-            cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+            cout << "Invalid input! Please enter 0, 1, 2 or 3!" << endl;
             continue;
         }
 
@@ -240,12 +316,16 @@ void customerMaintenancePage(vector<Customer>& customers, vector<Item>& items, v
             clearScreen(); // navigate to view all appointment (appointment module)
             allAppointmentsView(customer, customers, appointments);
             break;
+        case 3:
+            clearScreen();
+            manageReceiptPage(customer, receipts);
+            break;
         case 0: // exit the customer maintenance page
             clearScreen();
             return;
         default: // Any invalid situation, display error message and prompt user to try again
             clearScreen();
-            cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+            cout << "Invalid input! Please enter 0, 1, 2 or 3!" << endl;
         }
     } while (true);
 }
@@ -483,10 +563,11 @@ void addStaff(vector<Staff>& staffs, vector<Customer>& customers) {
 
 void staffMaintenancePage(vector<Staff>& staffs, vector<Customer>& customers) {
     char selection = 0;
-    int currentpage = 1, indexFound = 0;
+    int currentpage = 1, indexFound = 0, start;
     bool found = false, success = false;
     string input;
     Staff inputStaff;
+    Staff* staffPtr;
 
     do {
         int totalStaff = int(staffs.size());
@@ -496,17 +577,21 @@ void staffMaintenancePage(vector<Staff>& staffs, vector<Customer>& customers) {
         cout << "==================\n\n";
         cout << left << setw(20) << "Staff code" << setw(25) << "Name" << setw(15) << "Phone No." << setw(15) << "Salary" << setw(16) << "Appointment done" << endl;
         cout << left << setw(20) << "===========" << setw(25) << "=====" << setw(15) << "==========" << setw(15) << "=======" << setw(16) << "=================" << endl;
-
-        int start = (currentpage - 1) * MAX_STAFF_PER_PAGE;
-        Staff* staffPtr = &staffs[start]; // Pointer to the start of the staff list
-
-        for (int i = 0; i < MAX_STAFF_PER_PAGE && (start + i) < totalStaff; i++) {
-            cout << left << setw(20) << staffPtr->staffCode
-                << setw(25) << staffPtr->user.name
-                << setw(15) << staffPtr->user.phoneNo
-                << "RM " << setw(12) << fixed << setprecision(2) << staffPtr->salary
-                << setw(16) << staffPtr->appointmentDone << endl;
-            staffPtr++;
+        
+        if (staffs.empty()) {
+            cout << "No staff found!" << endl;
+        }
+        else {
+            start = (currentpage - 1) * MAX_STAFF_PER_PAGE;
+            staffPtr = &staffs[start]; // Pointer to the start of the staff list
+            for (int i = 0; i < MAX_STAFF_PER_PAGE && (start + i) < totalStaff; i++) {
+                cout << left << setw(20) << staffPtr->staffCode
+                    << setw(25) << staffPtr->user.name
+                    << setw(15) << staffPtr->user.phoneNo
+                    << "RM " << setw(12) << fixed << setprecision(2) << staffPtr->salary
+                    << setw(16) << staffPtr->appointmentDone << endl;
+                staffPtr++;
+            }
         }
 
         cout << "\nPage " << currentpage << "/" << totalPages << endl;
@@ -708,7 +793,7 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
             break;
         case 4: // navigate to customer maintenance (user module)
             clearScreen();
-            customerMaintenancePage(customers, items, appointments);
+            customerMaintenancePage(customers, items, appointments, receipts);
             break;
         case 5: // navigate to view completed appointment (appointment module)
             clearScreen();
