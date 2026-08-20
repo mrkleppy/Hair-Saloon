@@ -8,5 +8,5 @@
 using namespace std;
 
 void appointmentReminder(Customer customer, vector<Appointment>& appoinments);
-
+void getCurrentDateTime(Date& currentDate, Time& currentTime);
 #endif

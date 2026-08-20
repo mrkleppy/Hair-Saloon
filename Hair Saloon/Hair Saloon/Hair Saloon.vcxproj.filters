@@ -100,5 +100,8 @@
     <Text Include="CancelledAppointments.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Service.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
