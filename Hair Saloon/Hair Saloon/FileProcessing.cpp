@@ -8,22 +8,23 @@
 
 using namespace std;
 
+// Read item file and load data into vector
 void readItemFile(vector<Item>& items) {
     ifstream inFile("Item.txt");
     string line;
 
-    while (getline(inFile, line)) {
+    while (getline(inFile, line)) { // get every line in the file
         stringstream ss(line);
         string element;
         vector<string> elements;
 
-        if (!inFile.is_open()) {
+        if (!inFile.is_open()) { // check file is exist
             cerr << "Error: Could not open the file!" << endl;
             return;
         }
 
-        while (getline(ss, element, ',')) {
-            elements.push_back(element);
+        while (getline(ss, element, ',')) { // seperate the line by ','
+            elements.push_back(element); // store every seperated element
         }
 
         Item item = { elements.at(0), 
@@ -33,29 +34,30 @@ void readItemFile(vector<Item>& items) {
             stoi(elements.at(4)), 
             stoi(elements.at(5)),
             stoi(elements.at(6)),
-            stoi(elements.at(7)) };
-        items.push_back(item);
+            stoi(elements.at(7)) }; // reconstruct into structure
+        items.push_back(item); // store into the vector
     }
 
     inFile.close();
 }
 
+// Read service file and load data into vector
 void readServiceFile(vector<Service>& services) {
     ifstream inFile("Service.txt");
     string line;
 
-    while (getline(inFile, line)) {
+    while (getline(inFile, line)) { // get every line in the file
         stringstream ss(line);
         string element;
         vector<string> elements;
 
-        if (!inFile.is_open()) {
+        if (!inFile.is_open()) { // check file is exist
             cerr << "Error: Could not open the file!" << endl;
             return;
         }
 
-        while (getline(ss, element, ',')) {
-            elements.push_back(element);
+        while (getline(ss, element, ',')) { // seperate the line by ','
+            elements.push_back(element); // store every seperated element
         }
 
         Service service = { elements.at(0),
@@ -63,79 +65,82 @@ void readServiceFile(vector<Service>& services) {
             stod(elements.at(2)),
             stod(elements.at(3)),
             stoi(elements.at(4)), 
-            stoi(elements.at(5)) };
-        services.push_back(service);
+            stoi(elements.at(5)) }; // reconstruct into structure
+        services.push_back(service); // store into the vector
     }
 
     inFile.close();
 }
 
+// Read staff file and load data into vector
 void readStaffFile(vector<Staff>& staffs) {
     ifstream inFile("Staff.txt");
     string line;
 
-    if (!inFile.is_open()) {
+    if (!inFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
 
-    while (getline(inFile, line)) {
+    while (getline(inFile, line)) { // get every line in the file
         stringstream ss(line);
         vector<string> elements;
         string element;
 
-        while (getline(ss, element, ',')) {
-            elements.push_back(element);
+        while (getline(ss, element, ',')) { // seperate the line by ','
+            elements.push_back(element); // store every seperated element
         }
 
-        Staff staff = { elements.at(0), elements.at(1), elements.at(2), elements.at(3), stod(elements.at(4)), stoi(elements.at(5)) };
-        staffs.push_back(staff);
+        Staff staff = { elements.at(0), elements.at(1), elements.at(2), elements.at(3), stod(elements.at(4)), stoi(elements.at(5)) }; // reconstruct into structure
+        staffs.push_back(staff); // store into the vector
     }
 
     inFile.close();
 }
 
+// Read customer file and load data into vector
 void readCustomerFile(vector<Customer>& customers) {
     ifstream inFile("Customer.txt");
     string line;
 
-    if (!inFile.is_open()) {
+    if (!inFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
 
-    while (getline(inFile, line)) {
+    while (getline(inFile, line)) { // get every line in the file
         stringstream ss(line);
         vector<string> elements;
         string element;
 
-        while (getline(ss, element, ',')) {
-            elements.push_back(element);
+        while (getline(ss, element, ',')) { // seperate the line by ','
+            elements.push_back(element); // store every seperated element
         }
 
-        Customer customer = { elements.at(0), elements.at(1), elements.at(2), stoi(elements.at(3)) };
-        customers.push_back(customer);
+        Customer customer = { elements.at(0), elements.at(1), elements.at(2), stoi(elements.at(3)) }; // reconstruct into structure
+        customers.push_back(customer); // store into the vector
     }
 
     inFile.close();
 }
 
+// Read appointmnet file and load data into vector
 void readAppointmentFile(vector<Appointment>& appointments) {
 	ifstream inFile("Appointment.txt");
 	string line;
 
-	if (!inFile.is_open()) {
+	if (!inFile.is_open()) { // check file is exist
 		cerr << "Error: Could not open the file!" << endl;
 		return;
 	}
 
-	while (getline(inFile, line)) {
+	while (getline(inFile, line)) { // get every line in the file
 		stringstream ss(line);
 		vector<string> elements;
 		string element;
 
-		while (getline(ss, element, ',')) {
-			elements.push_back(element);
+		while (getline(ss, element, ',')) { // seperate the line by ','
+			elements.push_back(element); // store every seperated element
 		}
 
         if (!line.empty() && line.back() == ',') {
@@ -176,9 +181,9 @@ void readAppointmentFile(vector<Appointment>& appointments) {
                 else {
                     index++;
                 }
-            }
+            } // reconstruct into structure
 
-            appointments.push_back(appointment);
+            appointments.push_back(appointment); // store into the vector
         }
         catch (const exception& e) {
 			cerr << "Error parsing appointment data: " << e.what() << endl;
@@ -188,16 +193,17 @@ void readAppointmentFile(vector<Appointment>& appointments) {
 	inFile.close();
 }
 
+// Read receipt file and load data into vector
 void readReceiptFile(vector<Receipt>& receipts) {
     ifstream inFile("Receipt.txt");
     string line;
 
-    if (!inFile.is_open()) {
+    if (!inFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
 
-    while (getline(inFile, line)) {
+    while (getline(inFile, line)) { // get every line in the file
         if (line.empty()) {
             continue;
         }
@@ -206,8 +212,8 @@ void readReceiptFile(vector<Receipt>& receipts) {
         vector<string> elements;
         string element;
 
-        while (getline(ss, element, ',')) {
-            elements.push_back(element);
+        while (getline(ss, element, ',')) { // seperate the line by ','
+            elements.push_back(element); // store every seperated element
         }
 
         // Preserve the final empty field if the line ends with a comma
@@ -229,9 +235,9 @@ void readReceiptFile(vector<Receipt>& receipts) {
             receipt.customerName = elements.at(index++);
             receipt.totalPrice = stod(elements.at(index++));
             receipt.status = elements.at(index++);
-            receipt.paymentType = elements.at(index++);
+            receipt.paymentType = elements.at(index++); // reconstruct into structure
 
-            receipts.push_back(receipt);
+            receipts.push_back(receipt); // store into the vector
         }
         catch (const exception& e) {
             cerr << "Error parsing receipt data: "
@@ -243,16 +249,17 @@ void readReceiptFile(vector<Receipt>& receipts) {
     inFile.close();
 }
 
+// Read invoice file and load data into vector
 void readInvoiceFile(vector<Invoice>& invoices) {
     ifstream inFile("Invoice.txt");
     string line;
 
-    if (!inFile.is_open()) {
+    if (!inFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
 
-    while (getline(inFile, line)) {
+    while (getline(inFile, line)) { // get every line in the file
         if (line.empty()) {
             continue;
         }
@@ -261,8 +268,8 @@ void readInvoiceFile(vector<Invoice>& invoices) {
         vector<string> elements;
         string element;
 
-        while (getline(ss, element, ',')) {
-            elements.push_back(element);
+        while (getline(ss, element, ',')) { // seperate the line by ','
+            elements.push_back(element); // store every seperated element
         }
 
         // Preserve the final empty field if the line ends with a comma
@@ -287,9 +294,9 @@ void readInvoiceFile(vector<Invoice>& invoices) {
                 item.itemId = elements.at(index++);
                 item.quantity = stoi(elements.at(index++));
                 invoice.invoiceItem.push_back(item);
-            }
+            } // reconstruct into structure
 
-            invoices.push_back(invoice);
+            invoices.push_back(invoice); // store into the vector
         }
         catch (const exception& e) {
             cerr << "Error parsing invoice data: "
@@ -301,15 +308,16 @@ void readInvoiceFile(vector<Invoice>& invoices) {
     inFile.close();
 }
 
+// Write every data from the vector into item file
 void overwriteItemFile(vector<Item>& items) {
     ofstream outFile("Item.txt");
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
 
-    for (Item item : items) {
+    for (Item item : items) { // loop through every elements in vector
         outFile << item.itemId << "," 
             << item.name << "," 
             << item.price << "," 
@@ -323,15 +331,16 @@ void overwriteItemFile(vector<Item>& items) {
     outFile.close();
 }
 
+// Write every data from the vector into service file
 void overwriteServiceFile(vector<Service>& services) {
     ofstream outFile("Service.txt");
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
 
-    for (Service service : services) {
+    for (Service service : services) { // loop through every elements in vector
         outFile << service.serviceId << ","
             << service.name << ","
             << service.malePrice << ","
@@ -343,15 +352,16 @@ void overwriteServiceFile(vector<Service>& services) {
     outFile.close();
 }
 
+// Write every data from the vector into staff file
 void overwriteStaffFile(vector<Staff>& staffs) {
     ofstream outFile("Staff.txt");
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
 
-    for (Staff staff : staffs) {
+    for (Staff staff : staffs) { // loop through every elements in vector
         outFile << staff.user.name << "," << staff.user.password << "," << staff.user.phoneNo << "," << staff.staffCode
             << "," << staff.salary << "," << staff.appointmentDone << "\n";
     }
@@ -359,30 +369,32 @@ void overwriteStaffFile(vector<Staff>& staffs) {
     outFile.close();
 }
 
+// Write every data from the vector into customer file
 void overwriteCustomerFile(vector<Customer>& customers) {
     ofstream outFile("Customer.txt");
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
 
-    for (Customer customer : customers) {
+    for (Customer customer : customers) { // loop through every elements in vector
         outFile << customer.user.name << "," << customer.user.password << "," << customer.user.phoneNo << "," << customer.points << "\n";
     }
 
     outFile.close();
 }
 
+// Write every data from the vector into appointment file
 void overwriteAppointmentFile(vector<Appointment>& appointments) {
     ofstream outFile("Appointment.txt");
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
 
-    for (Appointment appointment : appointments) {
+    for (Appointment appointment : appointments) { // loop through every elements in vector
         outFile
             << appointment.appointmentNo << ","
             << appointment.serviceCount << ","
@@ -415,15 +427,16 @@ void overwriteAppointmentFile(vector<Appointment>& appointments) {
     outFile.close();
 }
 
+// Write every data from the vector into receipt file
 void overwriteReceiptFile(vector<Receipt>& receipts) {
     ofstream outFile("Receipt.txt");
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
 
-    for (Receipt receipt : receipts) {
+    for (Receipt receipt : receipts) { // loop through every elements in vector
         outFile
             << receipt.receiptId << ","
             << receipt.referenceId << ","
@@ -441,10 +454,11 @@ void overwriteReceiptFile(vector<Receipt>& receipts) {
     outFile.close();
 }
 
+// append one new data into staff file
 void appendStaffToFile(Staff staff) {
-    ofstream outFile("Staff.txt", ios::app);
+    ofstream outFile("Staff.txt", ios::app); // call as appending
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
@@ -454,10 +468,11 @@ void appendStaffToFile(Staff staff) {
     outFile.close();
 }
 
+// append one new data into customer file
 void appendCustomerToFile(Customer customer) {
-    ofstream outFile("Customer.txt", ios::app);
+    ofstream outFile("Customer.txt", ios::app); // call as appending
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
@@ -466,10 +481,11 @@ void appendCustomerToFile(Customer customer) {
     outFile.close();
 }
 
+// append one new data into appointment file
 void appendAppointmentToFile(Appointment appointment) {
-    ofstream outFile("Appointment.txt", ios::app);
+    ofstream outFile("Appointment.txt", ios::app); // call as appending
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
@@ -507,10 +523,11 @@ void appendAppointmentToFile(Appointment appointment) {
     outFile.close();
 }
 
+// append one new data into cancelled appointment file
 void appendCancelledAppointmentToFile(Appointment appointment, string& reason) {
-    ofstream outFile("CancelledAppointments.txt", ios::app);
+    ofstream outFile("CancelledAppointments.txt", ios::app); // call as appending
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
@@ -533,10 +550,11 @@ void appendCancelledAppointmentToFile(Appointment appointment, string& reason) {
     outFile.close();
 }
 
+// append one new data into invoice file
 void appendInvoiceToFile(Invoice invoice) {
-    ofstream outFile("Invoice.txt", ios::app);
+    ofstream outFile("Invoice.txt", ios::app); // call as appending
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }
@@ -559,10 +577,11 @@ void appendInvoiceToFile(Invoice invoice) {
     outFile.close();
 }
 
+// append one new data into receipt file
 void appendReceiptToFile(Receipt receipt) {
-    ofstream outFile("Receipt.txt", ios::app);
+    ofstream outFile("Receipt.txt", ios::app); // call as appending
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open()) { // check file is exist
         cerr << "Error: Could not open the file!" << endl;
         return;
     }

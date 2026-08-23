@@ -21,8 +21,11 @@ void loadData(vector<Item>& items, vector<Service>& services, vector<Staff>& sta
 }
 
 int main() {
+    // Varicable declaration
     int selection = 0;
     string input;
+
+    // All data storing vector
 	vector<Item> items;
 	vector<Service> services;
 	vector<Staff> staffs;
@@ -39,8 +42,9 @@ int main() {
         cout << "1. Login\n2. Register as member\n0. Exit" << endl << endl;
         cout << "Selection: ";
         getline(cin, input);
-
-        if (input.empty()) {
+        
+        // Input validation
+        if (input.empty()) { // Cannot be empty
             clearScreen();
             cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
             continue;
@@ -48,15 +52,15 @@ int main() {
         
         try {
             size_t pos;
-            selection = stoi(input, &pos); // mismatch
+            selection = stoi(input, &pos); // Convert string to integer
 
-            if (pos != input.size()) {
+            if (pos != input.size()) { 
                 clearScreen();
                 cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
                 continue;
             }
         }
-        catch (...) {
+        catch (...) { // Mismtach happens
             clearScreen();
             cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
             continue;
