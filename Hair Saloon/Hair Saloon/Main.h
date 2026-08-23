@@ -9,9 +9,9 @@ using namespace std;
 
 const int MAX_PERSONS_PER_SLOT = 7; // Maximum number of persons allowed per time slot
 const int MAX_SERVICES_PER_APPOINTMENT = 7; // Maximum number of services allowed per appointment
-const int MAX_STAFF_PER_PAGE = 10;
-const int MAX_APPOINTMENTS_PER_PAGE = 10;
-const int MAX_RECEIPT_PER_PAGE = 10;
+const int MAX_STAFF_PER_PAGE = 10; // Maximum number of staff shown in one page
+const int MAX_APPOINTMENTS_PER_PAGE = 10; // Maximum number of appointment shown in one page
+const int MAX_RECEIPT_PER_PAGE = 10; // Maximum number of receipt shown in one page
 
 // Define the service structure
 struct Service {
@@ -63,18 +63,20 @@ struct Staff {
 	int appointmentDone;
 };
 
+// Define the date structure
 struct Date {
 	int day;
 	int month;
 	int year;
 };
 
+// Define the time structure
 struct Time {
 	int hour;
 	int minute;
 };
 
-// Define the appointment structure
+// Define the services in appointment structure
 struct AppointmentService {
 	string serviceId;
 	char gender;
@@ -82,6 +84,7 @@ struct AppointmentService {
 	double subtotal;
 };
 
+// Define the appointment structure
 struct Appointment {
 	string appointmentNo;
 	AppointmentService bookedServices[7]; // Assuming a maximum of 7 services can be booked per appointment
@@ -96,12 +99,13 @@ struct Appointment {
 	double total;
 };
 
-// Define the invoice structure
+// Define the item in invoice structure
 struct InvoiceItem {
 	string itemId;
 	int quantity;
 };
 
+// Define the invoice structure
 struct Invoice {
 	string invoiceId;
 	Date date;
@@ -120,6 +124,7 @@ struct Receipt {
 	string paymentType;
 };
 
+// shared function
 void clearScreen();
 
 #endif
