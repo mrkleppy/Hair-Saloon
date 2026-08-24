@@ -535,14 +535,14 @@ void appendCancelledAppointmentToFile(Appointment appointment, string& reason) {
     outFile << fixed << setprecision(2);
 
     outFile
-        << appointment.appointmentNo << ", "
-        << appointment.customerName << ", "
-        << appointment.date.day << "/"
-        << appointment.date.month << "/"
-        << appointment.date.year << ", "
-        << appointment.time.hour << ":"
-        << appointment.time.minute << ", "
-        << appointment.status << ", "
+        << appointment.appointmentNo << ","
+        << appointment.customerName << ","
+        << right << setw(2) << setfill('0') << appointment.date.day << "/"
+        << right << setw(2) << setfill('0') << appointment.date.month << "/"
+        << right << setw(4) << setfill('0') << appointment.date.year << ","
+        << right << setw(2) << setfill('0') << appointment.time.hour << ":"
+        << right << setw(2) << setfill('0') << appointment.time.minute << ","
+        << left << setfill(' ') << appointment.status << ","
         << reason;
 
     outFile << endl;

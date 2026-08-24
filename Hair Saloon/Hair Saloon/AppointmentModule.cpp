@@ -121,12 +121,14 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
             return;
         }
         
+        // Parse the inputted date into appointment date and check if its a valid format
 		if (!parseDate(dateStr, appointment.date) || !isValidDate(appointment.date) || dateStr.empty()) {
 			clearScreen();
 			cout << "Invalid date format or invalid date! Please enter a valid date in DD/MM/YYYY format." << endl;
 			continue;
 		}
 
+		// Check if the appointment date is within tomorrow and a week from now
 		if (!isFutureAppointment(appointment.date)) {
 			clearScreen();
 			cout << "Invalid date! Please enter a date that is within tomorrow and a week from now." << endl;
@@ -145,13 +147,15 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
                 return;
 
             }
-
+            
+			// Parse the inputted time into appointment time and check if its a valid format
             if (!parseTime(timeSlotStr, appointment.time) || !isValidTime(appointment.time) || timeSlotStr.empty()) {
                 clearScreen();
                 cout << "Invalid time slot! Please enter a valid time in HH:MM format within 09:00 and 17:00, using 00 or 30 minutes." << endl;
                 continue;
             }
 
+			// Check if the time slot string is longer than 5 characters (HH:MM), make sure there is no seconds inputted or extra characters
             if (timeSlotStr.size() > 5) {
                 clearScreen();
                 cout << "Please enter only Hours and Minutes" << endl;
@@ -173,11 +177,13 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
 
     // After choosing date and time slot, user now choose person count.
     do {
+		// Get the remaining slot capacity for the selected date and time
         int remaining = getRemainingSlotCapacity(appointment.date, appointment.time, appointments);
 
         cout << "\nPerson(s) (1 to " << remaining << "): ";
         getline(cin, input);
 
+		// Try catch to prevent infinite loop caused by invalid input that cannot be converted to integer
         try {
             size_t pos;
             appointment.totalPersons = stoi(input, &pos);
@@ -209,6 +215,7 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
         int persons;
         const Service* serviceChosen = nullptr;
 
+		// Get the number of assigned persons and remaining persons for the appointment
         int assignedPersons = getAssignedPersons(appointment);
         int remainingPersons = appointment.totalPersons - assignedPersons;
 
@@ -226,6 +233,7 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
         cout << "Remaining Persons: " << remainingPersons;
         cout << "\t\tCurrent Services Added: " << appointment.serviceCount << "/" << MAX_SERVICES_PER_APPOINTMENT << endl;
 
+		// Shows the current services added to the appointment if any
         if (appointment.serviceCount > 0) {
             cout << "\nCurrent Services: " << endl;
             for (int i = 0; i < appointment.serviceCount; i++) {
@@ -279,6 +287,7 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
                 continue;
             }
 
+            // Proceed to invoice screen when every persons are assigned
 			clearScreen();
             viewInvoiceScreen(customer, customers, appointments, services, receipts, appointment);
             break;
@@ -306,6 +315,7 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
         // Points to the service that is selected
 		serviceChosen = &services[selection - '1'];
 
+		// Ask for gender and number of persons for
         do {
             cout << "Gender (M/F): ";
             cin >> gender;
@@ -322,17 +332,39 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
         } while (true);
 
         do {
+			// If there is only 1 remaining person, automatically assign 1 person to the service without asking for input
             if (remainingPersons == 1) {
                 persons = 1;
                 cout << "Only 1 person remaining, automatically assigning 1 person to this service." << endl;
             }
+
+			// else, ask for the number of persons to assign to the service
             else {
                 cout << "Person(s) (Not more than " << remainingPersons << "): ";
-                cin >> persons;
-                cin.ignore();
+                cin >> input;
+                getline(cin, input);
 
-                if (persons < 1 || persons > remainingPersons) {
-                    cout << "Invalid number of persons! Please enter a number between 1 and " << remainingPersons << "!" << endl << endl;
+                // Try catch to prevent infinite loop caused by invalid input that cannot be converted to integer
+                try {
+                    size_t pos;
+                    persons = stoi(input, &pos);
+
+                    if (persons < 1 || persons > remainingPersons) {
+                        cout << "Invalid number of persons! Please enter a number between 1 and " << remainingPersons << "!" << endl << endl;
+                        continue;
+                    }
+
+                    break;
+                }
+                catch (const invalid_argument&) {
+                    clearScreen();
+                    cout << "Invalid input! Please enter a whole number only!" << endl
+                        << "Within 1 to " << remainingPersons;
+                    continue;
+                }
+                catch (const out_of_range&) {
+                    clearScreen();
+                    cout << "Input is too large! Please enter a valid number between 1 to " << remainingPersons << endl;
                     continue;
                 }
             }
@@ -340,6 +372,8 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
             break;
         } while (true);
 
+
+		// Calculate the subtotal for the service based on gender and number of persons
         double servicePrice = (gender == 'M')? serviceChosen->malePrice : serviceChosen->femalePrice;
         double subtotal = servicePrice * persons;
 
@@ -358,6 +392,8 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
 				break;
 			}
 			else if (toupper(confirmation) == 'Y') {
+				// Add the service to the appointment's booked services
+
 				appointment.bookedServices[appointment.serviceCount].serviceId = serviceChosen->serviceId;
 				appointment.bookedServices[appointment.serviceCount].gender = gender;
 				appointment.bookedServices[appointment.serviceCount].persons = persons;
@@ -388,6 +424,8 @@ void cancelAppointment(Customer customer, vector<Appointment>& appointments) {
 
     do {
         string appointmentNo;
+
+		// Load every pending appointments for the customer into a separate vector
         loadCustomerPendingAppointments(customer, appointments, customerPendingAppointments);
 
         if (customerPendingAppointments.empty()) {
@@ -398,6 +436,7 @@ void cancelAppointment(Customer customer, vector<Appointment>& appointments) {
             return;
         }
 
+        // Show all of the pending appointments for the customer if any
         cout << "Appointments: \n";
         printPendingAppointments(customerPendingAppointments);
   
@@ -410,12 +449,16 @@ void cancelAppointment(Customer customer, vector<Appointment>& appointments) {
             return;
         }
         
+		// Find the appointment in the customer's pending appointments vector
         Appointment* appointmentPtr = findAppointment(customerPendingAppointments, appointmentNo);
 
+		// If the appointment is not found, show an error message and continue the loop
         if (appointmentPtr == nullptr) {
             cout << "Invalid appointment number." << endl;
             continue;
         }
+
+		// If the appointment is found, ask for confirmation to cancel the appointment
         else {
             do {
                 cout << "Are you sure you want to cancel this appointment? " << endl;
@@ -459,6 +502,8 @@ void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appoin
 
     do {
         string appointmentNo;
+
+		// Filter appointments that are assigned to the staff and store them in a separate vector
         loadStaffAssignedAppointments(staff, appointments, staffAssignedAppointments);
 
         if (staffAssignedAppointments.empty()) {
@@ -469,12 +514,10 @@ void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appoin
             return;
         }
 
-        cout << "Upcoming Appointments for " << staff.user.name << endl;
+        cout << "Assigned upcoming Appointments for " << staff.user.name << endl << endl;
         printPendingAppointments(staffAssignedAppointments);
 
-        cout << "\n(n = next page, p = previous page, q = quit" << endl <<
-            "Enter Appointment No. to manage status: ";
-
+        cout << "\nEnter Appointment No. to manage status: ";
         getline(cin, appointmentNo);
 
 		if (appointmentNo == "q" || appointmentNo == "Q") {
@@ -489,6 +532,8 @@ void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appoin
             cout << "Invalid appointment number" << endl;
             continue;
         }
+
+		// If the appointmente is found, we proceed to manage the status of the appointment
         else {
             appointmentStatusManager(appointmentPtr, staff, staffs, appointments, services);
         }
@@ -505,6 +550,7 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
         cout << "Appointment No. " << appointmentPtr->appointmentNo
             << " is being managed by ";
 
+		// Show all the assigned staff for the appointment
         for (int i = 0; i < appointmentPtr->staffCount; i++) {
             for (const Staff& assignedStaff : staffs) {
                 if (appointmentPtr->assignedStaffIds[i] == assignedStaff.staffCode) {
@@ -524,6 +570,7 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
             << setw(13) << "Persons(s)"
             << endl;
 
+		// Show all the booked services for the appointment
         for (int i = 0; i < appointmentPtr->serviceCount; i++) {
             cout << left << setw(5) << (i + 1)
                 << setw(18) << getServiceNameById(appointmentPtr->bookedServices[i].serviceId, services)
@@ -546,6 +593,7 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
 			clearScreen();
 
             do {
+				// Confirmation to mark the appointment as completed
                 cout << "Appointment No. " << appointmentPtr->appointmentNo << " is done?" << endl <<
                     "Confirm (Y/N): ";
 
@@ -553,8 +601,10 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
 				cin.ignore();
 
 				if (toupper(confirmation) == 'Y') {
+					// Mark the appointment as completed
 					appointmentPtr->status = "Completed";
 
+					// Update the appointmentDone count for each assigned staff member
                     for (int i = 0; i < appointmentPtr->staffCount; i++) {
                         for (Staff& assignedStaff : staffs) {
                             if (appointmentPtr->assignedStaffIds[i] == assignedStaff.staffCode) {
@@ -564,6 +614,7 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
                         }
                     }
 
+					// Update the appointments and staffs files after marking the appointment as completed
 					overwriteAppointmentFile(appointments);
                     overwriteStaffFile(staffs);
 
@@ -589,7 +640,8 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
 			clearScreen();
 			
             do {
-                cout << "Q to exit";
+				// Confirmation to cancel the appointment
+                cout << "Q to exit" << endl;
                 cout << "Why is " << appointmentPtr->appointmentNo << " being cancelled?" << endl <<
                     "Reason: ";
 
@@ -608,12 +660,20 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
 				cin.ignore();
 
 				if (toupper(confirmation) == 'Y') {
-					appointmentPtr->status = "Cancelled";
-					overwriteAppointmentFile(appointments);
+					// Mark the appointment as cancelled and save the reason for cancellation
+                    Appointment* actualPtr = findAppointment(appointments, appointmentPtr->appointmentNo); // Find the actual appointment in the main appointments vector
+                    if (actualPtr != nullptr) {
+                        actualPtr->status = "Cancelled";
+                        overwriteAppointmentFile(appointments);
+                        appendCancelledAppointmentToFile(*actualPtr, reason);
+                    }
 
-					clearScreen();
-					cout << "Appointment No. " << appointmentPtr->appointmentNo << " has been cancelled!" << endl;
-					return;
+                    cout << "Appointment No. " << appointmentPtr->appointmentNo << " has been cancelled successfully." << endl;
+                    cout << "Press enter to continue...";
+                    cin.get();
+
+                    clearScreen();
+                    return;
 				}
 				else if (toupper(confirmation) == 'N') {
 					clearScreen();
@@ -646,6 +706,7 @@ void allAppointmentsView(Customer customer, vector<Customer>& customers, vector<
     vector<Appointment> customerPendingAppointments{};
 
     do {
+		// Identify the customer in the customers vector based on phone number and load their details
         for (int i = 0; i < customers.size(); i++) {
             if (customer.user.phoneNo == customers[i].user.phoneNo) {
                 customer.user.name = customers[i].user.name;
@@ -663,6 +724,7 @@ void allAppointmentsView(Customer customer, vector<Customer>& customers, vector<
             return;
         }
 
+		// Load the pending appointments for the customer into a separate vector
         loadCustomerPendingAppointments(customer, appointments, customerPendingAppointments);
 
         if (customerPendingAppointments.empty()) {
@@ -673,6 +735,7 @@ void allAppointmentsView(Customer customer, vector<Customer>& customers, vector<
             return;
         }
 
+		// Show all of the pending appointments for the customer if any
         cout << "Customer Name: " << customer.user.name << endl;
         cout << "Pending Appointments" << endl;
         printPendingAppointments(customerPendingAppointments);
@@ -691,6 +754,7 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
     vector<Appointment> staffCompletedAppointments{};
 
 	do {
+		// Load the completed appointments for the staff into a separate vector
         loadStaffCompletedAppointments(staff, appointments, staffCompletedAppointments);
 
         if (staffCompletedAppointments.empty()) {
@@ -701,6 +765,7 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
             return;
         }
 
+		// Page for the completed appointments for the staff member, max of 10 appointments per page
         int totalAppointments = int(staffCompletedAppointments.size());
         int totalPages = int(ceil(static_cast<double>(totalAppointments) / MAX_APPOINTMENTS_PER_PAGE));
 
@@ -715,6 +780,7 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
         int start = (currentPage - 1) * MAX_APPOINTMENTS_PER_PAGE;
         const Appointment* appointmentPtr = &staffCompletedAppointments[start];
 		
+		// Show the completed appointments for the staff member, max of 10 appointments per page
         for (int i = 0; i < MAX_APPOINTMENTS_PER_PAGE && (start + i) < totalAppointments; i++) {
             cout << left << setw(20) << appointmentPtr->appointmentNo
                 << setw(24) << appointmentPtr->customerName
@@ -742,6 +808,7 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
 
         switch (selection) {
         case 'n':
+            // Next page
             if (currentPage < totalPages) {
                 currentPage++;
                 clearScreen();
@@ -752,6 +819,7 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
             }
             break;
         case 'p':
+            // Previous page
             if (currentPage > 1) {
                 currentPage--;
                 clearScreen();
@@ -762,6 +830,7 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
             }
             break;
         case 'q':
+            // Exit
             clearScreen();
             return;
         default:
@@ -779,6 +848,7 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
     vector<Appointment> unassignedAppointments{};
 
     do {
+		// Load unassigned appointments into a separate vector
         string appointmentNo;
         loadUnassignedAppointments(appointments, unassignedAppointments);
 
@@ -804,6 +874,7 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
         int start = (currentPage - 1) * MAX_APPOINTMENTS_PER_PAGE;
         const Appointment* appointmentDisplayPtr = &unassignedAppointments[start];
 
+		// Show the unassigned appointments for the admin to assign, max of 10 appointments per page
         for (int i = 0; i < MAX_APPOINTMENTS_PER_PAGE && (start + i) < totalAppointments; i++) {
             cout << left << setw(20) << appointmentDisplayPtr->appointmentNo
                 << setw(24) << appointmentDisplayPtr->customerName
@@ -831,6 +902,7 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
         }
 
         if (tolower(appointmentNo[0]) == 'n') {
+			// Next page
             if (currentPage < totalPages) {
                 currentPage++;
                 clearScreen();
@@ -841,6 +913,7 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
             }
         }
         else if (tolower(appointmentNo[0]) == 'p') {
+			// Previous page
             if (currentPage > 1) {
                 currentPage--;
                 clearScreen();
@@ -851,10 +924,12 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
             }
         }
         else if (tolower(appointmentNo[0]) == 'q') {
+			// Exit
             clearScreen();
             return;
         }
 
+		// If the input is not n, p, or q, we assume it is an appointment number and try to find the appointment in the unassigned appointments vector
         Appointment* appointmentPtr = findAppointment(appointments, appointmentNo);
 
         if (appointmentPtr == nullptr) {
@@ -862,6 +937,8 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
             cout << "Invalid appointment number" << endl;
             continue;
         }
+
+		// If the appointment is found, we proceed to assign staff to the appointment
         else {
             assignAppointmentToStaff(appointmentPtr, appointments, staffs, services);
         }
@@ -874,6 +951,7 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
     int staffCount = 0; // Initialise
 
 	do {
+		// Displaying information about the appointments and how many staffs are needed to be assigned
         cout << "Assigning Appointment No. " << appointmentPtr->appointmentNo
             << "\t(" << appointmentPtr->totalPersons << " staff needed!)" << endl
             << "Date: " << setw(2) << setfill('0') << appointmentPtr->date.day << "/" << right << setw(2) << appointmentPtr->date.month << "/" << left << setw(4) << appointmentPtr->date.year << setfill(' ') << "\t\t\t"
@@ -885,6 +963,7 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
             << setw(13) << "Persons(s)"
             << endl;
 
+		// Show all the booked services for the appointment
         for (int i = 0; i < appointmentPtr->serviceCount; i++) {
             cout << left << setw(6) << (i + 1)
                 << setw(18) << getServiceNameById(appointmentPtr->bookedServices[i].serviceId, services)
@@ -893,6 +972,7 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
                 << endl;
         }
         
+		// Show the currently assigned staff for the appointment
         cout << "\nCurrently Assigned Staff: ";
         if (appointmentPtr->staffCount == 0) {
             cout << "None";
@@ -901,6 +981,7 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
             for (int i = 0; i < appointmentPtr->staffCount; i++) {
                 string staffName = appointmentPtr->assignedStaffIds[i];
 
+				// Identify the staff name based on the staff ID in the assignedStaffIds array
                 for (const Staff& staff : staffs) {
                     if (staff.staffCode == appointmentPtr->assignedStaffIds[i]) {
                         staffName = staff.user.name;
@@ -912,18 +993,21 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
                     cout << ", ";
                 }
 
+				// Display the staff name for the assigned staff
                 cout << staffName;
             }
         }
 
+		// Show the available staff for the appointment based on their availability and whether they have already been assigned to the appointment
         cout << "\nAvailable Staff List: " << endl;
         cout << left << setw(13) << "Staff ID" << setw(25) << "Name" << endl;
 
         bool anyAvailable = false;
 
         for (Staff& staff : staffs) {
-            bool alreadyAssigned = false;
+            bool alreadyAssigned = false; // Initialise a flag to check if the staff has been assigned to an another appointment within the time slot
 
+			// If the staff has already been assigned to the appointment, we skip them from the available staff list (in file)
             for (int i = 0; i < appointmentPtr->staffCount; i++) {
                 if (appointmentPtr->assignedStaffIds[i] == staff.staffCode) {
                     alreadyAssigned = true;
@@ -931,12 +1015,14 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
                 }
             }
 
+			// If the staff is not already assigned to the appointment and is available for the appointment's date and time, we display them in the available staff list
             if (!alreadyAssigned && isStaffAvailable(staff.staffCode, *appointmentPtr, appointments)) {
                 anyAvailable = true;
                 cout << left << setw(13) << staff.staffCode << setw(25) << staff.user.name << endl;
             }
         }
         
+		// If no available staff are found for the appointment's date and time, we display a message and return to the previous menu
         if (!anyAvailable) {
             cout << "No available staff found for this time slot." << endl;
             cout << "Press enter to continue...";
@@ -945,6 +1031,7 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
             return;
         }
 
+		// If the number of assigned staff is equal to or greater than the total number of persons required for the appointment, we display a message and return to the previous menu
         if (appointmentPtr->staffCount >= appointmentPtr->totalPersons) {
             cout << "\nAll required staff have already been assigned." << endl;
             cout << "Press enter to continue...";
@@ -953,6 +1040,7 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
             return;
         }
 
+		// Prompt the admin to assign staff to the appointment
         cout << "\nAssign staff " << (appointmentPtr->staffCount + 1) << " of " << appointmentPtr->totalPersons << "\n(enter Staff ID or q to quit): ";
         
         string staffId;
@@ -967,6 +1055,7 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
         Staff* selectedStaff = nullptr;
         bool alreadyAssigned = false;
 
+		// Check if the staff has already been assigned to the appointment (in memory) (different than the one above)
         for (int i = 0; i < appointmentPtr->staffCount; i++) {
             if (appointmentPtr->assignedStaffIds[i] == staffId) {
                 alreadyAssigned = true;
@@ -980,6 +1069,7 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
             continue;
         }
 
+		// Check if the staff ID entered by the admin exists in the staffs vector and assign the pointer to selectedStaff if found
         for (Staff& staff : staffs) {
             if (staff.staffCode == staffId) {
                 selectedStaff = &staff;
@@ -993,6 +1083,7 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
             continue;
         }
 
+		// Check if the staff is available for the appointment's date and time by calling the isStaffAvailable function (in memory)
         if (!isStaffAvailable(staffId, *appointmentPtr, appointments)) {
             clearScreen();
             cout << "This staff is not available for the selected date and time!" << endl;
@@ -1007,6 +1098,7 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
             cin >> confirmation;
             cin.ignore();
 
+			// If the admin confirms the assignment, we add the staff ID to the assignedStaffIds array of the appointment and increment the staffCount. We then update the appointments file to save the changes.
             if (toupper(confirmation) == 'Y') {
                 appointmentPtr->assignedStaffIds[appointmentPtr->staffCount] = staffId;
                 appointmentPtr->staffCount++;
@@ -1015,6 +1107,7 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
                 clearScreen();
                 cout << "Staff " << selectedStaff->user.name << " has been assigned to Appointment No. " << appointmentPtr->appointmentNo << "!" << endl;
 
+				// If the number of assigned staff is equal to the total number of persons required for the appointment, we display a message and return to the previous menu
                 if (appointmentPtr->staffCount == appointmentPtr->totalPersons) {
                     cout << "All required staff have been assigned." << endl;
                     return;
@@ -1039,30 +1132,35 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
 // ===============================================================================================
 // Helpers
 string generateNextAppointmentNo(const vector<Appointment>& appointments) {
-    static int nextNumber = 0;
+	// Initialize a static variable to keep track of the next appointment number across function calls
+    static int nextAppointmentNumber = 0;
 
-    if (nextNumber == 0) {
+    if (nextAppointmentNumber == 0) {
         for (const Appointment& appointment : appointments) {
+			// Extract the appointment number from the appointment object
             const string& id = appointment.appointmentNo;
 
+			// Check if the appointment number is in the correct format (APxxxxx) and update the nextAppointmentNumber accordingly
             if (id.length() == 7 && id.substr(0, 2) == "AP") {
                 try {
-                    nextNumber = max(nextNumber, stoi(id.substr(2)));
+					// If the appointment number is valid, we convert the numeric part to an integer and update nextAppointmentNumber if it is greater than the current value
+                    nextAppointmentNumber = max(nextAppointmentNumber, stoi(id.substr(2)));
                 }
                 catch (...) {
                 }
             }
         }
 
-        nextNumber++;
+        nextAppointmentNumber++;
     }
 
     stringstream ss;
-    ss << "AP" << setw(5) << setfill('0') << nextNumber++;
+	ss << "AP" << setw(5) << setfill('0') << nextAppointmentNumber++; // Increment the nextAppointmentNumber for the next call to this function
     return ss.str();
 }
 
 string getServiceNameById(const string& serviceId, const vector<Service>& services) {
+	// Search for the service name based on the service ID in the services vector
     for (const Service& service : services) {
         if (service.serviceId == serviceId) {
             return service.name;
@@ -1077,6 +1175,7 @@ bool parseDate(const string& input, Date& date) {
     char slash1, slash2;
     stringstream ss(input);
 
+	// We expect the date format to be DD/MM/YYYY, so we read the day, month, and year from the input string and check if the slashes are in the correct positions.
     if (ss >> date.day >> slash1 >> date.month >> slash2 >> date.year) {
         return slash1 == '/' && slash2 == '/';
     }
@@ -1089,6 +1188,7 @@ bool parseTime(const string& input, Time& time) {
     char colon;
     stringstream ss(input);
 
+	// We expect the time format to be HH:MM, so we read the hour and minute from the input string and check if the colon is in the correct position.
     if (ss >> time.hour >> colon >> time.minute) {
         return colon == ':';
     }
@@ -1097,18 +1197,23 @@ bool parseTime(const string& input, Time& time) {
 }
 
 bool isLeapYear(int year) {
+    // Check for leap year
     return (year % 400 == 0) || (year % 100 != 0 && year % 4 == 0);
 }
 
 bool isValidDate(const Date& date) {
     stringstream ss;
+
+	// Format the date into a string in the format DD/MM/YYYY for regex validation
     ss << setw(2) << setfill('0') << date.day << "/"
         << setw(2) << setfill('0') << date.month << "/"
         << setw(4) << setfill('0') << date.year;
 
     string dateStr = ss.str();
 
-    regex datePattern(R"(^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/(2026|20[3-9][0-9]|2[1-9][0-9]{2})$)");
+	// Regex validation for the date format DD/MM/YYYY
+    // Ensuring that the day is between 01 and 31, the month is between 01 and 12, and the year is between 2000 and 2999.
+    regex datePattern(R"(^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/(20[0-9][0-9]|2[1-9][0-9]{2})$)");
 
     if (!regex_match(dateStr, datePattern)) {
         return false;
@@ -1122,9 +1227,13 @@ bool isValidDate(const Date& date) {
 
 bool isValidTime(const Time& time) {
     stringstream ss;
+
+	// Format the time into a string in the format HH:MM for regex validation
     ss << setw(2) << setfill('0') << time.hour << ":"
         << setw(2) << setfill('0') << time.minute;
 
+	// Regex validation for the time format HH:MM
+	// Ensuring that the hour is between 09 and 17, and the minute is either 00 or 30. And only 17:00 is allowed as the last time slot.
     regex timePattern(R"(^(09|1[0-6]):(00|30)$|^17:00$)");
     return regex_match(ss.str(), timePattern);
 }
@@ -1175,18 +1284,20 @@ bool isFutureAppointment(const Date& appointmentDate) {
 }
 
 bool sameDate(const Date& date1, const Date& date2) {
+	// Check if two dates are the same by comparing their day, month, and year
     return date1.day == date2.day &&
         date1.month == date2.month &&
         date1.year == date2.year;
 }
 
 bool sameTime(const Time& time1, const Time& time2) {
+	// Check if two times are the same by comparing their hour and minute
     return time1.hour == time2.hour &&
         time1.minute == time2.minute;
 }
 
 int getBookedPersonsForSlot(const Date& date, const Time& time, const vector<Appointment>& appointments) {
-    int totalBooked = 0;
+	int totalBooked = 0; // Initialise the total number of booked persons for the given date and time slot
 
     for (const Appointment& appt : appointments) {
 		// Check if the selected appointment date and time slot matches the existing appointments and is not cancelled
@@ -1197,21 +1308,28 @@ int getBookedPersonsForSlot(const Date& date, const Time& time, const vector<App
         }
     }
 
+	// Return the total number of booked persons for the given date and time slot
     return totalBooked;
 }
 
 bool canBookSlot(const Date& date, const Time& time, int newPersons, const vector<Appointment>& appointments) {
+	// Get the total number of booked persons for the given date and time slot
     int bookedPersons = getBookedPersonsForSlot(date, time, appointments);
+
+    // Check if the total number of booked persons for the given date and time slot plus the new persons to be booked does not exceed the maximum allowed persons per slot (7)
 	return bookedPersons + newPersons <= MAX_PERSONS_PER_SLOT; // Maximum of 7 persons per slot
 }
 
 int getRemainingSlotCapacity(const Date& date, const Time& time, const vector<Appointment>& appointments) {
+	// Get the total number of booked persons for the given date and time slot
     int remaining = MAX_PERSONS_PER_SLOT - getBookedPersonsForSlot(date, time, appointments);
     return (remaining < 0) ? 0 : remaining; // Ensure it doesn't go below 0
 }
 
 int getAssignedPersons(const Appointment& appointment) {
-    int totalAssigned = 0;
+	int totalAssigned = 0; // Initialise the total number of assigned persons for the given appointment
+
+	// Check the number of persons assigned to each booked service in the appointment and sum them up
     for (int i = 0; i < appointment.serviceCount; i++) {
         totalAssigned += appointment.bookedServices[i].persons;
     }
@@ -1220,8 +1338,10 @@ int getAssignedPersons(const Appointment& appointment) {
 }
 
 void loadCustomerPendingAppointments(Customer& customer, vector<Appointment>& appointments, vector<Appointment>& customerPendingAppointments) {
+	// Clear the customerPendingAppointments vector to ensure it is empty before loading new data
     customerPendingAppointments.clear();
 
+	// Check each appointment in the appointments vector and load the pending appointments for the customer into a separate vector
     for (Appointment& appointment : appointments) {
         if (customer.user.name == appointment.customerName && appointment.status == "Pending") {
             customerPendingAppointments.push_back(appointment);
@@ -1230,8 +1350,10 @@ void loadCustomerPendingAppointments(Customer& customer, vector<Appointment>& ap
 }
 
 void loadStaffAssignedAppointments(Staff& staff, vector<Appointment>& appointments, vector<Appointment>& staffAssignedAppointments) {
+	// Clear the staffAssignedAppointments vector to ensure it is empty before loading new data
     staffAssignedAppointments.clear();
 
+	// Check each appointment in the appointments vector and load the assigned appointments for the staff into a separate vector
     for (Appointment& appointment : appointments) {
         for (int i = 0; i < appointment.staffCount; i++) {
             if (staff.staffCode == appointment.assignedStaffIds[i] && appointment.status == "Pending") {
@@ -1242,8 +1364,10 @@ void loadStaffAssignedAppointments(Staff& staff, vector<Appointment>& appointmen
 }
 
 void loadStaffCompletedAppointments(Staff& staff, vector<Appointment>& appointments, vector<Appointment>& staffCompletedAppointments) {
+	// Clear the staffCompletedAppointments vector to ensure it is empty before loading new data
     staffCompletedAppointments.clear();
 
+	// Check each appointment in the appointments vector and load the completed appointments for the staff into a separate vector
     for (Appointment& appointment : appointments) {
         for (int i = 0; i < appointment.staffCount; i++) {
             if (staff.staffCode == appointment.assignedStaffIds[i] && appointment.status == "Completed") {
@@ -1254,8 +1378,10 @@ void loadStaffCompletedAppointments(Staff& staff, vector<Appointment>& appointme
 }
 
 void loadUnassignedAppointments(vector<Appointment>& appointments, vector<Appointment>& unassignedAppointments) {
+	// Clear the unassignedAppointments vector to ensure it is empty before loading new data
     unassignedAppointments.clear();
 
+	// Check each appointment in the appointments vector and load the unassigned appointments into a separate vector
     for (Appointment& appointment : appointments) {
         int assignedCount = 0;
 
@@ -1272,6 +1398,7 @@ void loadUnassignedAppointments(vector<Appointment>& appointments, vector<Appoin
 }
 
 void printPendingAppointments(const vector<Appointment> loadedAppointments) {
+    // Header
     cout << left << setw(20) << setfill(' ') << "Appointment No."
         << setw(14) << "Date"
         << setw(9) << "Time"
@@ -1279,6 +1406,7 @@ void printPendingAppointments(const vector<Appointment> loadedAppointments) {
         << setw(11) << "Status"
         << setw(15) << "Total (RM)" << endl;
 
+	// Show all of the pending appointments for the customer if any
     for (const Appointment& appointment : loadedAppointments) {
         cout << left << setw(20) << setfill(' ') << appointment.appointmentNo
             << setw(2) << setfill('0') << appointment.date.day << "/" << right << setw(2) << setfill('0') << appointment.date.month << "/" << left << setw(4) << setfill('0') << appointment.date.year << setw(4) << setfill(' ') << " "
@@ -1290,17 +1418,24 @@ void printPendingAppointments(const vector<Appointment> loadedAppointments) {
 }
 
 Appointment* findAppointment(vector<Appointment>& appointments, const string& appointmentNo) {
+	// Find the appointment in the appointments vector based on the appointment number
+	// Based on the conditions (e.g, customer's appointment, staff's assigned appointment, admin's unassigned appointment), we can use this function to find the appointment in the appointments vector
+    // Return a pointer to it. If not found, return nullptr.
     return findBy(appointments, [&](Appointment& appointment) {
         return appointment.appointmentNo == appointmentNo;
         });
 }
 
 bool isStaffAvailable(const string& staffId, const Appointment& targetAppointment, vector<Appointment> appointments) {
+	// Check if the staff is available for the target appointment's date and time by iterating through all appointments
     for (const Appointment& appointment : appointments) {
+
+		// If a staff is already assigned to the target appointment, we skip checking that appointment
         if (appointment.appointmentNo == targetAppointment.appointmentNo) {
             continue;
         }
 
+		// Check if the staff is already assigned to another appointment at the same date and time as the target appointment
         if (appointment.date.day == targetAppointment.date.day &&
             appointment.date.month == targetAppointment.date.month &&
             appointment.date.year == targetAppointment.date.year &&
