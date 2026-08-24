@@ -1052,50 +1052,50 @@ void viewPOSScreen(vector<Item> &items, vector<Customer> &customers, vector<Serv
 
 // Helpers
 string generateNextInvoiceId(vector<Invoice>& invoices) {
-	static int nextNumber = 0;
+	static int nextInvoiceNumber = 0;
 
-	if (nextNumber == 0) {
+	if (nextInvoiceNumber == 0) {
 		for (const Invoice& invoice : invoices) {
 			const string& id = invoice.invoiceId;
 
 			if (id.length() == 8 && id.substr(0, 3) == "INV") {
 				try {
-					nextNumber = max(nextNumber, stoi(id.substr(3)));
+					nextInvoiceNumber = max(nextInvoiceNumber, stoi(id.substr(3)));
 				}
 				catch (...) {
 				}
 			}
 		}
 
-		nextNumber++;
+		nextInvoiceNumber++;
 	}
 
 	stringstream ss;
-	ss << "INV" << setw(5) << setfill('0') << nextNumber++;
+	ss << "INV" << setw(5) << setfill('0') << nextInvoiceNumber++;
 	return ss.str();
 }
 
 string generateNextReceiptId(vector<Receipt>& receipts) {
-	static int nextNumber = 0;
+	static int nextReceiptNumber = 0;
 
-	if (nextNumber == 0) {
+	if (nextReceiptNumber == 0) {
 		for (const Receipt& receipt : receipts) {
 			const string& id = receipt.receiptId;
 
 			if (id.length() == 8 && id.substr(0, 3) == "REC") {
 				try {
-					nextNumber = max(nextNumber, stoi(id.substr(3)));
+					nextReceiptNumber = max(nextReceiptNumber, stoi(id.substr(3)));
 				}
 				catch (...) {
 				}
 			}
 		}
 
-		nextNumber++;
+		nextReceiptNumber++;
 	}
 
 	stringstream ss;
-	ss << "REC" << setw(5) << setfill('0') << nextNumber++;
+	ss << "REC" << setw(5) << setfill('0') << nextReceiptNumber++;
 	return ss.str();
 }
 

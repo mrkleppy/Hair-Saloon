@@ -19,7 +19,6 @@ void loadData(vector<Item>& items, vector<Service>& services, vector<Staff>& sta
     readReceiptFile(receipts); // Load receipt data from file
     readInvoiceFile(invoices); // Load invoice data from file
 }
-
 int main() {
     // Varicable declaration
     int selection = 0;

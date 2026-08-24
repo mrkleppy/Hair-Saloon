@@ -24,6 +24,8 @@ void loadCustomerPendingAppointments(Customer& customer, vector<Appointment>& ap
 
 template <typename T, typename Predicate>
 T* findBy(vector<T>& items, Predicate condition) {
+
+	// Iterate through the vector and return a pointer to the first item that satisfies the condition
     for (T& item : items) {
         if (condition(item)) {
             return &item;
