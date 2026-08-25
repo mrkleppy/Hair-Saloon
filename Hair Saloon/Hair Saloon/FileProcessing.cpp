@@ -162,7 +162,7 @@ void readAppointmentFile(vector<Appointment>& appointments) {
             appointment.time.hour = stoi(elements.at(index++));
             appointment.time.minute = stoi(elements.at(index++));
 
-            appointment.status = elements.at(index++);
+            appointment.status = stringToStatus(elements.at(index++));
             appointment.customerName = elements.at(index++);
             appointment.staffCount = stoi(elements.at(index++));
             appointment.total = stod(elements.at(index++));
@@ -234,8 +234,8 @@ void readReceiptFile(vector<Receipt>& receipts) {
 
             receipt.customerName = elements.at(index++);
             receipt.totalPrice = stod(elements.at(index++));
-            receipt.status = elements.at(index++);
-            receipt.paymentType = elements.at(index++); // reconstruct into structure
+            receipt.status = stringToStatus(elements.at(index++));
+            receipt.paymentType = stringToPaymentType(elements.at(index++)); // reconstruct into structure
 
             receipts.push_back(receipt); // store into the vector
         }
@@ -404,7 +404,7 @@ void overwriteAppointmentFile(vector<Appointment>& appointments) {
             << appointment.date.year << ","
             << appointment.time.hour << ","
             << appointment.time.minute << ","
-            << appointment.status << ","
+            << statusToString(appointment.status) << ","
             << appointment.customerName << ","
             << appointment.staffCount << ","
             << fixed << setprecision(2) << appointment.total;
@@ -445,8 +445,8 @@ void overwriteReceiptFile(vector<Receipt>& receipts) {
             << receipt.date.year << ","
             << receipt.customerName << ","
             << receipt.totalPrice << ","
-            << receipt.status << ","
-            << receipt.paymentType;
+            << statusToString(receipt.status) << ","
+            << paymentTypeToString(receipt.paymentType);
 
         outFile << "\n";
     }
@@ -501,7 +501,7 @@ void appendAppointmentToFile(Appointment appointment) {
         << appointment.date.year << ","
         << appointment.time.hour << ","
         << appointment.time.minute << ","
-        << appointment.status << ","
+        << statusToString(appointment.status) << ","
         << appointment.customerName << ","
         << appointment.staffCount << ","
         << fixed << setprecision(2) << appointment.total;
@@ -542,7 +542,7 @@ void appendCancelledAppointmentToFile(Appointment appointment, string& reason) {
         << right << setw(4) << setfill('0') << appointment.date.year << ","
         << right << setw(2) << setfill('0') << appointment.time.hour << ":"
         << right << setw(2) << setfill('0') << appointment.time.minute << ","
-        << left << setfill(' ') << appointment.status << ","
+        << left << setfill(' ') << statusToString(appointment.status) << ","
         << reason;
 
     outFile << endl;
@@ -594,8 +594,8 @@ void appendReceiptToFile(Receipt receipt) {
         << receipt.date.year << ","
         << receipt.customerName << ","
         << receipt.totalPrice << ","
-        << receipt.status << ","
-        << receipt.paymentType;
+        << statusToString(receipt.status) << ","
+        << paymentTypeToString(receipt.paymentType);
 
     outFile << endl;
 

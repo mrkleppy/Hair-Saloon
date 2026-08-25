@@ -10,7 +10,7 @@ using namespace std;
 void appointmentManager(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments, vector<Receipt>& receipts, vector<Service>& services);
 
 // Staff side Appointment Management Module
-void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services);
+void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services, vector<Receipt>& receipts);
 void allAppointmentsView(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments);
 void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments);
 
