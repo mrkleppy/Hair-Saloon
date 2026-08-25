@@ -28,7 +28,7 @@ void displayReceipt(vector<Receipt> receipts) {
         cout << left << setw(15) << receipt.receiptId 
             << setw(15) << receipt.referenceId 
             << setw(15) << format("{:02d}/{:02d}/{:04d}", receipt.date.day, receipt.date.month, receipt.date.year)
-            << setw(20) << receipt.status << endl;
+            << setw(20) << statusToString(receipt.status) << endl;
     }
 }
 
@@ -36,7 +36,7 @@ void displayReceipt(vector<Receipt> receipts) {
 void updateReceiptStatus(Receipt receipt, vector<Receipt>& receipts) {
     for (int i = 0; i < receipts.size(); i++) {
         if (receipt.receiptId == receipts[i].receiptId) {
-            receipts[i].status = "Picked Up";
+            receipts[i].status = PICKED_UP;
             break;
         }
     }
@@ -45,7 +45,7 @@ void updateReceiptStatus(Receipt receipt, vector<Receipt>& receipts) {
 // filter out the receipts with "Not Picked Up" status
 void getNotPickedUpReceipt(vector<Receipt>& notPickedUpReceipts, vector<Receipt>& receipts) {
     for (Receipt receipt : receipts) {
-        if (receipt.status == "Not Picked Up") {
+        if (receipt.status == NOT_PICKED_UP) {
             notPickedUpReceipts.push_back(receipt);
         }
     }
@@ -293,7 +293,7 @@ void customerMaintenancePage(vector<Customer>& customers, vector<Item>& items, v
         cout << "Customer Maintenance" << endl;
         cout << "=====================\n";
         cout << "1. Redeem points\n2. View all appointment\n3. Manage Receipts\n0. Exit" << endl << endl;
-        cout << "selection: ";
+        cout << "Selection: ";
         getline(cin, input);
 
         if (input.empty()) { // cannot be empty
@@ -597,6 +597,10 @@ void staffMaintenancePage(vector<Staff>& staffs, vector<Customer>& customers) {
         int totalStaff = int(staffs.size()); // get total staff in vector
         int totalPages = int(ceil(static_cast<double>(totalStaff) / MAX_STAFF_PER_PAGE)); // calculate total page needed to display
 
+        if (totalPages == 0) {
+            totalPages = 1;
+        }
+
         cout << "Staff Maintenance" << endl;
         cout << "==================\n\n";
         cout << left << setw(20) << "Staff code" << setw(25) << "Name" << setw(15) << "Phone No." << setw(15) << "Salary" << setw(16) << "Appointment done" << endl;
@@ -814,7 +818,7 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
             break;
         case 2: // navigate to view assigned appointment (appointment module)
             clearScreen();
-            assignedAppointmentsView(staff, staffs, appointments, services);
+            assignedAppointmentsView(staff, staffs, appointments, services, receipts);
             break;
         case 3: // navigate to inventory maintenance (inventory module)
             clearScreen();

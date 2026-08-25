@@ -17,12 +17,12 @@ using namespace std;
 // ==============================================================================================
 // Member side Appointment Management Module
 void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments, vector<Receipt>& receipts, vector<Service>& services);
-void cancelAppointment(Customer customer, vector<Appointment>& appointments);
+void cancelAppointment(Customer customer, vector<Appointment>& appointments, vector<Receipt>& receipts);
 
 // ==============================================================================================
 // Staff side Appointment Management Module
-void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services);
-void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services);
+void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services, vector<Receipt>& receipts);
+void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services, vector<Receipt>& receipts);
 void allAppointmentsView(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments);
 
 // ==============================================================================================
@@ -81,7 +81,7 @@ void appointmentManager(Customer customer, vector<Customer>& customers, vector<A
 
         case '2':
             clearScreen();
-            cancelAppointment(customer, appointments);
+            cancelAppointment(customer, appointments, receipts);
             break;
 
         case '0':
@@ -104,7 +104,7 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
     appointment.staffCount = 0;
     appointment.totalPersons = 0;
     appointment.total = 0;
-    appointment.status = "Pending";
+    appointment.status = PENDING;
 
     string dateStr, timeSlotStr, input;
     clearScreen();
@@ -341,7 +341,6 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
 			// else, ask for the number of persons to assign to the service
             else {
                 cout << "Person(s) (Not more than " << remainingPersons << "): ";
-                cin >> input;
                 getline(cin, input);
 
                 // Try catch to prevent infinite loop caused by invalid input that cannot be converted to integer
@@ -415,7 +414,7 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
 }
 
 // Remove Appointment
-void cancelAppointment(Customer customer, vector<Appointment>& appointments) {
+void cancelAppointment(Customer customer, vector<Appointment>& appointments, vector<Receipt>& receipts) {
     clearScreen();
 
     char confirmation;
@@ -469,11 +468,20 @@ void cancelAppointment(Customer customer, vector<Appointment>& appointments) {
                 if (toupper(confirmation) == 'Y') {
 					Appointment* actualPtr = findAppointment(appointments, appointmentNo); // Find the actual appointment in the main appointments vector
                     if (actualPtr != nullptr) {
-                        actualPtr->status = "Cancelled";
+                        actualPtr->status = CANCELLED;
                         overwriteAppointmentFile(appointments);
                         appendCancelledAppointmentToFile(*actualPtr, reason);
                     }
                     
+					// Update the status of the receipt associated with the appointment to CANCELLED
+                    for (Receipt& receipt : receipts) {
+                        if (receipt.referenceId == appointmentPtr->appointmentNo) {
+                            receipt.status = CANCELLED;
+                            break;
+                        }
+                    }
+                    overwriteReceiptFile(receipts);
+
                     cout << "Appointment cancelled successfully." << endl;
                     cout << "Press enter to continue...";
                     cin.get();
@@ -496,7 +504,7 @@ void cancelAppointment(Customer customer, vector<Appointment>& appointments) {
 // ==============================================================================================
 // Staff side Appointment Management Module
 // View assigned Appointments
-void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services) {
+void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services, vector<Receipt>& receipts) {
     clearScreen();
     vector<Appointment> staffAssignedAppointments{};
 
@@ -535,13 +543,13 @@ void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appoin
 
 		// If the appointmente is found, we proceed to manage the status of the appointment
         else {
-            appointmentStatusManager(appointmentPtr, staff, staffs, appointments, services);
+            appointmentStatusManager(appointmentPtr, staff, staffs, appointments, services, receipts);
         }
     } while(true);
 }   
 
 // Manage Appointment Status
-void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services) {
+void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services, vector<Receipt>& receipts) {
     string reason;
     char selection, confirmation;
     clearScreen();
@@ -602,7 +610,12 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
 
 				if (toupper(confirmation) == 'Y') {
 					// Mark the appointment as completed
-					appointmentPtr->status = "Completed";
+                    Appointment* actualPtr = findAppointment(appointments, appointmentPtr->appointmentNo); // Find the actual appointment in the main appointments vector
+
+					// Update the status of the appointment to COMPLETED
+                    if (actualPtr != nullptr) {
+                        actualPtr->status = COMPLETED;
+                    }
 
 					// Update the appointmentDone count for each assigned staff member
                     for (int i = 0; i < appointmentPtr->staffCount; i++) {
@@ -617,6 +630,15 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
 					// Update the appointments and staffs files after marking the appointment as completed
 					overwriteAppointmentFile(appointments);
                     overwriteStaffFile(staffs);
+                    
+					// Update the receipts file with the completed appointment details
+					for (Receipt& receipt : receipts) {
+						if (receipt.referenceId == appointmentPtr->appointmentNo) {
+							receipt.status = COMPLETED;
+							break;
+						}
+					}
+                    overwriteReceiptFile(receipts);
 
 					clearScreen();
 					cout << "Appointment No. " << appointmentPtr->appointmentNo << " has been marked as completed!" << endl;
@@ -663,10 +685,19 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
 					// Mark the appointment as cancelled and save the reason for cancellation
                     Appointment* actualPtr = findAppointment(appointments, appointmentPtr->appointmentNo); // Find the actual appointment in the main appointments vector
                     if (actualPtr != nullptr) {
-                        actualPtr->status = "Cancelled";
+                        actualPtr->status = CANCELLED;
                         overwriteAppointmentFile(appointments);
                         appendCancelledAppointmentToFile(*actualPtr, reason);
                     }
+
+					// Update the receipts file with the cancelled appointment details
+                    for (Receipt& receipt : receipts) {
+                        if (receipt.referenceId == appointmentPtr->appointmentNo) {
+                            receipt.status = CANCELLED;
+                            break;
+                        }
+                    }
+                    overwriteReceiptFile(receipts);
 
                     cout << "Appointment No. " << appointmentPtr->appointmentNo << " has been cancelled successfully." << endl;
                     cout << "Press enter to continue...";
@@ -769,6 +800,10 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
         int totalAppointments = int(staffCompletedAppointments.size());
         int totalPages = int(ceil(static_cast<double>(totalAppointments) / MAX_APPOINTMENTS_PER_PAGE));
 
+        if (totalPages == 0) {
+            totalPages = 1;
+        }
+
 		cout << "Completed Appointments for " << staff.user.name << endl << endl;
 		cout << left << setw(20) << "Appointment No."
             << setw(24) << "Customer Name"
@@ -863,6 +898,10 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
         int totalAppointments = int(unassignedAppointments.size());
         int totalPages = int(ceil(static_cast<double>(totalAppointments) / MAX_APPOINTMENTS_PER_PAGE));
 
+        if (totalPages == 0) {
+			totalPages = 1;
+        }
+
         cout << "Appointment Assignment: " << endl 
             << left << setw(20) << "Appointment No."
             << setw(24) << "Customer Name"
@@ -873,6 +912,10 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
 
         int start = (currentPage - 1) * MAX_APPOINTMENTS_PER_PAGE;
         const Appointment* appointmentDisplayPtr = &unassignedAppointments[start];
+
+        if (totalPages == 0) {
+            totalPages = 1;
+        }
 
 		// Show the unassigned appointments for the admin to assign, max of 10 appointments per page
         for (int i = 0; i < MAX_APPOINTMENTS_PER_PAGE && (start + i) < totalAppointments; i++) {
@@ -930,6 +973,15 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
         }
 
 		// If the input is not n, p, or q, we assume it is an appointment number and try to find the appointment in the unassigned appointments vector
+		Appointment* filteredPtr = findAppointment(unassignedAppointments, appointmentNo);
+
+		if (filteredPtr == nullptr) {
+			clearScreen();
+			cout << "Invalid appointment number" << endl;
+			continue;
+		}
+
+		// if the appointment is found in the filtered unassigned appointments vector, we find the actual appointment in the main appointments vector
         Appointment* appointmentPtr = findAppointment(appointments, appointmentNo);
 
         if (appointmentPtr == nullptr) {
@@ -1133,7 +1185,7 @@ void assignAppointmentToStaff(Appointment* appointmentPtr, vector<Appointment>& 
 // Helpers
 string generateNextAppointmentNo(const vector<Appointment>& appointments) {
 	// Initialize a static variable to keep track of the next appointment number across function calls
-    static int nextAppointmentNumber = 0;
+    int nextAppointmentNumber = 0;
 
     if (nextAppointmentNumber == 0) {
         for (const Appointment& appointment : appointments) {
@@ -1303,7 +1355,7 @@ int getBookedPersonsForSlot(const Date& date, const Time& time, const vector<App
 		// Check if the selected appointment date and time slot matches the existing appointments and is not cancelled
         if (sameDate(appt.date, date) &&
             sameTime(appt.time, time) &&
-            appt.status != "Cancelled") {
+            appt.status != CANCELLED) {
             totalBooked += appt.totalPersons;
         }
     }
@@ -1343,7 +1395,7 @@ void loadCustomerPendingAppointments(Customer& customer, vector<Appointment>& ap
 
 	// Check each appointment in the appointments vector and load the pending appointments for the customer into a separate vector
     for (Appointment& appointment : appointments) {
-        if (customer.user.name == appointment.customerName && appointment.status == "Pending") {
+        if (customer.user.name == appointment.customerName && appointment.status == PENDING) {
             customerPendingAppointments.push_back(appointment);
         }
     }
@@ -1356,7 +1408,7 @@ void loadStaffAssignedAppointments(Staff& staff, vector<Appointment>& appointmen
 	// Check each appointment in the appointments vector and load the assigned appointments for the staff into a separate vector
     for (Appointment& appointment : appointments) {
         for (int i = 0; i < appointment.staffCount; i++) {
-            if (staff.staffCode == appointment.assignedStaffIds[i] && appointment.status == "Pending") {
+            if (staff.staffCode == appointment.assignedStaffIds[i] && appointment.status == PENDING) {
                 staffAssignedAppointments.push_back(appointment);
             }
         }
@@ -1370,7 +1422,7 @@ void loadStaffCompletedAppointments(Staff& staff, vector<Appointment>& appointme
 	// Check each appointment in the appointments vector and load the completed appointments for the staff into a separate vector
     for (Appointment& appointment : appointments) {
         for (int i = 0; i < appointment.staffCount; i++) {
-            if (staff.staffCode == appointment.assignedStaffIds[i] && appointment.status == "Completed") {
+            if (staff.staffCode == appointment.assignedStaffIds[i] && appointment.status == COMPLETED) {
                 staffCompletedAppointments.push_back(appointment);
             }
         }
@@ -1391,7 +1443,7 @@ void loadUnassignedAppointments(vector<Appointment>& appointments, vector<Appoin
             }
         }
 
-        if (appointment.status == "Pending" && assignedCount < appointment.totalPersons) {
+        if (appointment.status == PENDING && assignedCount < appointment.totalPersons) {
             unassignedAppointments.push_back(appointment);
         }
     }
@@ -1412,7 +1464,7 @@ void printPendingAppointments(const vector<Appointment> loadedAppointments) {
             << setw(2) << setfill('0') << appointment.date.day << "/" << right << setw(2) << setfill('0') << appointment.date.month << "/" << left << setw(4) << setfill('0') << appointment.date.year << setw(4) << setfill(' ') << " "
             << setw(2) << setfill('0') << appointment.time.hour << ":" << setw(2) << appointment.time.minute << setw(4) << setfill(' ') << " "
             << setw(14) << appointment.totalPersons
-            << setw(11) << appointment.status
+            << setw(11) << statusToString(appointment.status)
             << setw(3) << "RM " << right << setw(7) << fixed << setprecision(2) << appointment.total << endl;
     }
 }

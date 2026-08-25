@@ -13,6 +13,56 @@ const int MAX_STAFF_PER_PAGE = 10; // Maximum number of staff shown in one page
 const int MAX_APPOINTMENTS_PER_PAGE = 10; // Maximum number of appointment shown in one page
 const int MAX_RECEIPT_PER_PAGE = 10; // Maximum number of receipt shown in one page
 
+// Enum for appointment status
+enum Status {
+	PENDING,
+	COMPLETED,
+	CANCELLED,
+	NOT_PICKED_UP,
+	PICKED_UP
+};
+
+// Enum for payment type
+enum PaymentType {
+	CASH,
+	BANK
+};
+
+// Helpers for enum classes
+static string statusToString(Status status) {
+	switch (status) {
+	case PENDING:		return "Pending";
+	case COMPLETED:		return "Completed";
+	case CANCELLED:		return "Cancelled";
+	case NOT_PICKED_UP: return "Not Picked Up";
+	case PICKED_UP:		return "Picked Up";
+	default:					return "Unknown";
+	}
+}
+
+static Status stringToStatus(const string& statusStr) {
+	if (statusStr == "Pending")				return PENDING;
+	else if (statusStr == "Completed")		return COMPLETED;
+	else if (statusStr == "Cancelled")		return CANCELLED;
+	else if (statusStr == "Not Picked Up")	return NOT_PICKED_UP;
+	else if (statusStr == "Picked Up")		return PICKED_UP;
+	return PENDING; // Default case
+}
+
+static string paymentTypeToString(PaymentType paymentType) {
+	switch (paymentType) {
+	case CASH:	return "Cash";
+	case BANK:	return "Bank";
+	default:	return "Unknown";
+	}
+}
+
+static PaymentType stringToPaymentType(const string& paymentTypeStr) {
+	if (paymentTypeStr == "Cash")		return CASH;
+	else if (paymentTypeStr == "Bank")	return BANK;
+	return CASH; // Default case
+}
+
 // Define the service structure
 struct Service {
 	string serviceId;
@@ -92,7 +142,7 @@ struct Appointment {
 	int totalPersons;
 	Date date;
 	Time time;
-	string status;
+	Status status;
 	string customerName;
 	string assignedStaffIds[7]; // Assuming a maximum of 7 staff can be assigned to an appointment
 	int staffCount;
@@ -120,8 +170,8 @@ struct Receipt {
 	Date date;
 	string customerName;
 	double totalPrice;
-	string status;
-	string paymentType;
+	Status status;
+	PaymentType paymentType;
 };
 
 // shared function
