@@ -292,7 +292,7 @@ void customerMaintenancePage(vector<Customer>& customers, vector<Item>& items, v
     do { // Display the customer maintenance page UI
         cout << "Customer Maintenance" << endl;
         cout << "=====================\n";
-        cout << "1. Redeem points\n2. View all appointment\n3. Manage Receipts\n0. Exit" << endl << endl;
+        cout << "1. Redeem points\n2. View all appointments\n3. Manage Receipts\n0. Exit" << endl << endl;
         cout << "Selection: ";
         getline(cin, input);
 
@@ -783,8 +783,8 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
         cout << "Welcome " << staff.user.name << "!" << endl;
         cout << "What would you like to do?" << endl;
         cout << "===========================\n";
-        cout << "1. POS system\n2. View assigned appointment\n3. Inventory maintenance \
-            \n4. Customer maintenance\n5. View appointment done\n0. Logout" << endl << endl;
+        cout << "1. POS system\n2. View assigned appointments\n3. Inventory maintenance \
+            \n4. Customer maintenance\n5. View appointments done\n0. Logout" << endl << endl;
         cout << "Selection: ";
         getline(cin, input);
 

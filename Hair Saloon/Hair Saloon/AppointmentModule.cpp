@@ -220,15 +220,15 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
         int remainingPersons = appointment.totalPersons - assignedPersons;
 
         cout << "Appointment Date: "
-            << setw(2) << setfill('0') << appointment.date.day << "/"
-            << setw(2) << setfill('0') << appointment.date.month << "/"
-            << appointment.date.year;
+            << right << setw(2) << setfill('0') << appointment.date.day << "/"
+            << right << setw(2) << setfill('0') << appointment.date.month << "/"
+            << left << appointment.date.year;
 
         cout << "\tAppointment Time: "
-            << setw(2) << setfill('0') << appointment.time.hour << ":"
-            << setw(2) << setfill('0') << appointment.time.minute << endl;
+            << right << setw(2) << setfill('0') << appointment.time.hour << ":"
+            << right << setw(2) << setfill('0') << appointment.time.minute << endl;
 
-        cout << "Total Persons: " << appointment.totalPersons;
+        cout << left << "Total Persons: " << appointment.totalPersons;
         cout << "\t\tAssigned Persons: " << assignedPersons << endl;
         cout << "Remaining Persons: " << remainingPersons;
         cout << "\t\tCurrent Services Added: " << appointment.serviceCount << "/" << MAX_SERVICES_PER_APPOINTMENT << endl;
@@ -324,12 +324,23 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
             gender = toupper(gender);
             
             if (gender != 'M' && gender != 'F') {
+                clearScreen();
                 cout << "Invalid gender! Please enter M or F!" << endl << endl;
                 continue;
             }
 
             break;
         } while (true);
+
+        bool foundSameService = false;
+
+        for (int i = 0; i < appointment.serviceCount; i++) {
+            if (appointment.bookedServices[i].serviceId == serviceChosen->serviceId &&
+                appointment.bookedServices[i].gender == gender) {
+                foundSameService = true;
+                break;
+            }
+        }
 
         do {
 			// If there is only 1 remaining person, automatically assign 1 person to the service without asking for input
@@ -349,6 +360,7 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
                     persons = stoi(input, &pos);
 
                     if (persons < 1 || persons > remainingPersons) {
+                        clearScreen();
                         cout << "Invalid number of persons! Please enter a number between 1 and " << remainingPersons << "!" << endl << endl;
                         continue;
                     }
@@ -358,7 +370,7 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
                 catch (const invalid_argument&) {
                     clearScreen();
                     cout << "Invalid input! Please enter a whole number only!" << endl
-                        << "Within 1 to " << remainingPersons;
+                        << "Within 1 to " << remainingPersons << endl;
                     continue;
                 }
                 catch (const out_of_range&) {
@@ -370,7 +382,6 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
 
             break;
         } while (true);
-
 
 		// Calculate the subtotal for the service based on gender and number of persons
         double servicePrice = (gender == 'M')? serviceChosen->malePrice : serviceChosen->femalePrice;
@@ -393,12 +404,27 @@ void bookAppointment(Customer customer, vector<Customer>& customers, vector<Appo
 			else if (toupper(confirmation) == 'Y') {
 				// Add the service to the appointment's booked services
 
-				appointment.bookedServices[appointment.serviceCount].serviceId = serviceChosen->serviceId;
-				appointment.bookedServices[appointment.serviceCount].gender = gender;
-				appointment.bookedServices[appointment.serviceCount].persons = persons;
-				appointment.bookedServices[appointment.serviceCount].subtotal = subtotal;
-				appointment.serviceCount++;
-				appointment.total += subtotal;
+				// If the same service with the same gender is already added, update the persons and subtotal instead of adding a new entry
+                if (foundSameService) {
+					for (int i = 0; i < appointment.serviceCount; i++) {
+						if (appointment.bookedServices[i].serviceId == serviceChosen->serviceId && appointment.bookedServices[i].gender == gender) {
+							appointment.bookedServices[i].persons += persons;
+							appointment.bookedServices[i].subtotal += subtotal;
+							appointment.total += subtotal;
+							break;
+						}
+					}
+				}
+
+				// If the service is unique (not already added), add it as a new entry in the booked services
+				else {
+					appointment.bookedServices[appointment.serviceCount].serviceId = serviceChosen->serviceId;
+					appointment.bookedServices[appointment.serviceCount].gender = gender;
+					appointment.bookedServices[appointment.serviceCount].persons = persons;
+					appointment.bookedServices[appointment.serviceCount].subtotal = subtotal;
+					appointment.serviceCount++;
+					appointment.total += subtotal;
+				}
 
 				clearScreen();
 				cout << serviceChosen->name << " added successfully!" << endl << endl;
@@ -819,11 +845,11 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
         for (int i = 0; i < MAX_APPOINTMENTS_PER_PAGE && (start + i) < totalAppointments; i++) {
             cout << left << setw(20) << appointmentPtr->appointmentNo
                 << setw(24) << appointmentPtr->customerName
-                << setw(2) << setfill('0') << appointmentPtr->date.day << "/"
-                << setw(2) << appointmentPtr->date.month << "/"
-                << setw(8) << appointmentPtr->date.year << setfill(' ')
-                << setw(2) << setfill('0') << appointmentPtr->time.hour << ":"
-                << setw(6) << appointmentPtr->time.minute
+                << right << setw(2) << setfill('0') << appointmentPtr->date.day << "/"
+                << right << setw(2) << appointmentPtr->date.month << "/"
+                << left << setw(4) << appointmentPtr->date.year << setw(4) << setfill(' ') << " "
+                << right << setw(2) << setfill('0') << appointmentPtr->time.hour << ":"
+                << right << setw(2) << appointmentPtr->time.minute << left << setw(4) << setfill(' ') << " "
                 << setw(12) << appointmentPtr->totalPersons
                 << setw(3) << "RM " << setw(11) << fixed << setprecision(2) << appointmentPtr->total << endl;
 

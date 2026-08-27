@@ -71,7 +71,7 @@ void viewReceiptScreen(Customer customer, vector<Receipt>& receipts) {
 			return;
 		}
 
-		cout << left << setw(15) << "Receipt(s)" << setw(15) << "Date" << setw(15) << "Total (RM)" << setw(15) << "Status" << "\n";
+		cout << left << setw(15) << setfill(' ') << "Receipt(s)" << setw(15) << "Date" << setw(15) << "Total (RM)" << setw(15) << "Status" << "\n";
 		cout << left << setw(15) << "===========" << setw(15) << "==========" << setw(15) << "===========" << setw(15) << "===========" << "\n";
 
 		int start = (currentPage - 1) * MAX_RECEIPT_PER_PAGE;
@@ -227,35 +227,38 @@ void viewInvoiceScreen(Customer customer, vector<Customer>& customers, vector<Ap
 			return;
 		}
 		else if (confirm == 'Y') {
-			cout << "\nPayment type :" << endl;
-			cout << "1. Cash" << endl;
-			cout << "2. Bank" << endl;
-			cout << "0. Cancel Payment" << endl;
-			cout << "Selection: ";
-			getline(cin, input);
+			do {
+				cout << "\nPayment type :" << endl;
+				cout << "1. Cash" << endl;
+				cout << "2. Bank" << endl;
+				cout << "0. Cancel Payment" << endl;
+				cout << "Selection: ";
+				getline(cin, input);
 
-			if (input.empty()) {
-				clearScreen();
-				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
-				continue;
-			}
-
-			try {
-				size_t pos;
-				selection = stoi(input, &pos);
-
-				if (pos != input.size()) {
+				if (input.empty()) {
 					clearScreen();
 					cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
 					continue;
 				}
-			}
-			catch (...) {
-				clearScreen();
-				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
-				continue;
-			}
 
+				try {
+					size_t pos;
+					selection = stoi(input, &pos);
+
+					if (pos != input.size()) {
+						clearScreen();
+						cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+						continue;
+					}
+				}
+				catch (...) {
+					clearScreen();
+					cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+					continue;
+				}
+
+				break;
+			} while (true);
 			switch (selection) {
 			case 1:
 			case 2:
@@ -411,34 +414,38 @@ void viewInvoiceScreen(Customer customer,
 			return;
 		}
 		else if (confirm == 'Y') {
-			cout << "\nPayment type :" << endl;
-			cout << "1. Cash" << endl;
-			cout << "2. Bank" << endl;
-			cout << "0. Cancel Payment" << endl;
-			cout << "Selection: ";
-			getline(cin, input);
+			do {
+				cout << "\nPayment type :" << endl;
+				cout << "1. Cash" << endl;
+				cout << "2. Bank" << endl;
+				cout << "0. Cancel Payment" << endl;
+				cout << "Selection: ";
+				getline(cin, input);
 
-			if (input.empty()) {
-				clearScreen();
-				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
-				continue;
-			}
-
-			try {
-				size_t pos;
-				selection = stoi(input, &pos);
-
-				if (pos != input.size()) {
+				if (input.empty()) {
 					clearScreen();
 					cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
 					continue;
 				}
-			}
-			catch (...) {
-				clearScreen();
-				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
-				continue;
-			}
+
+				try {
+					size_t pos;
+					selection = stoi(input, &pos);
+
+					if (pos != input.size()) {
+						clearScreen();
+						cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+						continue;
+					}
+				}
+				catch (...) {
+					clearScreen();
+					cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+					continue;
+				}
+
+				break;
+			} while (true);
 
 			switch (selection) {
 			case 1:
@@ -631,34 +638,38 @@ void viewInvoiceScreen(Customer customer,
 			return;
 		}
 		else if (confirm == 'Y') {
-			cout << "\nPayment type :" << endl;
-			cout << "1. Cash" << endl;
-			cout << "2. Bank" << endl;
-			cout << "0. Cancel Payment" << endl;
-			cout << "Selection: ";
-			getline(cin, input);
+			do {
+				cout << "\nPayment type :" << endl;
+				cout << "1. Cash" << endl;
+				cout << "2. Bank" << endl;
+				cout << "0. Cancel Payment" << endl;
+				cout << "Selection: ";
+				getline(cin, input);
 
-			if (input.empty()) {
-				clearScreen();
-				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
-				continue;
-			}
-
-			try {
-				size_t pos;
-				selection = stoi(input, &pos);
-
-				if (pos != input.size()) {
+				if (input.empty()) {
 					clearScreen();
 					cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
 					continue;
 				}
-			}
-			catch (...) {
-				clearScreen();
-				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
-				continue;
-			}
+
+				try {
+					size_t pos;
+					selection = stoi(input, &pos);
+
+					if (pos != input.size()) {
+						clearScreen();
+						cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+						continue;
+					}
+				}
+				catch (...) {
+					clearScreen();
+					cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+					continue;
+				}
+
+				break;
+			} while (true);
 
 			switch (selection) {
 			case 1:
@@ -774,6 +785,11 @@ void viewPOSScreen(vector<Item> &items, vector<Customer> &customers, vector<Serv
 	do {
 		cout << "Enter member phone (\"cash\" for non-member): ";
 		getline(cin, memberPhone);
+
+		if (memberPhone == "q" || memberPhone == "Q") {
+			clearScreen();
+			return;
+		}
 
 		string normalisedInput = memberPhone;
 		transform(normalisedInput.begin(), normalisedInput.end(), normalisedInput.begin(), ::tolower);
