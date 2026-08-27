@@ -7,6 +7,7 @@
 #include <vector>
 #include "Main.h"
 
+// shared function
 void readItemFile(vector<Item>& items);
 void readServiceFile(vector<Service>& services);
 void readStaffFile(vector<Staff>& staffs);

@@ -1,4 +1,3 @@
-#include <iostream>
 #include <regex>
 #include <vector>
 #include "Main.h"
@@ -7,6 +6,7 @@ using namespace std;
 
 const regex PHONE_NUMBER_PATTERN(R"(^01\d-\d{7,8}$)"); // regex with pattern like 012-3456789
 
+// validation for username
 bool validateUsername(User user, vector<Customer> &customers, vector<Staff> &staffs, string *message) {
     // Validate: no redundant username
     for (int i = 0; i < customers.size(); i++) {
@@ -42,6 +42,7 @@ bool validateUsername(User user, vector<Customer> &customers, vector<Staff> &sta
     return true;
 }
 
+// Validation for phone number
 bool validatePhoneNo(User user, vector<Customer>& customers, vector<Staff>& staffs, string* message) {
     // Validate: no redundant phone no.
     for (int i = 0; i < customers.size(); i++) {
@@ -84,6 +85,7 @@ bool validatePhoneNo(User user, vector<Customer>& customers, vector<Staff>& staf
     return true;
 }
 
+// Validation for password
 bool validatePassword(User user, string confirmPassword, string* message) {
     // Validate: both password is same
     if ((user.password) != confirmPassword) {
@@ -95,6 +97,7 @@ bool validatePassword(User user, string confirmPassword, string* message) {
     return true;
 }
 
+// Validation for salary
 bool validateSalary(Staff staff, string* message) {
 	// Validate: salary cannot be empty
 	if (staff.salary <= 0) {
@@ -102,11 +105,10 @@ bool validateSalary(Staff staff, string* message) {
 		*message = "Salary must be greater than 0! ";
 		return false;
 	}
-	else if (staff.salary < 3000.00) {
+	else if (staff.salary < 3000.00 || staff.salary >= 20000.00) {
 		clearScreen();
-		*message = "Salary must be more than 3000! ";
+		*message = "Salary must be within 3000.0 to 20000.0! ";
 		return false;
 	}
-
 	return true;
 }

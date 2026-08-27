@@ -10,7 +10,7 @@ using namespace std;
 void appointmentManager(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments, vector<Receipt>& receipts, vector<Service>& services);
 
 // Staff side Appointment Management Module
-void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services);
+void assignedAppointmentsView(Staff& staff, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services, vector<Receipt>& receipts);
 void allAppointmentsView(Customer customer, vector<Customer>& customers, vector<Appointment>& appointments);
 void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments);
 
@@ -24,6 +24,8 @@ void loadCustomerPendingAppointments(Customer& customer, vector<Appointment>& ap
 
 template <typename T, typename Predicate>
 T* findBy(vector<T>& items, Predicate condition) {
+
+	// Iterate through the vector and return a pointer to the first item that satisfies the condition
     for (T& item : items) {
         if (condition(item)) {
             return &item;

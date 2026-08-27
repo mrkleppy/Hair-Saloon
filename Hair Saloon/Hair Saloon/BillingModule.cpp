@@ -34,8 +34,8 @@ void printReceiptDetails(Receipt receipt) {
 	cout << "Reference ID : " << receipt.referenceId << "\n";
 	cout << "Date         : " << right << setw(2) << setfill('0') << receipt.date.day << "/" << setw(2) << receipt.date.month << "/" << setw(4) << receipt.date.year << left << setfill(' ') << "\n";
 	cout << "Total (RM)   : " << fixed << setprecision(2) << receipt.totalPrice << "\n";
-	cout << "Picked up?   : " << receipt.status << "\n";
-	cout << "Payment Type : " << receipt.paymentType << "\n\n";
+	cout << "Status		  : " << statusToString(receipt.status) << "\n";
+	cout << "Payment Type : " << paymentTypeToString(receipt.paymentType) << "\n\n";
 	cout << "Press enter to continue...";
 	cin.get();
 	clearScreen();
@@ -71,7 +71,7 @@ void viewReceiptScreen(Customer customer, vector<Receipt>& receipts) {
 			return;
 		}
 
-		cout << left << setw(15) << "Receipt(s)" << setw(15) << "Date" << setw(15) << "Total (RM)" << setw(15) << "Picked up?" << "\n";
+		cout << left << setw(15) << setfill(' ') << "Receipt(s)" << setw(15) << "Date" << setw(15) << "Total (RM)" << setw(15) << "Status" << "\n";
 		cout << left << setw(15) << "===========" << setw(15) << "==========" << setw(15) << "===========" << setw(15) << "===========" << "\n";
 
 		int start = (currentPage - 1) * MAX_RECEIPT_PER_PAGE;
@@ -81,7 +81,7 @@ void viewReceiptScreen(Customer customer, vector<Receipt>& receipts) {
 			cout << left << setw(15) << receiptPtr->receiptId
 				<< setw(15) << right << setw(2) << setfill('0') << receiptPtr->date.day << "/" << setw(2) << receiptPtr->date.month << "/" << setw(4) << receiptPtr->date.year << left << setfill(' ') << setw(5) << " "
 				<< "RM " << setw(12) << fixed << setprecision(2) << receiptPtr->totalPrice
-				<< setw(15) << receiptPtr->status << endl;
+				<< setw(15) << statusToString(receiptPtr->status) << endl;
 			receiptPtr++;
 		}
 
@@ -227,35 +227,38 @@ void viewInvoiceScreen(Customer customer, vector<Customer>& customers, vector<Ap
 			return;
 		}
 		else if (confirm == 'Y') {
-			cout << "\nPayment type :" << endl;
-			cout << "1. Cash" << endl;
-			cout << "2. Bank" << endl;
-			cout << "0. Cancel Payment" << endl;
-			cout << "Selection: ";
-			getline(cin, input);
+			do {
+				cout << "\nPayment type :" << endl;
+				cout << "1. Cash" << endl;
+				cout << "2. Bank" << endl;
+				cout << "0. Cancel Payment" << endl;
+				cout << "Selection: ";
+				getline(cin, input);
 
-			if (input.empty()) {
-				clearScreen();
-				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
-				continue;
-			}
-
-			try {
-				size_t pos;
-				selection = stoi(input, &pos);
-
-				if (pos != input.size()) {
+				if (input.empty()) {
 					clearScreen();
 					cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
 					continue;
 				}
-			}
-			catch (...) {
-				clearScreen();
-				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
-				continue;
-			}
 
+				try {
+					size_t pos;
+					selection = stoi(input, &pos);
+
+					if (pos != input.size()) {
+						clearScreen();
+						cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+						continue;
+					}
+				}
+				catch (...) {
+					clearScreen();
+					cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+					continue;
+				}
+
+				break;
+			} while (true);
 			switch (selection) {
 			case 1:
 			case 2:
@@ -285,8 +288,8 @@ void viewInvoiceScreen(Customer customer, vector<Customer>& customers, vector<Ap
 				getCurrentDateTime(newReceipt.date, placeholder);
 				newReceipt.customerName = customer.user.name;
 				newReceipt.totalPrice = appointment.total;
-				newReceipt.status = "-";
-				newReceipt.paymentType = (selection == 1 ? "Cash" : "Bank");
+				newReceipt.status = appointment.status;
+				newReceipt.paymentType = (selection == 1 ? CASH : BANK);
 
 				receipts.push_back(newReceipt);
 				appendReceiptToFile(newReceipt);
@@ -411,34 +414,38 @@ void viewInvoiceScreen(Customer customer,
 			return;
 		}
 		else if (confirm == 'Y') {
-			cout << "\nPayment type :" << endl;
-			cout << "1. Cash" << endl;
-			cout << "2. Bank" << endl;
-			cout << "0. Cancel Payment" << endl;
-			cout << "Selection: ";
-			getline(cin, input);
+			do {
+				cout << "\nPayment type :" << endl;
+				cout << "1. Cash" << endl;
+				cout << "2. Bank" << endl;
+				cout << "0. Cancel Payment" << endl;
+				cout << "Selection: ";
+				getline(cin, input);
 
-			if (input.empty()) {
-				clearScreen();
-				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
-				continue;
-			}
-
-			try {
-				size_t pos;
-				selection = stoi(input, &pos);
-
-				if (pos != input.size()) {
+				if (input.empty()) {
 					clearScreen();
 					cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
 					continue;
 				}
-			}
-			catch (...) {
-				clearScreen();
-				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
-				continue;
-			}
+
+				try {
+					size_t pos;
+					selection = stoi(input, &pos);
+
+					if (pos != input.size()) {
+						clearScreen();
+						cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+						continue;
+					}
+				}
+				catch (...) {
+					clearScreen();
+					cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+					continue;
+				}
+
+				break;
+			} while (true);
 
 			switch (selection) {
 			case 1:
@@ -486,8 +493,8 @@ void viewInvoiceScreen(Customer customer,
 				getCurrentDateTime(newReceipt.date, placeholder);
 				newReceipt.customerName = customer.user.name;
 				newReceipt.totalPrice = grandTotal;
-				newReceipt.status = "Not Picked Up";
-				newReceipt.paymentType = (selection == 1 ? "Cash" : "Bank");
+				newReceipt.status = NOT_PICKED_UP;
+				newReceipt.paymentType = (selection == 1 ? CASH : BANK);
 
 				receipts.push_back(newReceipt);
 				appendReceiptToFile(newReceipt);
@@ -631,34 +638,38 @@ void viewInvoiceScreen(Customer customer,
 			return;
 		}
 		else if (confirm == 'Y') {
-			cout << "\nPayment type :" << endl;
-			cout << "1. Cash" << endl;
-			cout << "2. Bank" << endl;
-			cout << "0. Cancel Payment" << endl;
-			cout << "Selection: ";
-			getline(cin, input);
+			do {
+				cout << "\nPayment type :" << endl;
+				cout << "1. Cash" << endl;
+				cout << "2. Bank" << endl;
+				cout << "0. Cancel Payment" << endl;
+				cout << "Selection: ";
+				getline(cin, input);
 
-			if (input.empty()) {
-				clearScreen();
-				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
-				continue;
-			}
-
-			try {
-				size_t pos;
-				selection = stoi(input, &pos);
-
-				if (pos != input.size()) {
+				if (input.empty()) {
 					clearScreen();
 					cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
 					continue;
 				}
-			}
-			catch (...) {
-				clearScreen();
-				cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
-				continue;
-			}
+
+				try {
+					size_t pos;
+					selection = stoi(input, &pos);
+
+					if (pos != input.size()) {
+						clearScreen();
+						cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+						continue;
+					}
+				}
+				catch (...) {
+					clearScreen();
+					cout << "Invalid input! Please enter 0, 1 or 2!" << endl;
+					continue;
+				}
+
+				break;
+			} while (true);
 
 			switch (selection) {
 			case 1:
@@ -713,8 +724,8 @@ void viewInvoiceScreen(Customer customer,
 				getCurrentDateTime(newReceipt.date, placeholder);
 				newReceipt.customerName = customer.user.name;
 				newReceipt.totalPrice = grandTotal;
-				newReceipt.status = "Completed";
-				newReceipt.paymentType = (selection == 1 ? "Cash" : "Bank");
+				newReceipt.status = COMPLETED;
+				newReceipt.paymentType = (selection == 1 ? CASH : BANK);
 
 				receipts.push_back(newReceipt);
 				appendReceiptToFile(newReceipt);
@@ -774,6 +785,11 @@ void viewPOSScreen(vector<Item> &items, vector<Customer> &customers, vector<Serv
 	do {
 		cout << "Enter member phone (\"cash\" for non-member): ";
 		getline(cin, memberPhone);
+
+		if (memberPhone == "q" || memberPhone == "Q") {
+			clearScreen();
+			return;
+		}
 
 		string normalisedInput = memberPhone;
 		transform(normalisedInput.begin(), normalisedInput.end(), normalisedInput.begin(), ::tolower);
@@ -1052,50 +1068,50 @@ void viewPOSScreen(vector<Item> &items, vector<Customer> &customers, vector<Serv
 
 // Helpers
 string generateNextInvoiceId(vector<Invoice>& invoices) {
-	static int nextNumber = 0;
+	int nextInvoiceNumber = 0;
 
-	if (nextNumber == 0) {
+	if (nextInvoiceNumber == 0) {
 		for (const Invoice& invoice : invoices) {
 			const string& id = invoice.invoiceId;
 
 			if (id.length() == 8 && id.substr(0, 3) == "INV") {
 				try {
-					nextNumber = max(nextNumber, stoi(id.substr(3)));
+					nextInvoiceNumber = max(nextInvoiceNumber, stoi(id.substr(3)));
 				}
 				catch (...) {
 				}
 			}
 		}
 
-		nextNumber++;
+		nextInvoiceNumber++;
 	}
 
 	stringstream ss;
-	ss << "INV" << setw(5) << setfill('0') << nextNumber++;
+	ss << "INV" << setw(5) << setfill('0') << nextInvoiceNumber++;
 	return ss.str();
 }
 
 string generateNextReceiptId(vector<Receipt>& receipts) {
-	static int nextNumber = 0;
+	int nextReceiptNumber = 0;
 
-	if (nextNumber == 0) {
+	if (nextReceiptNumber == 0) {
 		for (const Receipt& receipt : receipts) {
 			const string& id = receipt.receiptId;
 
 			if (id.length() == 8 && id.substr(0, 3) == "REC") {
 				try {
-					nextNumber = max(nextNumber, stoi(id.substr(3)));
+					nextReceiptNumber = max(nextReceiptNumber, stoi(id.substr(3)));
 				}
 				catch (...) {
 				}
 			}
 		}
 
-		nextNumber++;
+		nextReceiptNumber++;
 	}
 
 	stringstream ss;
-	ss << "REC" << setw(5) << setfill('0') << nextNumber++;
+	ss << "REC" << setw(5) << setfill('0') << nextReceiptNumber++;
 	return ss.str();
 }
 
