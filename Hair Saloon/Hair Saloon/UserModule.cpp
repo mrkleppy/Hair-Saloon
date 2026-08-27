@@ -843,7 +843,7 @@ void staffHomePage(Staff staff, vector<Item>& items, vector<Customer>& customers
 }
 
 // UI for admin home page
-void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services) {
+void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Service>& services, vector<Receipt>& receipts, vector<Invoice>& invoices) {
     // Variable declarations
     int selection = 0;
     string input;
@@ -894,7 +894,7 @@ void adminHomePage(vector<Item>& items, vector<Customer>& customers, vector<Staf
             break;
         case 4:
             clearScreen(); //navigate to view reportings (reporting module)
-            reportingHomePage();
+            reportingHomePage(items, services, staffs, appointments, receipts, invoices);
             break;
         case 0: // exit the admin home page
             clearScreen();

@@ -1,0 +1,8 @@
+REC00001,INV00001,19,8,2026,1,342,Not Picked Up,Cash
+REC00002,INV00002,20,8,2026,1,79.8,Not Picked Up,Bank
+REC00003,INV00003,20,8,2026,1,39.9,Not Picked Up,Cash
+REC00004,AP00012,20,8,2026,1,240,Cancelled,Bank
+REC00005,POS,20,8,2026,Walk in Customer,164.7,Completed,Bank
+REC00006,POS,20,8,2026,Cheah Ah Mau,469.8,Completed,Bank
+REC00007,POS,20,8,2026,Cheah Ah Mau,90,Completed,Cash
+REC00008,POS,20,8,2026,Cheah Ah Mau,90,Completed,Bank

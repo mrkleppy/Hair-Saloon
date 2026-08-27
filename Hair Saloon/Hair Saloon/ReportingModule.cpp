@@ -1,53 +1,72 @@
+#include "ReportingModule.h"
 #include <iostream>
 #include <iomanip>
-#include <string>
-#include "Main.h"
+#include <numeric>
+#include <algorithm>
+#include <unordered_map>
+#include <map>
+#include <sstream>
 
 using namespace std;
 
-// Aiden
-// Function prototypes
-void companyFinancialReport();
-void staffPerformanceReport();
-void inventoryReport();
-void servicesReport();
-void appointmentReport();
+const string RED = "\033[31m";
+const string GREEN = "\033[32m";
+const string BLUE = "\033[34m";
+const string RESET = "\033[0m";
 
-// Admin side Reporting Module
-void reportingHomePage() {
+// Internal Function Prototypes
+void companyFinancialReport(const vector<Receipt>& receipts, const vector<Item>& items);
+void staffPerformanceReport(const vector<Staff>& staffs);
+void inventoryReport(const vector<Item>& items);
+void servicesReport(const vector<Service>& services);
+void appointmentReport(const vector<Appointment>& appointments);
+
+// Admin side Reporting Module (Matches ReportingModule.h)
+void reportingHomePage(vector<Item>& items, vector<Service>& services, vector<Staff>& staffs, vector<Appointment>& appointments, vector<Receipt>& receipts, vector<Invoice>& invoices) {
     int selection = 0;
-    clearScreen();
 
     do {
+        clearScreen();
         cout << "What report are you gonna view?" << endl;
-        cout << "1. Company Financial Report\n2. Staff Performance Report\n3. Inventory Report\
-            \n4. Services Report\n5. Appointment Report\n0. Exit" << endl;
+        cout << "1. Company Financial Report\n"
+             << "2. Staff Performance Report\n"
+             << "3. Inventory Report\n"
+             << "4. Services Report\n"
+             << "5. Appointment Report\n"
+             << "0. Exit" << endl;
         cout << "Selection: ";
-        cin >> selection;
+
+        if (!(cin >> selection)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            clearScreen();
+            cout << "Invalid input! Please enter a valid number." << endl;
+            continue;
+        }
         cin.ignore();
 
         switch (selection) {
-        case 1: // financial report
+        case 1:
             clearScreen();
-            companyFinancialReport();
+            companyFinancialReport(receipts, items);
             break;
-        case 2: // performance report
+        case 2:
             clearScreen();
-            staffPerformanceReport();
+            staffPerformanceReport(staffs);
             break;
-        case 3: // inventory report
+        case 3:
             clearScreen();
-            inventoryReport();
+            inventoryReport(items);
             break;
-        case 4: // services report
+        case 4:
             clearScreen();
-            servicesReport();
+            servicesReport(services);
             break;
-        case 5: // appointment report
+        case 5:
             clearScreen();
-            appointmentReport();
+            appointmentReport(appointments);
             break;
-        case 0: // exit
+        case 0:
             clearScreen();
             return;
         default:
@@ -57,11 +76,32 @@ void reportingHomePage() {
     } while (true);
 }
 
-void companyFinancialReport() {
-    // Read sales, cost of sales and appointment refund costs
+// 1. Financial Report (Calculates from live Receipts)
+void companyFinancialReport(const vector<Receipt>& receipts, const vector<Item>& items) {
     double sales = 0.00;
-    double costOfSales = 0.00;
+    double cashSales = 0.00;
+    double bankSales = 0.00;
     double appointmentRefundCosts = 0.00;
+
+    for (const Receipt& r : receipts) {
+        if (r.status != CANCELLED) {
+            sales += r.totalPrice;
+            if (r.paymentType == CASH) {
+                cashSales += r.totalPrice;
+            } else if (r.paymentType == BANK) {
+                bankSales += r.totalPrice;
+            }
+        } else {
+            appointmentRefundCosts += r.totalPrice / 2.0;
+        }
+    }
+
+	// Cost of Sales is Items Restock cost
+    double costOfSales = 0.00;
+
+	for (const Item& item : items) {
+		costOfSales += item.reorderPrice * item.soldCounter;
+	}
 
     double grossProfit = sales - costOfSales;
     double netProfit = grossProfit - appointmentRefundCosts;
@@ -70,51 +110,58 @@ void companyFinancialReport() {
     cout << "Company Financial Report" << endl << endl;
 
     cout << fixed << setprecision(2);
-    cout << left << setw(28) << "Sales" << "RM " << sales << endl;
-    cout << left << setw(28) << "(-) Cost of Sales" << "RM " << costOfSales << endl;
+    cout << left << setw(28) << "  - Cash Payments" << BLUE << "RM " << setw(10) << right << fixed << setprecision(2) << cashSales << RESET << endl;
+    cout << left << setw(28) << "  - Bank Payments" << BLUE << "RM " << setw(10) << right << fixed << setprecision(2) << bankSales << RESET << endl;
+    cout << left << setw(28) << "Gross Sales " << GREEN << "RM " << setw(10) << right << fixed << setprecision(2) << sales << RESET << endl;
+    cout << left << setw(28) << "(-) Cost of Sales" << RED << "RM " << setw(10) << right << fixed << setprecision(2) << costOfSales << RESET << endl;
     cout << "----------------------------------------" << endl;
-    cout << left << setw(28) << "Gross Profit" << "RM " << grossProfit << endl << endl;
-    cout << left << setw(28) << "(-) Appointment Refund Costs" << "RM " << appointmentRefundCosts << endl;
+    cout << left << setw(28) << "Gross Profit" << BLUE << "RM " << setw(10) << right << fixed << setprecision(2) << grossProfit << RESET << endl << endl;
+    cout << left << setw(28) << "(-) Refund / Cancel Costs" << RED << "RM " << setw(10) << right<< fixed << setprecision(2)<< appointmentRefundCosts<< RESET<< endl;
     cout << "----------------------------------------" << endl;
-    cout << left << setw(28) << "Net Profit" << "RM " << netProfit << endl;
+    cout << left << setw(28) << "Net Profit" << BLUE << "RM " << setw(10) << right << fixed << setprecision(2) << netProfit << RESET << endl;
 
     cout << "\nPress enter to go back...";
     cin.get();
     clearScreen();
 }
 
-void staffPerformanceReport() {
-    // Read staff list, appointments done and POS sales made
-    Staff staffList[5] = {
-        { {"John Doe", "password1", "0123456789"}, "S001", 3000.00, 10 },
-        { {"Jane Smith", "password2", "0987654321"}, "S002", 3200.00, 15 },
-        { {"Alice Johnson", "password3", "0112233445"}, "S003", 2800.00, 8 },
-        { {"Bob Brown", "password4", "0109876543"}, "S004", 3500.00, 20 },
-        { {"Charlie Davis", "password5", "0134567890"}, "S005", 3100.00, 12 }
-    };
-    double posSalesMade[5] = { 340.50, 210.00, 180.90, 500.00, 275.30 };
-    int totalStaff = sizeof(staffList) / sizeof(Staff);
+// 2. Staff Performance Report (Uses live Staff list)
+void staffPerformanceReport(const vector<Staff>& staffs) {
+    if (staffs.empty()) {
+        cout << "No staff records available." << endl;
+        cout << "\nPress enter to go back...";
+        cin.get();
+        clearScreen();
+        return;
+    }
 
-    // Judge best employee based on POS sales made
-    int bestIndex = 0;
-    for (int i = 1; i < totalStaff; i++) {
-        if (posSalesMade[i] > posSalesMade[bestIndex]) {
-            bestIndex = i;
+    int highestDone = staffs[0].appointmentDone;
+    for (size_t i = 1; i < staffs.size(); ++i) {
+        if (staffs[i].appointmentDone > highestDone) {
+            highestDone = staffs[i].appointmentDone;
         }
     }
 
     clearScreen();
     cout << "Staff Performance Report" << endl << endl;
-    cout << left << setw(10) << "Staff" << setw(20) << "Name" << setw(18) << "Appointments done" \
-        << setw(16) << "POS Sales (RM)" << "Remarks" << endl;
+    cout << left
+        << setw(10) << "Staff"
+        << setw(25) << "Name"
+        << setw(20) << "Appointments Done"
+        << "Remarks" << endl;
+    cout << "--------------------------------------------------------------------" << endl;
 
-    cout << fixed << setprecision(2);
-    for (int i = 0; i < totalStaff; i++) {
-        cout << left << setw(10) << staffList[i].staffCode
-            << setw(20) << staffList[i].user.name
-            << setw(18) << staffList[i].appointmentDone
-            << setw(16) << posSalesMade[i]
-            << (i == bestIndex ? "Best employee" : "") << endl;
+    for (size_t i = 0; i < staffs.size(); ++i) {
+        cout << left
+            << setw(10) << staffs[i].staffCode
+            << setw(25) << staffs[i].user.name
+            << setw(20) << staffs[i].appointmentDone;
+
+        if (highestDone > 0 && staffs[i].appointmentDone == highestDone) {
+            cout << "Best employee";
+        }
+
+        cout << endl;
     }
 
     cout << "\nPress enter to go back...";
@@ -122,71 +169,54 @@ void staffPerformanceReport() {
     clearScreen();
 }
 
-void inventoryReport() {
-    // Read item list, reorder times, sold times and profit
-    string itemName[8] = { "Shampoo", "Dry shampoo", "Conditioner", "Hair dye", "Hair gel", "Hair spray", "Styling cream", "Hair scalp" };
-    int reorderTimes[8] = { 2, 1, 0, 3, 1, 0, 1, 0 };
-    int soldTimes[8] = { 15, 8, 10, 5, 12, 7, 6, 3 };
-    double profit[8] = { 320.50, 180.00, 210.90, 90.00, 250.30, 130.00, 145.60, 60.00 };
-    int totalItems = 8;
+// 3. Inventory Report (Uses live Item list & soldCounter)
+void inventoryReport(const vector<Item>& items) {
+    if (items.empty()) {
+        cout << "No items found in inventory." << endl;
+        cout << "\nPress enter to go back...";
+        cin.get();
+        return;
+    }
 
-    // Judge best selling item based on profit
-    int bestIndex = 0;
-    for (int i = 1; i < totalItems; i++) {
-        if (profit[i] > profit[bestIndex]) {
-            bestIndex = i;
+    double maxProfit = items[0].soldCounter * items[0].price;
+
+    for (size_t i = 1; i < items.size(); i++) {
+        double currentProfit = items[i].soldCounter * items[i].price;
+        if (currentProfit > maxProfit) {
+            maxProfit = currentProfit;
         }
     }
 
     clearScreen();
     cout << "Inventory Report" << endl << endl;
-    cout << left << setw(16) << "Item" << setw(14) << "Reorder times" << setw(12) << "Sold times" \
-        << setw(14) << "Profit (RM)" << "Remarks" << endl;
+    cout << left << setw(18) << "Item"
+        << setw(10) << "Stock"
+        << setw(12) << "Sold times"
+        << setw(14) << "Profit (RM)"
+        << "Remarks" << endl;
+    cout << "-------------------------------------------------------------------" << endl;
 
     cout << fixed << setprecision(2);
-    for (int i = 0; i < totalItems; i++) {
-        // Need sales - reorder logic for low stock flag
-        cout << left << setw(16) << itemName[i]
-            << setw(14) << reorderTimes[i]
-            << setw(12) << soldTimes[i]
-            << setw(14) << profit[i]
-            << (i == bestIndex ? "Best selling item" : "") << endl;
-    }
 
-    cout << "\nPress enter to go back...";
-    cin.get();
-    clearScreen();
-}
-
-void servicesReport() {
-    // Read services done, male count and female count
-    string serviceName[4] = { "Hair Cut", "Hair Coloring", "Hair Treatment", "Styling" };
-    int servicesDone[4] = { 20, 12, 9, 15 };
-    int maleCount[4] = { 14, 5, 4, 8 };
-    int femaleCount[4] = { 6, 7, 5, 7 };
-    int totalServices = 4;
-
-    // Judge most done service for male and female
-    int mostMaleIndex = 0, mostFemaleIndex = 0;
-    for (int i = 1; i < totalServices; i++) {
-        if (maleCount[i] > maleCount[mostMaleIndex]) mostMaleIndex = i;
-        if (femaleCount[i] > femaleCount[mostFemaleIndex]) mostFemaleIndex = i;
-    }
-
-    clearScreen();
-    cout << "Services Report" << endl << endl;
-    cout << left << setw(16) << "Service" << setw(14) << "Services done" << setw(12) << "Male count" \
-        << setw(14) << "Female count" << "Remarks" << endl;
-
-    for (int i = 0; i < totalServices; i++) {
+    for (size_t i = 0; i < items.size(); i++) {
+        double profit = items[i].soldCounter * items[i].price;
         string remark = "";
-        if (i == mostMaleIndex) remark = "Most done as male";
-        else if (i == mostFemaleIndex) remark = "Most done as female";
 
-        cout << left << setw(16) << serviceName[i]
-            << setw(14) << servicesDone[i]
-            << setw(12) << maleCount[i]
-            << setw(14) << femaleCount[i]
+        if (items[i].soldCounter > 0 && profit == maxProfit) {
+            remark += "Best selling item";
+        }
+
+        if (items[i].stock <= 5) {
+            if (!remark.empty()) {
+                remark += " | ";
+            }
+            remark += "Low stock warning";
+        }
+
+        cout << left << setw(18) << items[i].name
+            << setw(10) << items[i].stock
+            << setw(12) << items[i].soldCounter
+            << setw(14) << profit
             << remark << endl;
     }
 
@@ -195,41 +225,135 @@ void servicesReport() {
     clearScreen();
 }
 
-void appointmentReport() {
-    // Read appointments made and refunded, grouped by month, from file (TODO)
-    // Placeholder for now
-    string monthYear[2] = { "Jan '26", "Feb '26" };
-    int appointmentsMade[2] = { 30, 42 };
-    int refunded[2] = { 2, 5 };
-    int totalMonths = 2;
-    int totalAppointments = 0;
-
-    for (int i = 0; i < totalMonths; i++) {
-        totalAppointments += appointmentsMade[i];
+// 4. Services Report (Uses live maleCounter & femaleCounter)
+void servicesReport(const vector<Service>& services) {
+    if (services.empty()) {
+        cout << "No services available." << endl;
+        cout << "\nPress enter to go back...";
+        cin.get();
+        return;
     }
 
-    // Judge best performing month based on (made - refunded), highest value
-    int bestIndex = 0;
-    int bestValue = appointmentsMade[0] - refunded[0];
-    for (int i = 1; i < totalMonths; i++) {
-        int value = appointmentsMade[i] - refunded[i];
-        if (value > bestValue) {
-            bestValue = value;
-            bestIndex = i;
+    int highestMaleCount = services[0].maleCounter;
+    int highestFemaleCount = services[0].femaleCounter;
+
+    for (size_t i = 1; i < services.size(); i++) {
+        if (services[i].maleCounter > highestMaleCount) {
+            highestMaleCount = services[i].maleCounter;
+        }
+
+        if (services[i].femaleCounter > highestFemaleCount) {
+            highestFemaleCount = services[i].femaleCounter;
+        }
+    }
+
+    clearScreen();
+    cout << "Services Report" << endl << endl;
+    cout << left << setw(18) << "Service"
+        << setw(14) << "Services done"
+        << setw(12) << "Male count"
+        << setw(14) << "Female count"
+        << "Remarks" << endl;
+    cout << "-------------------------------------------------------------------" << endl;
+
+    for (size_t i = 0; i < services.size(); i++) {
+        int totalDone = services[i].maleCounter + services[i].femaleCounter;
+        string remark = "";
+
+        if (services[i].maleCounter > 0 && services[i].maleCounter == highestMaleCount) {
+            remark += "Most done as male";
+        }
+
+        if (services[i].femaleCounter > 0 && services[i].femaleCounter == highestFemaleCount) {
+            if (!remark.empty()) {
+                remark += " | ";
+            }
+            remark += "Most done as female";
+        }
+
+        cout << left << setw(18) << services[i].name
+            << setw(14) << totalDone
+            << setw(12) << services[i].maleCounter
+            << setw(14) << services[i].femaleCounter
+            << remark << endl;
+    }
+
+    cout << "\nPress enter to go back...";
+    cin.get();
+    clearScreen();
+}
+
+// 5. Appointment Report (Uses live Appointment list)
+void appointmentReport(const vector<Appointment>& appointments) {
+    int totalAppointments = static_cast<int>(appointments.size());
+    int completedCount = 0;
+    int cancelledCount = 0;
+
+    struct MonthlyReport {
+        int made = 0;
+        int refunded = 0;
+    };
+
+    map<pair<int, int>, MonthlyReport> monthlyData;
+
+    for (const Appointment& app : appointments) {
+        if (app.status == COMPLETED) {
+            completedCount++;
+        }
+        else if (app.status == CANCELLED) {
+            cancelledCount++;
+        }
+
+        pair<int, int> monthKey = { app.date.year, app.date.month };
+        monthlyData[monthKey].made++;
+
+        if (app.status == CANCELLED) {
+            monthlyData[monthKey].refunded++;
+        }
+    }
+
+    int bestNet = -1;
+    for (const auto& entry : monthlyData) {
+        int net = entry.second.made - entry.second.refunded;
+        if (net > bestNet) {
+            bestNet = net;
         }
     }
 
     clearScreen();
     cout << "Appointment Report" << endl << endl;
-    cout << "Total Appointments count: " << totalAppointments << endl << endl;
-    cout << left << setw(14) << "Month/Year" << setw(18) << "Appointments made" << setw(12) << "Refunded" \
-        << "Remarks" << endl;
+    cout << "Total Appointments count: " << totalAppointments << endl;
+    cout << "Completed Appointments  : " << completedCount << endl;
+    cout << "Cancelled Appointments  : " << cancelledCount << endl << endl;
 
-    for (int i = 0; i < totalMonths; i++) {
-        cout << left << setw(14) << monthYear[i]
-            << setw(18) << appointmentsMade[i]
-            << setw(12) << refunded[i]
-            << (i == bestIndex ? "Best performing month" : "") << endl;
+    cout << left
+        << setw(12) << "Month/Year"
+        << setw(20) << "Appointments made"
+        << setw(12) << "Refunded"
+        << "Remarks" << endl;
+    cout << "--------------------------------------------------------------" << endl;
+
+    for (const auto& entry : monthlyData) {
+        int year = entry.first.first;
+        int month = entry.first.second;
+        int made = entry.second.made;
+        int refunded = entry.second.refunded;
+        int net = made - refunded;
+
+        ostringstream monthYear;
+        monthYear << setw(2) << setfill('0') << month
+            << "/" << year;
+
+        string remark = "";
+        if (net == bestNet && bestNet >= 0) {
+            remark = "Best performing month";
+        }
+
+        cout << left
+            << setw(12) << monthYear.str()
+            << setw(20) << made
+            << setw(12) << refunded
+            << remark << endl;
     }
 
     cout << "\nPress enter to go back...";

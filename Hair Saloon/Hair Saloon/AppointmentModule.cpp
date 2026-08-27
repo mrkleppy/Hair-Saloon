@@ -479,6 +479,7 @@ void cancelAppointment(Customer customer, vector<Appointment>& appointments, vec
 
 		// If the appointment is not found, show an error message and continue the loop
         if (appointmentPtr == nullptr) {
+            clearScreen();
             cout << "Invalid appointment number." << endl;
             continue;
         }
@@ -508,6 +509,7 @@ void cancelAppointment(Customer customer, vector<Appointment>& appointments, vec
                     }
                     overwriteReceiptFile(receipts);
 
+                    clearScreen();
                     cout << "Appointment cancelled successfully." << endl;
                     cout << "Press enter to continue...";
                     cin.get();
@@ -516,10 +518,12 @@ void cancelAppointment(Customer customer, vector<Appointment>& appointments, vec
                     return;
                 }
                 else if (toupper(confirmation) == 'N') {
+                    clearScreen();
                     cout << "Cancellation stopped." << endl;
                     break;
                 }
                 else {
+                    clearScreen();
                     cout << "Invalid input! Please enter Y or N!" << endl;
                 }
             } while (true);
@@ -620,7 +624,7 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
 		cout << "Selection: ";
 		
         cin >> selection;
-		cin.ignore();
+		cin.ignore(10000, '\n');
 		
         switch (selection) {
 		case '1':
@@ -678,6 +682,7 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
 				else {
 					clearScreen();
 					cout << "Invalid input! Please enter Y or N!" << endl;
+                    continue;
 				}
 
             } while(true);
@@ -700,46 +705,49 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
                     return;
                 }
 
-                cout << "\nAppointment No. " << appointmentPtr->appointmentNo << " is being cancelled for the following reason: " << endl <<
-                    reason << endl <<
-                    "Confirm (Y/N): ";
+                do {
+                    cout << "\nAppointment No. " << appointmentPtr->appointmentNo << " is being cancelled for the following reason: " << endl <<
+                        reason << endl <<
+                        "Confirm (Y/N): ";
 
-				cin >> confirmation;
-				cin.ignore();
+                    cin >> confirmation;
+                    cin.ignore(10000, '\n');
 
-				if (toupper(confirmation) == 'Y') {
-					// Mark the appointment as cancelled and save the reason for cancellation
-                    Appointment* actualPtr = findAppointment(appointments, appointmentPtr->appointmentNo); // Find the actual appointment in the main appointments vector
-                    if (actualPtr != nullptr) {
-                        actualPtr->status = CANCELLED;
-                        overwriteAppointmentFile(appointments);
-                        appendCancelledAppointmentToFile(*actualPtr, reason);
-                    }
-
-					// Update the receipts file with the cancelled appointment details
-                    for (Receipt& receipt : receipts) {
-                        if (receipt.referenceId == appointmentPtr->appointmentNo) {
-                            receipt.status = CANCELLED;
-                            break;
+                    if (toupper(confirmation) == 'Y') {
+                        // Mark the appointment as cancelled and save the reason for cancellation
+                        Appointment* actualPtr = findAppointment(appointments, appointmentPtr->appointmentNo); // Find the actual appointment in the main appointments vector
+                        if (actualPtr != nullptr) {
+                            actualPtr->status = CANCELLED;
+                            overwriteAppointmentFile(appointments);
+                            appendCancelledAppointmentToFile(*actualPtr, reason);
                         }
+
+                        // Update the receipts file with the cancelled appointment details
+                        for (Receipt& receipt : receipts) {
+                            if (receipt.referenceId == appointmentPtr->appointmentNo) {
+                                receipt.status = CANCELLED;
+                                break;
+                            }
+                        }
+                        overwriteReceiptFile(receipts);
+
+                        cout << "Appointment No. " << appointmentPtr->appointmentNo << " has been cancelled successfully." << endl;
+                        cout << "Press enter to continue...";
+                        cin.get();
+
+                        clearScreen();
+                        return;
                     }
-                    overwriteReceiptFile(receipts);
-
-                    cout << "Appointment No. " << appointmentPtr->appointmentNo << " has been cancelled successfully." << endl;
-                    cout << "Press enter to continue...";
-                    cin.get();
-
-                    clearScreen();
-                    return;
-				}
-				else if (toupper(confirmation) == 'N') {
-					clearScreen();
-					return;
-				}
-				else {
-					clearScreen();
-					cout << "Invalid input! Please enter Y or N!" << endl;
-				}
+                    else if (toupper(confirmation) == 'N') {
+                        clearScreen();
+                        return;
+                    }
+                    else {
+                        clearScreen();
+                        cout << "Invalid input! Please enter Y or N!" << endl;
+                        continue;
+                    }
+                } while (true);
             } while (true);
             break;
 
@@ -750,6 +758,7 @@ void appointmentStatusManager(Appointment* appointmentPtr, Staff& staff, vector<
 		default:
 			clearScreen();
 			cout << "Invalid input! Please enter 0, 1, or 2!" << endl;
+            continue;
 		}
         break;
 	} while (true);
@@ -799,6 +808,7 @@ void allAppointmentsView(Customer customer, vector<Customer>& customers, vector<
 
         cout << "\n\nPress any key to continue...";
         cin.ignore();
+        clearScreen();
         break;
 
     } while (true);
@@ -873,10 +883,12 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
             if (currentPage < totalPages) {
                 currentPage++;
                 clearScreen();
+                continue;
             }
             else {
                 clearScreen();
-                cout << "You are already on the last page!";
+                cout << "You are already on the last page!" << endl;
+                continue;
             }
             break;
         case 'p':
@@ -884,10 +896,12 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
             if (currentPage > 1) {
                 currentPage--;
                 clearScreen();
+                continue;
             }
             else {
                 clearScreen();
-                cout << "You are already on the first page!";
+                cout << "You are already on the first page!" << endl;
+                continue;
             }
             break;
         case 'q':
@@ -897,6 +911,7 @@ void completedAppointmentsView(Staff& staff, vector<Appointment>& appointments) 
         default:
             clearScreen();
             cout << "Invalid input! Please enter n, p, or q!" << endl;
+            continue;
         }
 	} while (true);
 }
@@ -970,29 +985,33 @@ void assignAppointmentsPage(vector<Appointment>& appointments, vector<Staff>& st
             continue;
         }
 
-        if (tolower(appointmentNo[0]) == 'n') {
+        if (appointmentNo == "n" || appointmentNo == "N") {
 			// Next page
             if (currentPage < totalPages) {
                 currentPage++;
                 clearScreen();
+                continue;
             }
             else {
                 clearScreen();
-                cout << "You are already on the last page!";
+                cout << "You are already on the last page!" << endl;
+                continue;
             }
         }
-        else if (tolower(appointmentNo[0]) == 'p') {
+        else if (appointmentNo == "p" || appointmentNo == "P") {
 			// Previous page
             if (currentPage > 1) {
                 currentPage--;
                 clearScreen();
+                continue;
             }
             else {
                 clearScreen();
-                cout << "You are already on the first page!";
+                cout << "You are already on the first page!" << endl;
+                continue;
             }
         }
-        else if (tolower(appointmentNo[0]) == 'q') {
+        else if (appointmentNo == "q" || appointmentNo == "Q") {
 			// Exit
             clearScreen();
             return;
