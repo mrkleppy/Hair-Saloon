@@ -22,6 +22,7 @@ double calculateCartTotal(const vector<CartItem>& cart);
 // Member side Inventory Module
 void purchaseItemPage(Customer customer, vector<Customer>& customers, vector<Item>& items, vector<Invoice>& invoices, vector<Receipt>& receipts) {
     vector<CartItem> cart;
+    string input;
     int quantity;
     char selection, confirmation;
     Item* itemChosen;
@@ -69,13 +70,38 @@ void purchaseItemPage(Customer customer, vector<Customer>& customers, vector<Ite
             }
 
             cout << "Quantity (Stock available: " << itemChosen->stock << "): ";
-            cin >> quantity;
-            cin.ignore();
+            getline(cin, input);
 
-			// Validate the quantity input (must be positive and not exceed available stock)
-            if (quantity <= 0 || quantity > itemChosen->stock) {
+            if (input.empty()) {
                 clearScreen();
-                cout << "Invalid quantity! Please enter a valid quantity." << endl;
+                cout << "Invalid input! Please enter a quantity." << endl;
+                continue;
+            }
+
+            try {
+                size_t pos;
+                quantity = stoi(input, &pos);
+
+                if (pos != input.length()) {
+                    clearScreen();
+                    cout << "Invalid input! Please enter a whole number only!" << endl;
+                    continue;
+                }
+
+                if (quantity <= 0 || quantity > itemChosen->stock) {
+                    clearScreen();
+                    cout << "Invalid quantity! Please enter a valid quantity within 1 to " << itemChosen->stock << " units." << endl;
+                    continue;
+                }
+            }
+            catch (const invalid_argument&) {
+                clearScreen();
+                cout << "Invalid input! Please enter a whole number only!" << endl;
+                continue;
+            }
+            catch (const out_of_range&) {
+                clearScreen();
+                cout << "Quantity is too large!" << endl;
                 continue;
             }
 
@@ -309,7 +335,7 @@ void removeItemFromCart(vector<Item>& items, vector<CartItem>& cart) {
 void inventoryMaintenancePage(vector<Item>& items) {
     Item* itemChosen;
     char confirmation;
-    string itemId;
+    string itemId, input;
     int quantity;
     clearScreen();
 
@@ -332,6 +358,12 @@ void inventoryMaintenancePage(vector<Item>& items) {
 
         cout << "\nWhat item to reorder? (q to quit): ";
         getline(cin, itemId);
+
+        if (itemId.empty()) {
+            clearScreen();
+            cout << "Please enter an Item ID!" << endl;
+            continue;
+        }
 
         if (itemId == "q" || itemId == "Q") {
             clearScreen();
@@ -356,18 +388,45 @@ void inventoryMaintenancePage(vector<Item>& items) {
         // If the item chosen is found, prompt for restock
         do {
             cout << "Quantity: ";
-            cin >> quantity;
-            cin.ignore();
+            getline(cin, input);
 
-			// Validate the quantity input (must be positive and not exceed 50)
-            if (quantity <= 0) {
+            if (input.empty()) {
                 clearScreen();
-                cout << "Invalid quantity! Please enter a positive quantity." << endl;
+                cout << "Invalid input! Please enter a quantity." << endl;
                 continue;
             }
-            else if (quantity > 50) {
+
+            // Try catch to prevent infinite loop caused by invalid input that cannot be converted to integer
+            try {
+                size_t pos;
+                quantity = stoi(input, &pos);
+
+                if (pos != input.length()) {
+                    clearScreen();
+                    cout << "Invalid input! Please enter a whole number only!" << endl;
+                    continue;
+                }
+
+                // Validate the quantity input (must be positive and not exceed 50)
+                if (quantity <= 0) {
+                    clearScreen();
+                    cout << "Invalid quantity! Please enter a positive quantity." << endl;
+                    continue;
+                }
+                else if (quantity > 50) {
+                    clearScreen();
+                    cout << "Invalid quantity! Please enter a quantity less than or equal to 50." << endl;
+                    continue;
+                }
+            }
+            catch (const invalid_argument&) {
                 clearScreen();
-                cout << "Invalid quantity! Please enter a quantity less than or equal to 50." << endl;
+                cout << "Invalid input! Please enter a whole number only!" << endl;
+                continue;
+            }
+            catch (const out_of_range&) {
+                clearScreen();
+                cout << "Quantity is too large!" << endl;
                 continue;
             }
 
