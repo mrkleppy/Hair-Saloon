@@ -105,9 +105,9 @@ bool validateSalary(Staff staff, string* message) {
 		*message = "Salary must be greater than 0! ";
 		return false;
 	}
-	else if (staff.salary < 3000.00 || staff.salary >= 20000.00) {
+	else if (staff.salary < 3000.00 || staff.salary > 20000.00) {
 		clearScreen();
-		*message = "Salary must be within 3000.0 to 20000.0! ";
+		*message = "Salary must be within RM 3000.00 to RM 20000.00! ";
 		return false;
 	}
 	return true;
