@@ -180,14 +180,14 @@ void viewInvoiceScreen(Customer customer, vector<Customer>& customers, vector<Ap
 		cout << "Customer Name : " << customer.user.name << endl;
 		cout << "Reference No. : " << appointment.appointmentNo << endl;
 		cout << "Date          : "
-			<< left << setw(2) << setfill('0') << appointment.date.day << "/"
+			<< right << setw(2) << setfill('0') << appointment.date.day << "/"
 			<< right << setw(2) << appointment.date.month << "/"
 			<< left << setw(4) << appointment.date.year << setfill(' ') << endl;
 		cout << "Time          : "
-			<< setw(2) << setfill('0') << appointment.time.hour << ":"
-			<< setw(2) << appointment.time.minute << setfill(' ') << endl;
+			<< right << setw(2) << setfill('0') << appointment.time.hour << ":"
+			<< right << setw(2) << appointment.time.minute << setfill(' ') << endl;
 
-		cout << "\nBooked Services\n";
+		cout << left <<"\nBooked Services\n";
 		cout << left << setw(6) << "No."
 			<< setw(20) << "Service"
 			<< setw(10) << "Gender"
