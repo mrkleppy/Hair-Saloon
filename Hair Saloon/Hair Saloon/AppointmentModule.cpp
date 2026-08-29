@@ -1506,9 +1506,9 @@ void printPendingAppointments(const vector<Appointment> loadedAppointments) {
 	// Show all of the pending appointments for the customer if any
     for (const Appointment& appointment : loadedAppointments) {
         cout << left << setw(20) << setfill(' ') << appointment.appointmentNo
-            << setw(2) << setfill('0') << appointment.date.day << "/" << right << setw(2) << setfill('0') << appointment.date.month << "/" << left << setw(4) << setfill('0') << appointment.date.year << setw(4) << setfill(' ') << " "
-            << setw(2) << setfill('0') << appointment.time.hour << ":" << setw(2) << appointment.time.minute << setw(4) << setfill(' ') << " "
-            << setw(14) << appointment.totalPersons
+            << right << setw(2) << setfill('0') << appointment.date.day << "/" << right << setw(2) << setfill('0') << appointment.date.month << "/" << left << setw(4) << setfill('0') << appointment.date.year << setw(4) << setfill(' ') << " "
+            << right << setw(2) << setfill('0') << appointment.time.hour << ":" << right << setw(2) << appointment.time.minute << setw(4) << setfill(' ') << " "
+            << left << setw(14) << appointment.totalPersons
             << setw(11) << statusToString(appointment.status)
             << setw(3) << "RM " << right << setw(7) << fixed << setprecision(2) << appointment.total << endl;
     }
